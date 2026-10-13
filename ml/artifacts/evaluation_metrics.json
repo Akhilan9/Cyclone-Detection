@@ -1,8 +1,8 @@
 {
   "dataset_split": {
     "train_cyclone_ids": [
-      "2021134N10072",
       "2023335N10085",
+      "2021134N10072",
       "2020137N10087"
     ],
     "val_cyclone_ids": [
@@ -102,8 +102,8 @@
     },
     "convlstm_spatiotemporal": {
       "model_name": "ConvLSTM Spatiotemporal Net (Proposed)",
-      "mean_track_error_km": 187.3945378334169,
-      "intensity_mae_knots": 7.81,
+      "mean_track_error_km": 171.24867883019402,
+      "intensity_mae_knots": 7.53,
       "intensity_rmse_knots": 8.99,
       "description": "Recurrent spatiotemporal model learning rotational dynamics and kinematic drift."
     }

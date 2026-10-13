@@ -182,3 +182,85 @@ graph LR
     FastAPI -- SQL / TCP :5432 --> Postgres
     FastAPI -- Read Checkpoints / Write Reports --> FileSystem
 ```
+
+---
+
+## 6. Use-Case Diagram
+
+```mermaid
+graph LR
+    User((Meteorologist / Researcher))
+    SystemAdmin((System Admin / DevOps))
+
+    subgraph Cyclone Intelligence System
+        UC1[Inspect Real-time Dashboard & KPI Cards]
+        UC2[Browse Historical Satellite Sequences IR/VIS/Fused]
+        UC3[Execute Live AI Multi-Task Inference]
+        UC4[Track Historical & Predicted Tracks on Map]
+        UC5[Analyze Temporal Intensity Evolution Curves]
+        UC6[Inspect Verified Validation Metrics & Baselines]
+        UC7[Generate & Download Research Reports PDF/CSV]
+        UC8[Train & Retrain CNN & ConvLSTM Models]
+        UC9[Seed & Migrate Relational Database]
+    end
+
+    User --> UC1
+    User --> UC2
+    User --> UC3
+    User --> UC4
+    User --> UC5
+    User --> UC6
+    User --> UC7
+
+    SystemAdmin --> UC8
+    SystemAdmin --> UC9
+```
+
+---
+
+## 7. Activity Diagram: Live Cyclone Inference & Forecasting Workflow
+
+```mermaid
+graph TD
+    Start([User Initiates Prediction]) --> SelectStorm[Select Monitored Storm e.g. VARDAH]
+    SelectStorm --> SelectChannel[Select Satellite Channel IRWIN / VIS / Fused]
+    SelectChannel --> TriggerInference[Click 'Run Prediction' Button]
+    TriggerInference --> ValidateInput{Valid Sequence & Coordinates?}
+
+    ValidateInput -- No --> ReturnError[Display Validation Error 422/400]
+    ValidateInput -- Yes --> LoadCheckpoints{Model Checkpoints Loaded?}
+
+    LoadCheckpoints -- No --> Error503[Return 503 Model Unavailable]
+    LoadCheckpoints -- Yes --> SpatialPass[Forward Pass: Spatial Multi-Head CNN]
+
+    SpatialPass --> TemporalPass[Forward Pass: Spatiotemporal ConvLSTM]
+    TemporalPass --> ComputeBaselines[Compute Persistence & Kinematic Baselines]
+    ComputeBaselines --> PersistDB[Save PredictionRun & Results to Database]
+    PersistDB --> UpdateMap[Update Leaflet Track & Dynamic Radar Ping]
+    UpdateMap --> RenderKPIs[Update KPI Cards, Confidence Bar & Area Chart]
+    RenderKPIs --> End([Inference Completed Successfully])
+```
+
+---
+
+## 8. State Diagram: Tropical Cyclone Life-Cycle (IMD RSMC Standards)
+
+```mermaid
+stateDiagram-v2
+    [*] --> Depression: Wind 17-27 kts (D)
+    Depression --> DeepDepression: Wind 28-33 kts (DD)
+    DeepDepression --> CyclonicStorm: Wind 34-47 kts (CS)
+    CyclonicStorm --> SevereCyclonicStorm: Wind 48-63 kts (SCS)
+    SevereCyclonicStorm --> VerySevereCyclonicStorm: Wind 64-89 kts (VSCS)
+    VerySevereCyclonicStorm --> ExtremelySevereCyclonicStorm: Wind 90-119 kts (ESCS)
+    ExtremelySevereCyclonicStorm --> SuperCyclonicStorm: Wind >= 120 kts (SuCS)
+
+    SuperCyclonicStorm --> ExtremelySevereCyclonicStorm: Weakening
+    ExtremelySevereCyclonicStorm --> VerySevereCyclonicStorm: Weakening
+    VerySevereCyclonicStorm --> SevereCyclonicStorm: Landfall / Shear Decay
+    SevereCyclonicStorm --> CyclonicStorm: Dissipation
+    CyclonicStorm --> DeepDepression: Dissipation
+    DeepDepression --> Depression: Dissipation
+    Depression --> [*]: Remnant Low Pressure Area
+```
+
