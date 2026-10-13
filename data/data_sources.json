@@ -1,0 +1,78 @@
+{
+  "version": "1.0.0",
+  "data_sources": [
+    {
+      "id": "noaa_ibtracs_nio",
+      "name": "NOAA IBTrACS North Indian Ocean (v04r01)",
+      "organization": "National Centers for Environmental Information (NCEI), NOAA",
+      "basin": "North Indian Ocean (NI - Bay of Bengal and Arabian Sea)",
+      "coverage": "1848 - Present (Standardized 1980 - 2024)",
+      "frequency": "3-hourly / 6-hourly best-track observations",
+      "access": "Public, Free (No authentication required)",
+      "url": "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.NI.list.v04r01.csv",
+      "format": "CSV",
+      "parameters": [
+        "SID (Storm Identifier)",
+        "NAME",
+        "ISO_TIME (UTC)",
+        "LAT (deg N)",
+        "LON (deg E)",
+        "WMO_WIND (knots)",
+        "WMO_PRES (hPa)",
+        "AGENCY_NEWDELHI_WIND (IMD 3-min max sustained)",
+        "AGENCY_NEWDELHI_PRES (IMD central pressure)",
+        "NATURE"
+      ],
+      "license": "U.S. Government Open Data (Public Domain)",
+      "status": "active"
+    },
+    {
+      "id": "imd_best_track",
+      "name": "India Meteorological Department (IMD) Cyclone E-Atlas & Best Track",
+      "organization": "Ministry of Earth Sciences, Government of India",
+      "basin": "Bay of Bengal (BOB) & Arabian Sea (ARB)",
+      "coverage": "1990 - 2024",
+      "frequency": "3-hourly / 6-hourly synoptic observations",
+      "access": "Public archive (RSMC New Delhi Reports & Open Portal)",
+      "url": "https://rsmcnewdelhi.imd.gov.in/",
+      "format": "RSMC Bulletins & Best-Track Tables",
+      "parameters": [
+        "Storm Code",
+        "Name",
+        "Timestamp (UTC)",
+        "Center Latitude/Longitude",
+        "Estimated Central Pressure (ECP, hPa)",
+        "Maximum Sustained Surface Wind (MSW, knots/kmph)",
+        "Intensity Stage (D, DD, CS, SCS, VSCS, ESCS, SuCS)"
+      ],
+      "license": "Open Data Policy, Government of India",
+      "status": "integrated_via_ibtracs"
+    },
+    {
+      "id": "insat_3d_tir",
+      "name": "INSAT-3D / 3DR Thermal Infrared Satellite Imagery",
+      "organization": "ISRO / MOSDAC & IMD",
+      "basin": "Indian Ocean & South Asia (Coverage: 40E to 120E, 40S to 40N)",
+      "channels": ["TIR-1 (10.8 um)", "TIR-2 (12.0 um)", "MIR (3.9 um)", "WV (6.8 um)"],
+      "resolution": "4 km spatial resolution, 30-minute interval",
+      "access": "Open access research archive via MOSDAC (requires registration for live bulk download) / Historical public samples",
+      "url": "https://www.mosdac.gov.in/",
+      "format": "HDF5 / GeoTIFF / Standard Grayscale PNG",
+      "license": "Research and Academic Use",
+      "status": "sample_archive"
+    },
+    {
+      "id": "synthetic_benchmark_fixture",
+      "name": "Software Test & Integration Synthetic Fixture",
+      "organization": "Project Internal Verification Suite",
+      "basin": "North Indian Ocean Benchmark Grid",
+      "coverage": "Controlled synthetic storm tracks for CI/CD and integration testing",
+      "frequency": "6-hourly steps (T=12 timesteps per storm)",
+      "access": "Local repository fixture",
+      "url": "file://data/fixtures/sample_cyclones.json",
+      "format": "JSON / Synthetic NumPy Arrays",
+      "license": "Internal Test Only (Not for scientific research claims)",
+      "status": "fixture"
+    }
+  ]
+}

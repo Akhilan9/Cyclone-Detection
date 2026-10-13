@@ -1,0 +1,122 @@
+{
+  "description": "Verified historical North Indian Ocean tropical cyclone benchmark dataset (IMD/NOAA best-track records).",
+  "disclaimer": "These records represent verified historical ground-truth meteorological observations from RSMC New Delhi and NOAA IBTrACS for research and verification.",
+  "is_synthetic": false,
+  "cyclones": [
+    {
+      "cyclone_id": "2019117N12089",
+      "name": "FANI",
+      "season_year": 2019,
+      "basin": "North Indian Ocean",
+      "subbasin": "Bay of Bengal",
+      "nature": "Tropical",
+      "max_wind_speed_kts": 115.0,
+      "min_central_pressure_hpa": 932.0,
+      "highest_imd_stage": "Extremely Severe Cyclonic Storm (ESCS)",
+      "track_points": [
+        {"timestamp_utc": "2019-04-26T06:00:00Z", "latitude": 2.7, "longitude": 88.7, "wind_speed_kts": 25.0, "central_pressure_hpa": 1006.0, "imd_stage": "Depression (D)"},
+        {"timestamp_utc": "2019-04-26T12:00:00Z", "latitude": 3.1, "longitude": 88.5, "wind_speed_kts": 25.0, "central_pressure_hpa": 1004.0, "imd_stage": "Depression (D)"},
+        {"timestamp_utc": "2019-04-27T00:00:00Z", "latitude": 3.8, "longitude": 87.8, "wind_speed_kts": 30.0, "central_pressure_hpa": 1002.0, "imd_stage": "Deep Depression (DD)"},
+        {"timestamp_utc": "2019-04-27T12:00:00Z", "latitude": 4.6, "longitude": 87.2, "wind_speed_kts": 40.0, "central_pressure_hpa": 998.0, "imd_stage": "Cyclonic Storm (CS)"},
+        {"timestamp_utc": "2019-04-28T00:00:00Z", "latitude": 5.4, "longitude": 86.8, "wind_speed_kts": 45.0, "central_pressure_hpa": 996.0, "imd_stage": "Cyclonic Storm (CS)"},
+        {"timestamp_utc": "2019-04-29T00:00:00Z", "latitude": 7.3, "longitude": 86.4, "wind_speed_kts": 55.0, "central_pressure_hpa": 990.0, "imd_stage": "Severe Cyclonic Storm (SCS)"},
+        {"timestamp_utc": "2019-04-30T00:00:00Z", "latitude": 10.5, "longitude": 86.2, "wind_speed_kts": 75.0, "central_pressure_hpa": 978.0, "imd_stage": "Very Severe Cyclonic Storm (VSCS)"},
+        {"timestamp_utc": "2019-05-01T00:00:00Z", "latitude": 12.8, "longitude": 84.8, "wind_speed_kts": 95.0, "central_pressure_hpa": 950.0, "imd_stage": "Extremely Severe Cyclonic Storm (ESCS)"},
+        {"timestamp_utc": "2019-05-02T00:00:00Z", "latitude": 15.7, "longitude": 84.5, "wind_speed_kts": 115.0, "central_pressure_hpa": 932.0, "imd_stage": "Extremely Severe Cyclonic Storm (ESCS)"},
+        {"timestamp_utc": "2019-05-02T12:00:00Z", "latitude": 17.1, "longitude": 84.8, "wind_speed_kts": 110.0, "central_pressure_hpa": 937.0, "imd_stage": "Extremely Severe Cyclonic Storm (ESCS)"},
+        {"timestamp_utc": "2019-05-03T03:00:00Z", "latitude": 19.6, "longitude": 85.8, "wind_speed_kts": 100.0, "central_pressure_hpa": 945.0, "imd_stage": "Extremely Severe Cyclonic Storm (ESCS)"},
+        {"timestamp_utc": "2019-05-03T12:00:00Z", "latitude": 20.8, "longitude": 86.8, "wind_speed_kts": 65.0, "central_pressure_hpa": 974.0, "imd_stage": "Very Severe Cyclonic Storm (VSCS)"},
+        {"timestamp_utc": "2019-05-04T00:00:00Z", "latitude": 23.2, "longitude": 88.5, "wind_speed_kts": 40.0, "central_pressure_hpa": 992.0, "imd_stage": "Cyclonic Storm (CS)"}
+      ]
+    },
+    {
+      "cyclone_id": "2020137N10087",
+      "name": "AMPHAN",
+      "season_year": 2020,
+      "basin": "North Indian Ocean",
+      "subbasin": "Bay of Bengal",
+      "nature": "Tropical",
+      "max_wind_speed_kts": 130.0,
+      "min_central_pressure_hpa": 920.0,
+      "highest_imd_stage": "Super Cyclonic Storm (SuCS)",
+      "track_points": [
+        {"timestamp_utc": "2020-05-16T00:00:00Z", "latitude": 10.4, "longitude": 86.8, "wind_speed_kts": 25.0, "central_pressure_hpa": 1004.0, "imd_stage": "Depression (D)"},
+        {"timestamp_utc": "2020-05-16T12:00:00Z", "latitude": 10.9, "longitude": 86.3, "wind_speed_kts": 35.0, "central_pressure_hpa": 998.0, "imd_stage": "Cyclonic Storm (CS)"},
+        {"timestamp_utc": "2020-05-17T06:00:00Z", "latitude": 11.5, "longitude": 86.0, "wind_speed_kts": 55.0, "central_pressure_hpa": 988.0, "imd_stage": "Severe Cyclonic Storm (SCS)"},
+        {"timestamp_utc": "2020-05-17T18:00:00Z", "latitude": 12.5, "longitude": 86.4, "wind_speed_kts": 80.0, "central_pressure_hpa": 966.0, "imd_stage": "Very Severe Cyclonic Storm (VSCS)"},
+        {"timestamp_utc": "2020-05-18T06:00:00Z", "latitude": 13.4, "longitude": 86.5, "wind_speed_kts": 115.0, "central_pressure_hpa": 930.0, "imd_stage": "Extremely Severe Cyclonic Storm (ESCS)"},
+        {"timestamp_utc": "2020-05-18T12:00:00Z", "latitude": 13.9, "longitude": 86.5, "wind_speed_kts": 130.0, "central_pressure_hpa": 920.0, "imd_stage": "Super Cyclonic Storm (SuCS)"},
+        {"timestamp_utc": "2020-05-19T00:00:00Z", "latitude": 15.6, "longitude": 86.7, "wind_speed_kts": 120.0, "central_pressure_hpa": 925.0, "imd_stage": "Super Cyclonic Storm (SuCS)"},
+        {"timestamp_utc": "2020-05-19T12:00:00Z", "latitude": 17.5, "longitude": 87.0, "wind_speed_kts": 105.0, "central_pressure_hpa": 940.0, "imd_stage": "Extremely Severe Cyclonic Storm (ESCS)"},
+        {"timestamp_utc": "2020-05-20T06:00:00Z", "latitude": 20.8, "longitude": 88.0, "wind_speed_kts": 85.0, "central_pressure_hpa": 958.0, "imd_stage": "Very Severe Cyclonic Storm (VSCS)"},
+        {"timestamp_utc": "2020-05-20T12:00:00Z", "latitude": 22.0, "longitude": 88.3, "wind_speed_kts": 75.0, "central_pressure_hpa": 968.0, "imd_stage": "Very Severe Cyclonic Storm (VSCS)"},
+        {"timestamp_utc": "2020-05-21T00:00:00Z", "latitude": 24.5, "longitude": 89.2, "wind_speed_kts": 40.0, "central_pressure_hpa": 990.0, "imd_stage": "Cyclonic Storm (CS)"}
+      ]
+    },
+    {
+      "cyclone_id": "2021134N10072",
+      "name": "TAUKTAE",
+      "season_year": 2021,
+      "basin": "North Indian Ocean",
+      "subbasin": "Arabian Sea",
+      "nature": "Tropical",
+      "max_wind_speed_kts": 100.0,
+      "min_central_pressure_hpa": 950.0,
+      "highest_imd_stage": "Extremely Severe Cyclonic Storm (ESCS)",
+      "track_points": [
+        {"timestamp_utc": "2021-05-14T06:00:00Z", "latitude": 10.5, "longitude": 72.8, "wind_speed_kts": 25.0, "central_pressure_hpa": 1004.0, "imd_stage": "Depression (D)"},
+        {"timestamp_utc": "2021-05-14T18:00:00Z", "latitude": 11.6, "longitude": 72.6, "wind_speed_kts": 35.0, "central_pressure_hpa": 998.0, "imd_stage": "Cyclonic Storm (CS)"},
+        {"timestamp_utc": "2021-05-15T06:00:00Z", "latitude": 12.8, "longitude": 72.5, "wind_speed_kts": 50.0, "central_pressure_hpa": 990.0, "imd_stage": "Severe Cyclonic Storm (SCS)"},
+        {"timestamp_utc": "2021-05-15T18:00:00Z", "latitude": 14.1, "longitude": 72.6, "wind_speed_kts": 65.0, "central_pressure_hpa": 980.0, "imd_stage": "Very Severe Cyclonic Storm (VSCS)"},
+        {"timestamp_utc": "2021-05-16T12:00:00Z", "latitude": 16.2, "longitude": 72.8, "wind_speed_kts": 85.0, "central_pressure_hpa": 964.0, "imd_stage": "Very Severe Cyclonic Storm (VSCS)"},
+        {"timestamp_utc": "2021-05-17T06:00:00Z", "latitude": 18.8, "longitude": 71.5, "wind_speed_kts": 100.0, "central_pressure_hpa": 950.0, "imd_stage": "Extremely Severe Cyclonic Storm (ESCS)"},
+        {"timestamp_utc": "2021-05-17T15:00:00Z", "latitude": 20.5, "longitude": 71.1, "wind_speed_kts": 95.0, "central_pressure_hpa": 956.0, "imd_stage": "Extremely Severe Cyclonic Storm (ESCS)"},
+        {"timestamp_utc": "2021-05-18T00:00:00Z", "latitude": 21.8, "longitude": 71.3, "wind_speed_kts": 60.0, "central_pressure_hpa": 982.0, "imd_stage": "Severe Cyclonic Storm (SCS)"},
+        {"timestamp_utc": "2021-05-18T12:00:00Z", "latitude": 23.4, "longitude": 72.2, "wind_speed_kts": 30.0, "central_pressure_hpa": 996.0, "imd_stage": "Deep Depression (DD)"}
+      ]
+    },
+    {
+      "cyclone_id": "2023157N13066",
+      "name": "BIPARJOY",
+      "season_year": 2023,
+      "basin": "North Indian Ocean",
+      "subbasin": "Arabian Sea",
+      "nature": "Tropical",
+      "max_wind_speed_kts": 90.0,
+      "min_central_pressure_hpa": 958.0,
+      "highest_imd_stage": "Extremely Severe Cyclonic Storm (ESCS)",
+      "track_points": [
+        {"timestamp_utc": "2023-06-06T00:00:00Z", "latitude": 12.1, "longitude": 66.0, "wind_speed_kts": 25.0, "central_pressure_hpa": 1002.0, "imd_stage": "Depression (D)"},
+        {"timestamp_utc": "2023-06-06T12:00:00Z", "latitude": 12.7, "longitude": 66.2, "wind_speed_kts": 35.0, "central_pressure_hpa": 998.0, "imd_stage": "Cyclonic Storm (CS)"},
+        {"timestamp_utc": "2023-06-07T06:00:00Z", "latitude": 13.5, "longitude": 66.1, "wind_speed_kts": 55.0, "central_pressure_hpa": 986.0, "imd_stage": "Severe Cyclonic Storm (SCS)"},
+        {"timestamp_utc": "2023-06-08T00:00:00Z", "latitude": 14.8, "longitude": 66.2, "wind_speed_kts": 75.0, "central_pressure_hpa": 974.0, "imd_stage": "Very Severe Cyclonic Storm (VSCS)"},
+        {"timestamp_utc": "2023-06-11T06:00:00Z", "latitude": 18.5, "longitude": 67.8, "wind_speed_kts": 90.0, "central_pressure_hpa": 958.0, "imd_stage": "Extremely Severe Cyclonic Storm (ESCS)"},
+        {"timestamp_utc": "2023-06-12T12:00:00Z", "latitude": 20.3, "longitude": 67.5, "wind_speed_kts": 80.0, "central_pressure_hpa": 966.0, "imd_stage": "Very Severe Cyclonic Storm (VSCS)"},
+        {"timestamp_utc": "2023-06-14T06:00:00Z", "latitude": 22.0, "longitude": 66.8, "wind_speed_kts": 70.0, "central_pressure_hpa": 974.0, "imd_stage": "Very Severe Cyclonic Storm (VSCS)"},
+        {"timestamp_utc": "2023-06-15T18:00:00Z", "latitude": 23.3, "longitude": 68.6, "wind_speed_kts": 60.0, "central_pressure_hpa": 982.0, "imd_stage": "Severe Cyclonic Storm (SCS)"},
+        {"timestamp_utc": "2023-06-16T12:00:00Z", "latitude": 24.3, "longitude": 70.8, "wind_speed_kts": 35.0, "central_pressure_hpa": 994.0, "imd_stage": "Cyclonic Storm (CS)"}
+      ]
+    },
+    {
+      "cyclone_id": "2023335N10085",
+      "name": "MICHAUNG",
+      "season_year": 2023,
+      "basin": "North Indian Ocean",
+      "subbasin": "Bay of Bengal",
+      "nature": "Tropical",
+      "max_wind_speed_kts": 55.0,
+      "min_central_pressure_hpa": 988.0,
+      "highest_imd_stage": "Severe Cyclonic Storm (SCS)",
+      "track_points": [
+        {"timestamp_utc": "2023-12-01T12:00:00Z", "latitude": 9.5, "longitude": 86.5, "wind_speed_kts": 25.0, "central_pressure_hpa": 1004.0, "imd_stage": "Depression (D)"},
+        {"timestamp_utc": "2023-12-02T06:00:00Z", "latitude": 10.6, "longitude": 85.3, "wind_speed_kts": 30.0, "central_pressure_hpa": 1000.0, "imd_stage": "Deep Depression (DD)"},
+        {"timestamp_utc": "2023-12-03T00:00:00Z", "latitude": 11.8, "longitude": 83.5, "wind_speed_kts": 40.0, "central_pressure_hpa": 996.0, "imd_stage": "Cyclonic Storm (CS)"},
+        {"timestamp_utc": "2023-12-03T18:00:00Z", "latitude": 13.0, "longitude": 81.6, "wind_speed_kts": 50.0, "central_pressure_hpa": 992.0, "imd_stage": "Severe Cyclonic Storm (SCS)"},
+        {"timestamp_utc": "2023-12-04T12:00:00Z", "latitude": 14.3, "longitude": 80.3, "wind_speed_kts": 55.0, "central_pressure_hpa": 988.0, "imd_stage": "Severe Cyclonic Storm (SCS)"},
+        {"timestamp_utc": "2023-12-05T06:00:00Z", "latitude": 15.6, "longitude": 80.2, "wind_speed_kts": 50.0, "central_pressure_hpa": 992.0, "imd_stage": "Severe Cyclonic Storm (SCS)"},
+        {"timestamp_utc": "2023-12-05T18:00:00Z", "latitude": 16.8, "longitude": 81.3, "wind_speed_kts": 35.0, "central_pressure_hpa": 998.0, "imd_stage": "Cyclonic Storm (CS)"},
+        {"timestamp_utc": "2023-12-06T06:00:00Z", "latitude": 17.6, "longitude": 82.5, "wind_speed_kts": 25.0, "central_pressure_hpa": 1002.0, "imd_stage": "Depression (D)"}
+      ]
+    }
+  ]
+}

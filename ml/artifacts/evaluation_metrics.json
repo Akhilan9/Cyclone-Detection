@@ -1,0 +1,113 @@
+{
+  "dataset_split": {
+    "train_cyclone_ids": [
+      "2021134N10072",
+      "2023335N10085",
+      "2020137N10087"
+    ],
+    "val_cyclone_ids": [
+      "2019117N12089"
+    ],
+    "test_cyclone_ids": [
+      "2023157N13066"
+    ],
+    "test_sequence_count": 5
+  },
+  "classification_metrics": {
+    "accuracy": 0.2,
+    "macro_precision": 0.05,
+    "macro_recall": 0.25,
+    "macro_f1": 0.0833,
+    "confusion_matrix": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "sample_count": 5
+  },
+  "benchmark_comparison": {
+    "persistence_baseline": {
+      "model_name": "Persistence Baseline",
+      "mean_track_error_km": 266.97648456090917,
+      "intensity_mae_knots": 14.0,
+      "intensity_rmse_knots": 15.17,
+      "description": "Assumes zero change in motion vector and intensity from current observation."
+    },
+    "linear_extrapolation_baseline": {
+      "model_name": "Linear Kinematic Extrapolation",
+      "mean_track_error_km": 190.6985155798235,
+      "intensity_mae_knots": 9.0,
+      "intensity_rmse_knots": 13.23,
+      "description": "Projects velocity vector computed over the previous 6-hour interval."
+    },
+    "convlstm_spatiotemporal": {
+      "model_name": "ConvLSTM Spatiotemporal Net (Proposed)",
+      "mean_track_error_km": 187.3945378334169,
+      "intensity_mae_knots": 7.81,
+      "intensity_rmse_knots": 8.99,
+      "description": "Recurrent spatiotemporal model learning rotational dynamics and kinematic drift."
+    }
+  },
+  "forecast_horizon_hours": 6,
+  "input_window_hours": 24
+}
