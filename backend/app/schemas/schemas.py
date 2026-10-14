@@ -219,7 +219,7 @@ class EvaluationMetricsResponse(BaseModel):
 
 # Reports
 class ReportCreateRequest(BaseModel):
-    title: str
+    title: str = "Cyclone Meteorological Analysis Report"
     cyclone_id: str
     prediction_run_id: Optional[str] = None
     report_type: str = Field("pdf", pattern="^(pdf|csv)$")
