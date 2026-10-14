@@ -48,11 +48,11 @@
 - [x] Known limitations disclosed (`LIMITATIONS.md`).
 - [x] Demonstration steps reproducible (`README.md`).
 
-### Scientific UI Redesign & CycloneFusion Executive Dashboard
+### Scientific UI Redesign & CycloVision Executive Dashboard
 - [x] Executive single-screen Intelligence Dashboard implemented matching user reference screenshots.
 - [x] Document title and fonts aligned with research presentation standards.
 - [x] Historical satellite sequence viewer with 5-frame temporal strip, channel switcher (IRWIN, VIS/WV, Fused), and Auto Play loop.
-- [x] CycloneFusion interactive Leaflet map with floating glassmorphic HUD card, dynamic radar ripple marker on storm center, and chronological color-coded track points.
+- [x] CycloVision interactive Leaflet map with floating glassmorphic HUD card, dynamic radar ripple marker on storm center, and chronological color-coded track points.
 - [x] Multi-storm benchmark database expanded with verified historical storms (VARDAH 2016, NADA 2016, FANI 2019, AMPHAN 2020, TAUKTAE 2021, BIPARJOY 2023, MICHAUNG 2023).
 
 ---

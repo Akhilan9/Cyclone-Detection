@@ -73,7 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
         </div>
         <div>
           <div style={{ fontSize: '0.98rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
-            CycloneFusion <span style={{ color: '#2563eb', fontSize: '0.78rem', fontWeight: 700 }}>AI/ML</span>
+            CycloVision <span style={{ color: '#2563eb', fontSize: '0.78rem', fontWeight: 700 }}>AI/ML</span>
           </div>
           <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 500 }}>
             Satellite Multi-Source Spatiotemporal Framework

@@ -682,7 +682,7 @@ export const IntelligenceDashboard: React.FC = () => {
             <div style={{ fontWeight: 800, fontSize: '0.98rem', color: '#0f172a' }}>AI Future Prediction</div>
           </div>
           <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '16px' }}>
-            Trained CycloneFusion ConvLSTM
+            Trained CycloVision ConvLSTM
           </div>
 
           {/* Large Prediction Feature Box */}

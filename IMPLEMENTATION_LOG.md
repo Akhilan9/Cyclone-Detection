@@ -18,9 +18,9 @@
 - **FastAPI Backend**: Built all 15 required research endpoints, Alembic migrations, database models, ReportLab PDF generation, and CSV streaming.
 - **Testing**: 21/21 automated tests passed (`pytest -v`) in 11.23s.
 
-### Entry 3: Scientific UI Redesign (CycloneFusion Executive Dashboard)
+### Entry 3: Scientific UI Redesign (CycloVision Executive Dashboard)
 - **User Reference Alignment**: Overhauled the frontend to match the exact visual layout from reference demonstrations.
 - **Intelligence Dashboard**: Integrated 4 KPI summary cards, 5-frame satellite sequence viewer (IRWIN, VIS/WV, Fused) with Auto Play loop, AI Future Prediction card, and Temporal Analysis SVG chart.
-- **Interactive Mapping**: Enhanced Leaflet map with floating CycloneFusion HUD card, dynamic radar ripple marker on storm center, and chronological color-coded track points.
+- **Interactive Mapping**: Enhanced Leaflet map with floating CycloVision HUD card, dynamic radar ripple marker on storm center, and chronological color-coded track points.
 - **Production Verification**: Completed frontend build (`npm run build`) in 2.25s with 0 errors. Verified end-to-end communication with backend on port 8000.
 

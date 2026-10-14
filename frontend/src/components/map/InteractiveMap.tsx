@@ -245,7 +245,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
           </div>
           <div>
             <div style={{ fontWeight: 800, fontSize: '1.05rem', letterSpacing: '-0.02em', color: '#ffffff', lineHeight: 1.1 }}>
-              CycloneFusion
+              CycloVision
             </div>
             <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Tropical Cyclone Monitoring</div>
           </div>
