@@ -1,56 +1,125 @@
 {
   "dataset_split": {
     "train_cyclone_ids": [
-      "2023335N10085 (MICHAUNG)",
-      "2021134N10072 (TAUKTAE)",
-      "2020137N10087 (AMPHAN)"
+      "2018314N12093",
+      "2018281N14088",
+      "2019117N12089",
+      "2019302N11118",
+      "2023036S10114",
+      "2023157N13066",
+      "2016334N08086",
+      "2022266N11308",
+      "2016341N10095",
+      "2014279N11096",
+      "2020137N10087",
+      "2021143N15090"
     ],
     "val_cyclone_ids": [
-      "2019117N12089 (FANI)"
+      "2023129N08091",
+      "2013307N06158",
+      "2013281N12098",
+      "2021134N10072"
     ],
     "test_cyclone_ids": [
-      "2016341N10087 (VARDAH)",
-      "2023157N13066 (BIPARJOY)",
-      "2021143N18088 (YAAS)"
+      "2005236N23285",
+      "2017333N06082",
+      "2023335N10085",
+      "2015293N09266"
     ],
-    "test_sequence_count": 320
+    "test_sequence_count": 67
   },
   "classification_metrics": {
-    "accuracy": 0.6343,
-    "macro_precision": 0.6481,
-    "macro_recall": 0.6210,
-    "macro_f1": 0.6124,
+    "accuracy": 0.5522,
+    "macro_precision": 0.4142,
+    "macro_recall": 0.4505,
+    "macro_f1": 0.4032,
     "confusion_matrix": [
-      [28, 4, 2, 0, 0, 0, 0],
-      [5, 34, 6, 1, 0, 0, 0],
-      [1, 7, 42, 5, 1, 0, 0],
-      [0, 2, 8, 38, 6, 1, 0],
-      [0, 0, 2, 9, 36, 4, 1],
-      [0, 0, 0, 2, 5, 23, 3],
-      [0, 0, 0, 0, 1, 2, 12]
+      [
+        2,
+        1,
+        2,
+        0,
+        11,
+        0,
+        0
+      ],
+      [
+        2,
+        2,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        8,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        2,
+        0,
+        8,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        25,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
     ],
-    "sample_count": 320
+    "sample_count": 67
   },
   "benchmark_comparison": {
     "persistence_baseline": {
       "model_name": "Persistence Baseline",
-      "mean_track_error_km": 266.97648456090917,
-      "intensity_mae_knots": 14.0,
-      "intensity_rmse_knots": 15.17,
+      "mean_track_error_km": 91.16467169008449,
+      "intensity_mae_knots": 9.28,
+      "intensity_rmse_knots": 19.67,
       "description": "Assumes zero change in motion vector and intensity from current observation."
     },
     "linear_extrapolation_baseline": {
       "model_name": "Linear Kinematic Extrapolation",
-      "mean_track_error_km": 190.6985155798235,
-      "intensity_mae_knots": 9.0,
-      "intensity_rmse_knots": 13.23,
+      "mean_track_error_km": 49.175899073403706,
+      "intensity_mae_knots": 7.18,
+      "intensity_rmse_knots": 13.38,
       "description": "Projects velocity vector computed over the previous 6-hour interval."
     },
     "convlstm_spatiotemporal": {
       "model_name": "ConvLSTM Spatiotemporal Net (Proposed)",
-      "mean_track_error_km": 171.24867883019402,
-      "intensity_mae_knots": 7.53,
-      "intensity_rmse_knots": 8.99,
+      "mean_track_error_km": 81.85323894288484,
+      "intensity_mae_knots": 9.73,
+      "intensity_rmse_knots": 18.71,
       "description": "Recurrent spatiotemporal model learning rotational dynamics and kinematic drift."
     }
   },

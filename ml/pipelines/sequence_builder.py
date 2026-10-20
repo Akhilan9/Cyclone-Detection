@@ -86,6 +86,7 @@ class SpatiotemporalSequenceBuilder:
 
                     # Image observation: prioritize real NASA satellite observations
                     real_img_found = False
+                    img_path = obs.get("image_path")
                     if img_path and os.path.exists(img_path):
                         try:
                             img_arr = self.preprocessor.preprocess_image(img_path)

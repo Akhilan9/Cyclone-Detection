@@ -16,9 +16,35 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+class SqueezeExcitationBlock(nn.Module):
+    """
+    Squeeze-and-Excitation (SE) Channel Attention Block for Convective Eyewall Salience.
+    Dynamically recalibrates channel feature maps to amplify central vortex structure
+    over peripheral background cirrus cloud noise.
+    """
+
+    def __init__(self, channels: int, reduction: int = 16):
+        super().__init__()
+        reduced_channels = max(channels // reduction, 8)
+        self.avg_pool = nn.AdaptiveAvgPool2d(1)
+        self.fc = nn.Sequential(
+            nn.Linear(channels, reduced_channels, bias=False),
+            nn.ReLU(inplace=True),
+            nn.Linear(reduced_channels, channels, bias=False),
+            nn.Sigmoid(),
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        b, c, _, _ = x.size()
+        y = self.avg_pool(x).view(b, c)
+        y = self.fc(y).view(b, c, 1, 1)
+        return x * y.expand_as(x)
+
+
 class CycloneSpatialCNN(nn.Module):
     """
-    Multi-Head Deep Convolutional Neural Network for Satellite Cyclone Analysis.
+    Multi-Head Deep Convolutional Neural Network with Eyewall Squeeze-and-Excitation
+    Channel Attention for Satellite Cyclone Analysis.
     Extracts spatial hierarchical features from satellite thermal IR imagery.
     """
 
@@ -55,6 +81,9 @@ class CycloneSpatialCNN(nn.Module):
             nn.ReLU(inplace=True),
             nn.AdaptiveAvgPool2d((4, 4)),  # 256 x 4 x 4 = 4096
         )
+
+        # Eyewall Convective Channel Attention Block
+        self.se_attention = SqueezeExcitationBlock(256, reduction=16)
 
         # Dense Shared Representation
         self.shared_dense = nn.Sequential(
@@ -96,6 +125,7 @@ class CycloneSpatialCNN(nn.Module):
               'wind_speed_kts': (B, 1)
         """
         feats = self.features(x)
+        feats = self.se_attention(feats)
         flat = torch.flatten(feats, 1)
         shared = self.shared_dense(flat)
 
@@ -108,6 +138,24 @@ class CycloneSpatialCNN(nn.Module):
             "presence_prob": presence_prob,
             "class_logits": class_logits,
             "wind_speed_kts": wind_speed,
+        }
+
+    def predict_with_tta(self, x: torch.Tensor) -> Dict[str, torch.Tensor]:
+        """
+        Test-Time Augmentation (TTA) using 4-fold cyclonic rotational symmetry (0°, 90°, 180°, 270°).
+        Ensembles multi-angle forward passes to reduce epistemic variance and boost accuracy.
+        """
+        rots = [x, torch.rot90(x, 1, [2, 3]), torch.rot90(x, 2, [2, 3]), torch.rot90(x, 3, [2, 3])]
+        preds = [self.forward(r) for r in rots]
+
+        avg_presence = torch.stack([p["presence_prob"] for p in preds]).mean(dim=0)
+        avg_logits = torch.stack([p["class_logits"] for p in preds]).mean(dim=0)
+        avg_wind = torch.stack([p["wind_speed_kts"] for p in preds]).mean(dim=0)
+
+        return {
+            "presence_prob": avg_presence,
+            "class_logits": avg_logits,
+            "wind_speed_kts": avg_wind,
         }
 
 

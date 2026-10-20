@@ -36,10 +36,15 @@ class SatelliteService:
         if os.path.exists(target_path):
             return target_path
 
-        # Check in processed cache
+        # Check in processed cache (single image or final sequence frame)
         cache_path = os.path.join(CACHE_SATELLITE_DIR, f"{cyclone_id}_{image_type}.png")
         if os.path.exists(cache_path):
             return cache_path
+
+        ext = ".png" if image_type == "tir" else ".jpg"
+        frame_cache_path = os.path.join(CACHE_SATELLITE_DIR, f"{cyclone_id}_{image_type}_frame4{ext}")
+        if os.path.exists(frame_cache_path):
+            return frame_cache_path
 
         return None
 

@@ -3,7 +3,7 @@
     {
       "model_id": "cnn_spatial_v1",
       "name": "Spatial Feature Extractor & Intensity Classifier",
-      "architecture": "CNN Multi-Head",
+      "architecture": "CNN Multi-Head + Eyewall SE Channel Attention + Rotational TTA",
       "checkpoint_path": "D:\\Akhi\\Projects\\Cyclone Detection (Major Project)\\ml\\artifacts\\cnn_spatial_best.pt",
       "input_shape": [
         64,
@@ -11,14 +11,14 @@
         1
       ],
       "task": "Presence Detection & IMD Intensity Stage Classification",
-      "training_date": "2026-10-13",
+      "training_date": "2026-10-20",
       "framework": "PyTorch 2.6.0+cpu",
       "status": "ready"
     },
     {
       "model_id": "convlstm_spatiotemporal_v1",
       "name": "ConvLSTM Spatiotemporal Trajectory & Intensity Forecaster",
-      "architecture": "ConvLSTM + Kinematic Fusion",
+      "architecture": "ConvLSTM + Kinematic Multi-Basin Fusion",
       "checkpoint_path": "D:\\Akhi\\Projects\\Cyclone Detection (Major Project)\\ml\\artifacts\\convlstm_temporal_best.pt",
       "input_shape": [
         4,
@@ -27,7 +27,7 @@
         1
       ],
       "task": "+6h to +24h Trajectory & Intensity Forecasting",
-      "training_date": "2026-10-13",
+      "training_date": "2026-10-20",
       "framework": "PyTorch 2.6.0+cpu",
       "status": "ready"
     },

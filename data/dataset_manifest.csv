@@ -1,51 +1,573 @@
 cyclone_id,cyclone_name,season_year,basin,subbasin,obs_index,timestamp_utc,latitude,longitude,wind_speed_kts,central_pressure_hpa,imd_stage,image_path,split
-2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,0,2019-04-26T06:00:00Z,2.7,88.7,25.0,1006.0,Depression (D),,val
-2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,1,2019-04-26T12:00:00Z,3.1,88.5,25.0,1004.0,Depression (D),,val
-2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,2,2019-04-27T00:00:00Z,3.8,87.8,30.0,1002.0,Deep Depression (DD),,val
-2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,3,2019-04-27T12:00:00Z,4.6,87.2,40.0,998.0,Cyclonic Storm (CS),,val
-2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,4,2019-04-28T00:00:00Z,5.4,86.8,45.0,996.0,Cyclonic Storm (CS),,val
-2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,5,2019-04-29T00:00:00Z,7.3,86.4,55.0,990.0,Severe Cyclonic Storm (SCS),,val
-2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,6,2019-04-30T00:00:00Z,10.5,86.2,75.0,978.0,Very Severe Cyclonic Storm (VSCS),,val
-2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,7,2019-05-01T00:00:00Z,12.8,84.8,95.0,950.0,Extremely Severe Cyclonic Storm (ESCS),,val
-2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,8,2019-05-02T00:00:00Z,15.7,84.5,115.0,932.0,Extremely Severe Cyclonic Storm (ESCS),,val
-2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,9,2019-05-02T12:00:00Z,17.1,84.8,110.0,937.0,Extremely Severe Cyclonic Storm (ESCS),,val
-2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,10,2019-05-03T03:00:00Z,19.6,85.8,100.0,945.0,Extremely Severe Cyclonic Storm (ESCS),,val
-2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,11,2019-05-03T12:00:00Z,20.8,86.8,65.0,974.0,Very Severe Cyclonic Storm (VSCS),,val
-2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,12,2019-05-04T00:00:00Z,23.2,88.5,40.0,992.0,Cyclonic Storm (CS),,val
-2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,0,2020-05-16T00:00:00Z,10.4,86.8,25.0,1004.0,Depression (D),,train
-2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,1,2020-05-16T12:00:00Z,10.9,86.3,35.0,998.0,Cyclonic Storm (CS),,train
-2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,2,2020-05-17T06:00:00Z,11.5,86.0,55.0,988.0,Severe Cyclonic Storm (SCS),,train
-2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,3,2020-05-17T18:00:00Z,12.5,86.4,80.0,966.0,Very Severe Cyclonic Storm (VSCS),,train
-2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,4,2020-05-18T06:00:00Z,13.4,86.5,115.0,930.0,Extremely Severe Cyclonic Storm (ESCS),,train
-2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,5,2020-05-18T12:00:00Z,13.9,86.5,130.0,920.0,Super Cyclonic Storm (SuCS),,train
-2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,6,2020-05-19T00:00:00Z,15.6,86.7,120.0,925.0,Super Cyclonic Storm (SuCS),,train
-2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,7,2020-05-19T12:00:00Z,17.5,87.0,105.0,940.0,Extremely Severe Cyclonic Storm (ESCS),,train
-2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,8,2020-05-20T06:00:00Z,20.8,88.0,85.0,958.0,Very Severe Cyclonic Storm (VSCS),,train
-2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,9,2020-05-20T12:00:00Z,22.0,88.3,75.0,968.0,Very Severe Cyclonic Storm (VSCS),,train
-2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,10,2020-05-21T00:00:00Z,24.5,89.2,40.0,990.0,Cyclonic Storm (CS),,train
-2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,0,2021-05-14T06:00:00Z,10.5,72.8,25.0,1004.0,Depression (D),,train
-2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,1,2021-05-14T18:00:00Z,11.6,72.6,35.0,998.0,Cyclonic Storm (CS),,train
-2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,2,2021-05-15T06:00:00Z,12.8,72.5,50.0,990.0,Severe Cyclonic Storm (SCS),,train
-2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,3,2021-05-15T18:00:00Z,14.1,72.6,65.0,980.0,Very Severe Cyclonic Storm (VSCS),,train
-2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,4,2021-05-16T12:00:00Z,16.2,72.8,85.0,964.0,Very Severe Cyclonic Storm (VSCS),,train
-2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,5,2021-05-17T06:00:00Z,18.8,71.5,100.0,950.0,Extremely Severe Cyclonic Storm (ESCS),,train
-2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,6,2021-05-17T15:00:00Z,20.5,71.1,95.0,956.0,Extremely Severe Cyclonic Storm (ESCS),,train
-2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,7,2021-05-18T00:00:00Z,21.8,71.3,60.0,982.0,Severe Cyclonic Storm (SCS),,train
-2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,8,2021-05-18T12:00:00Z,23.4,72.2,30.0,996.0,Deep Depression (DD),,train
-2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,0,2023-06-06T00:00:00Z,12.1,66.0,25.0,1002.0,Depression (D),,test
-2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,1,2023-06-06T12:00:00Z,12.7,66.2,35.0,998.0,Cyclonic Storm (CS),,test
-2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,2,2023-06-07T06:00:00Z,13.5,66.1,55.0,986.0,Severe Cyclonic Storm (SCS),,test
-2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,3,2023-06-08T00:00:00Z,14.8,66.2,75.0,974.0,Very Severe Cyclonic Storm (VSCS),,test
-2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,4,2023-06-11T06:00:00Z,18.5,67.8,90.0,958.0,Extremely Severe Cyclonic Storm (ESCS),,test
-2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,5,2023-06-12T12:00:00Z,20.3,67.5,80.0,966.0,Very Severe Cyclonic Storm (VSCS),,test
-2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,6,2023-06-14T06:00:00Z,22.0,66.8,70.0,974.0,Very Severe Cyclonic Storm (VSCS),,test
-2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,7,2023-06-15T18:00:00Z,23.3,68.6,60.0,982.0,Severe Cyclonic Storm (SCS),,test
-2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,8,2023-06-16T12:00:00Z,24.3,70.8,35.0,994.0,Cyclonic Storm (CS),,test
-2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,0,2023-12-01T12:00:00Z,9.5,86.5,25.0,1004.0,Depression (D),,train
-2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,1,2023-12-02T06:00:00Z,10.6,85.3,30.0,1000.0,Deep Depression (DD),,train
-2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,2,2023-12-03T00:00:00Z,11.8,83.5,40.0,996.0,Cyclonic Storm (CS),,train
-2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,3,2023-12-03T18:00:00Z,13.0,81.6,50.0,992.0,Severe Cyclonic Storm (SCS),,train
-2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,4,2023-12-04T12:00:00Z,14.3,80.3,55.0,988.0,Severe Cyclonic Storm (SCS),,train
-2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,5,2023-12-05T06:00:00Z,15.6,80.2,50.0,992.0,Severe Cyclonic Storm (SCS),,train
-2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,6,2023-12-05T18:00:00Z,16.8,81.3,35.0,998.0,Cyclonic Storm (CS),,train
-2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,7,2023-12-06T06:00:00Z,17.6,82.5,25.0,1002.0,Depression (D),,train
+2016341N10095,VARDAH,2016,North Indian Ocean,Bay of Bengal,0,2016-12-08T00:00:00Z,11.2,90.5,35.0,1000.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016341N10095_real_tir.png,train
+2016341N10095,VARDAH,2016,North Indian Ocean,Bay of Bengal,1,2016-12-09T00:00:00Z,12.1,88.0,50.0,992.0,Severe Cyclonic Storm (SCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016341N10095_real_tir.png,train
+2016341N10095,VARDAH,2016,North Indian Ocean,Bay of Bengal,2,2016-12-10T00:00:00Z,12.8,85.5,65.0,982.0,Very Severe Cyclonic Storm (VSCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016341N10095_real_tir.png,train
+2016341N10095,VARDAH,2016,North Indian Ocean,Bay of Bengal,3,2016-12-11T00:00:00Z,13.2,83.2,75.0,974.0,Very Severe Cyclonic Storm (VSCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016341N10095_real_tir.png,train
+2016341N10095,VARDAH,2016,North Indian Ocean,Bay of Bengal,4,2016-12-12T06:00:00Z,13.1,80.5,70.0,978.0,Very Severe Cyclonic Storm (VSCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016341N10095_real_tir.png,train
+2016341N10095,VARDAH,2016,North Indian Ocean,Bay of Bengal,5,2016-12-13T00:00:00Z,12.9,78.0,35.0,998.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016341N10095_real_tir.png,train
+2016341N10095,VARDAH,2016,North Indian Ocean,Bay of Bengal,6,2016-12-14T00:00:00Z,12.5,74.0,25.0,1004.0,Depression (D),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016341N10095_real_tir.png,train
+2016341N10095,VARDAH,2016,North Indian Ocean,Bay of Bengal,7,2016-12-15T00:00:00Z,11.8,68.5,30.0,1002.0,Deep Depression (DD),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016341N10095_real_tir.png,train
+2016341N10095,VARDAH,2016,North Indian Ocean,Bay of Bengal,8,2016-12-16T00:00:00Z,11.0,63.0,30.0,1002.0,Deep Depression (DD),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016341N10095_real_tir.png,train
+2016341N10095,VARDAH,2016,North Indian Ocean,Bay of Bengal,9,2016-12-17T00:00:00Z,10.2,58.0,25.0,1004.0,Depression (D),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016341N10095_real_tir.png,train
+2016341N10095,VARDAH,2016,North Indian Ocean,Bay of Bengal,10,2016-12-18T00:00:00Z,9.5,54.0,25.0,1004.0,Depression (D),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016341N10095_real_tir.png,train
+2016341N10095,VARDAH,2016,North Indian Ocean,Bay of Bengal,11,2016-12-19T00:00:00Z,8.9,51.0,20.0,1008.0,Depression (D),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016341N10095_real_tir.png,train
+2016334N08086,NADA,2016,North Indian Ocean,Bay of Bengal,0,2016-11-29T12:00:00Z,7.5,86.0,25.0,1006.0,Depression (D),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016334N08086_real_tir.png,train
+2016334N08086,NADA,2016,North Indian Ocean,Bay of Bengal,1,2016-11-30T06:00:00Z,8.8,84.5,35.0,1002.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016334N08086_real_tir.png,train
+2016334N08086,NADA,2016,North Indian Ocean,Bay of Bengal,2,2016-11-30T18:00:00Z,9.8,83.0,40.0,1000.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016334N08086_real_tir.png,train
+2016334N08086,NADA,2016,North Indian Ocean,Bay of Bengal,3,2016-12-01T06:00:00Z,10.4,81.5,40.0,1000.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016334N08086_real_tir.png,train
+2016334N08086,NADA,2016,North Indian Ocean,Bay of Bengal,4,2016-12-01T18:00:00Z,10.8,80.2,30.0,1004.0,Deep Depression (DD),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016334N08086_real_tir.png,train
+2016334N08086,NADA,2016,North Indian Ocean,Bay of Bengal,5,2016-12-02T06:00:00Z,11.0,79.5,25.0,1006.0,Depression (D),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2016334N08086_real_tir.png,train
+2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,0,2019-04-26T06:00:00Z,2.7,88.7,25.0,1006.0,Depression (D),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2019117N12089_real_tir.png,train
+2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,1,2019-04-26T12:00:00Z,3.1,88.5,25.0,1004.0,Depression (D),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2019117N12089_real_tir.png,train
+2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,2,2019-04-27T00:00:00Z,3.8,87.8,30.0,1002.0,Deep Depression (DD),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2019117N12089_real_tir.png,train
+2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,3,2019-04-27T12:00:00Z,4.6,87.2,40.0,998.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2019117N12089_real_tir.png,train
+2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,4,2019-04-28T00:00:00Z,5.4,86.8,45.0,996.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2019117N12089_real_tir.png,train
+2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,5,2019-04-29T00:00:00Z,7.3,86.4,55.0,990.0,Severe Cyclonic Storm (SCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2019117N12089_real_tir.png,train
+2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,6,2019-04-30T00:00:00Z,10.5,86.2,75.0,978.0,Very Severe Cyclonic Storm (VSCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2019117N12089_real_tir.png,train
+2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,7,2019-05-01T00:00:00Z,12.8,84.8,95.0,950.0,Extremely Severe Cyclonic Storm (ESCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2019117N12089_real_tir.png,train
+2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,8,2019-05-02T00:00:00Z,15.7,84.5,115.0,932.0,Extremely Severe Cyclonic Storm (ESCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2019117N12089_real_tir.png,train
+2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,9,2019-05-02T12:00:00Z,17.1,84.8,110.0,937.0,Extremely Severe Cyclonic Storm (ESCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2019117N12089_real_tir.png,train
+2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,10,2019-05-03T03:00:00Z,19.6,85.8,100.0,945.0,Extremely Severe Cyclonic Storm (ESCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2019117N12089_real_tir.png,train
+2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,11,2019-05-03T12:00:00Z,20.8,86.8,65.0,974.0,Very Severe Cyclonic Storm (VSCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2019117N12089_real_tir.png,train
+2019117N12089,FANI,2019,North Indian Ocean,Bay of Bengal,12,2019-05-04T00:00:00Z,23.2,88.5,40.0,992.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2019117N12089_real_tir.png,train
+2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,0,2020-05-16T00:00:00Z,10.4,86.8,25.0,1004.0,Depression (D),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2020137N10087_real_tir.png,train
+2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,1,2020-05-16T12:00:00Z,10.9,86.3,35.0,998.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2020137N10087_real_tir.png,train
+2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,2,2020-05-17T06:00:00Z,11.5,86.0,55.0,988.0,Severe Cyclonic Storm (SCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2020137N10087_real_tir.png,train
+2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,3,2020-05-17T18:00:00Z,12.5,86.4,80.0,966.0,Very Severe Cyclonic Storm (VSCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2020137N10087_real_tir.png,train
+2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,4,2020-05-18T06:00:00Z,13.4,86.5,115.0,930.0,Extremely Severe Cyclonic Storm (ESCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2020137N10087_real_tir.png,train
+2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,5,2020-05-18T12:00:00Z,13.9,86.5,130.0,920.0,Super Cyclonic Storm (SuCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2020137N10087_real_tir.png,train
+2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,6,2020-05-19T00:00:00Z,15.6,86.7,120.0,925.0,Super Cyclonic Storm (SuCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2020137N10087_real_tir.png,train
+2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,7,2020-05-19T12:00:00Z,17.5,87.0,105.0,940.0,Extremely Severe Cyclonic Storm (ESCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2020137N10087_real_tir.png,train
+2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,8,2020-05-20T06:00:00Z,20.8,88.0,85.0,958.0,Very Severe Cyclonic Storm (VSCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2020137N10087_real_tir.png,train
+2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,9,2020-05-20T12:00:00Z,22.0,88.3,75.0,968.0,Very Severe Cyclonic Storm (VSCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2020137N10087_real_tir.png,train
+2020137N10087,AMPHAN,2020,North Indian Ocean,Bay of Bengal,10,2020-05-21T00:00:00Z,24.5,89.2,40.0,990.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2020137N10087_real_tir.png,train
+2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,0,2021-05-14T06:00:00Z,10.5,72.8,25.0,1004.0,Depression (D),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2021134N10072_real_tir.png,val
+2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,1,2021-05-14T18:00:00Z,11.6,72.6,35.0,998.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2021134N10072_real_tir.png,val
+2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,2,2021-05-15T06:00:00Z,12.8,72.5,50.0,990.0,Severe Cyclonic Storm (SCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2021134N10072_real_tir.png,val
+2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,3,2021-05-15T18:00:00Z,14.1,72.6,65.0,980.0,Very Severe Cyclonic Storm (VSCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2021134N10072_real_tir.png,val
+2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,4,2021-05-16T12:00:00Z,16.2,72.8,85.0,964.0,Very Severe Cyclonic Storm (VSCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2021134N10072_real_tir.png,val
+2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,5,2021-05-17T06:00:00Z,18.8,71.5,100.0,950.0,Extremely Severe Cyclonic Storm (ESCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2021134N10072_real_tir.png,val
+2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,6,2021-05-17T15:00:00Z,20.5,71.1,95.0,956.0,Extremely Severe Cyclonic Storm (ESCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2021134N10072_real_tir.png,val
+2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,7,2021-05-18T00:00:00Z,21.8,71.3,60.0,982.0,Severe Cyclonic Storm (SCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2021134N10072_real_tir.png,val
+2021134N10072,TAUKTAE,2021,North Indian Ocean,Arabian Sea,8,2021-05-18T12:00:00Z,23.4,72.2,30.0,996.0,Deep Depression (DD),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2021134N10072_real_tir.png,val
+2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,0,2023-06-06T00:00:00Z,12.1,66.0,25.0,1002.0,Depression (D),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023157N13066_real_tir.png,train
+2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,1,2023-06-06T12:00:00Z,12.7,66.2,35.0,998.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023157N13066_real_tir.png,train
+2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,2,2023-06-07T06:00:00Z,13.5,66.1,55.0,986.0,Severe Cyclonic Storm (SCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023157N13066_real_tir.png,train
+2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,3,2023-06-08T00:00:00Z,14.8,66.2,75.0,974.0,Very Severe Cyclonic Storm (VSCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023157N13066_real_tir.png,train
+2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,4,2023-06-11T06:00:00Z,18.5,67.8,90.0,958.0,Extremely Severe Cyclonic Storm (ESCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023157N13066_real_tir.png,train
+2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,5,2023-06-12T12:00:00Z,20.3,67.5,80.0,966.0,Very Severe Cyclonic Storm (VSCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023157N13066_real_tir.png,train
+2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,6,2023-06-14T06:00:00Z,22.0,66.8,70.0,974.0,Very Severe Cyclonic Storm (VSCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023157N13066_real_tir.png,train
+2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,7,2023-06-15T18:00:00Z,23.3,68.6,60.0,982.0,Severe Cyclonic Storm (SCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023157N13066_real_tir.png,train
+2023157N13066,BIPARJOY,2023,North Indian Ocean,Arabian Sea,8,2023-06-16T12:00:00Z,24.3,70.8,35.0,994.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023157N13066_real_tir.png,train
+2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,0,2023-12-01T12:00:00Z,9.5,86.5,25.0,1004.0,Depression (D),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023335N10085_real_tir.png,test
+2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,1,2023-12-02T06:00:00Z,10.6,85.3,30.0,1000.0,Deep Depression (DD),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023335N10085_real_tir.png,test
+2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,2,2023-12-03T00:00:00Z,11.8,83.5,40.0,996.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023335N10085_real_tir.png,test
+2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,3,2023-12-03T18:00:00Z,13.0,81.6,50.0,992.0,Severe Cyclonic Storm (SCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023335N10085_real_tir.png,test
+2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,4,2023-12-04T12:00:00Z,14.3,80.3,55.0,988.0,Severe Cyclonic Storm (SCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023335N10085_real_tir.png,test
+2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,5,2023-12-05T06:00:00Z,15.6,80.2,50.0,992.0,Severe Cyclonic Storm (SCS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023335N10085_real_tir.png,test
+2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,6,2023-12-05T18:00:00Z,16.8,81.3,35.0,998.0,Cyclonic Storm (CS),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023335N10085_real_tir.png,test
+2023335N10085,MICHAUNG,2023,North Indian Ocean,Bay of Bengal,7,2023-12-06T06:00:00Z,17.6,82.5,25.0,1002.0,Depression (D),D:\Akhi\Projects\Cyclone Detection (Major Project)\data\raw\satellite_images\2023335N10085_real_tir.png,test
+2005236N23285,KATRINA,2005,North Atlantic,Gulf of Mexico,0,2005-08-23T18:00:00Z,23.1,-75.1,30.0,1008.0,Tropical Depression,,test
+2005236N23285,KATRINA,2005,North Atlantic,Gulf of Mexico,1,2005-08-24T12:00:00Z,24.5,-76.5,40.0,1006.0,Tropical Storm,,test
+2005236N23285,KATRINA,2005,North Atlantic,Gulf of Mexico,2,2005-08-25T18:00:00Z,26.0,-79.9,65.0,985.0,Category 1 Hurricane,,test
+2005236N23285,KATRINA,2005,North Atlantic,Gulf of Mexico,3,2005-08-26T12:00:00Z,25.1,-82.0,75.0,979.0,Category 1 Hurricane,,test
+2005236N23285,KATRINA,2005,North Atlantic,Gulf of Mexico,4,2005-08-27T12:00:00Z,24.4,-84.7,100.0,948.0,Category 3 Major Hurricane,,test
+2005236N23285,KATRINA,2005,North Atlantic,Gulf of Mexico,5,2005-08-28T12:00:00Z,25.7,-87.7,145.0,909.0,Category 5 Major Hurricane,,test
+2005236N23285,KATRINA,2005,North Atlantic,Gulf of Mexico,6,2005-08-28T18:00:00Z,26.5,-88.6,150.0,902.0,Category 5 Major Hurricane,,test
+2005236N23285,KATRINA,2005,North Atlantic,Gulf of Mexico,7,2005-08-29T11:00:00Z,29.3,-89.6,110.0,920.0,Category 3 Major Hurricane,,test
+2005236N23285,KATRINA,2005,North Atlantic,Gulf of Mexico,8,2005-08-29T18:00:00Z,31.1,-89.6,80.0,948.0,Category 1 Hurricane,,test
+2005236N23285,KATRINA,2005,North Atlantic,Gulf of Mexico,9,2005-08-30T12:00:00Z,35.6,-88.4,30.0,990.0,Tropical Depression,,test
+2022266N11308,IAN,2022,North Atlantic,Caribbean / Florida,0,2022-09-24T00:00:00Z,14.1,-73.8,35.0,1003.0,Tropical Storm,,train
+2022266N11308,IAN,2022,North Atlantic,Caribbean / Florida,1,2022-09-25T12:00:00Z,15.2,-79.8,45.0,1001.0,Tropical Storm,,train
+2022266N11308,IAN,2022,North Atlantic,Caribbean / Florida,2,2022-09-26T12:00:00Z,19.1,-82.7,70.0,981.0,Category 1 Hurricane,,train
+2022266N11308,IAN,2022,North Atlantic,Caribbean / Florida,3,2022-09-27T08:00:00Z,22.3,-83.7,110.0,947.0,Category 3 Major Hurricane,,train
+2022266N11308,IAN,2022,North Atlantic,Caribbean / Florida,4,2022-09-28T06:00:00Z,25.4,-82.9,135.0,937.0,Category 4 Major Hurricane,,train
+2022266N11308,IAN,2022,North Atlantic,Caribbean / Florida,5,2022-09-28T12:00:00Z,26.2,-82.6,140.0,937.0,Category 5 Major Hurricane,,train
+2022266N11308,IAN,2022,North Atlantic,Caribbean / Florida,6,2022-09-28T19:00:00Z,26.7,-82.2,130.0,940.0,Category 4 Major Hurricane,,train
+2022266N11308,IAN,2022,North Atlantic,Caribbean / Florida,7,2022-09-29T12:00:00Z,28.5,-80.8,60.0,987.0,Tropical Storm,,train
+2022266N11308,IAN,2022,North Atlantic,Caribbean / Florida,8,2022-09-30T18:00:00Z,33.2,-79.2,75.0,977.0,Category 1 Hurricane,,train
+2013307N06158,HAIYAN,2013,Western Pacific,Philippine Sea,0,2013-11-03T12:00:00Z,6.0,153.2,35.0,1002.0,Tropical Storm,,val
+2013307N06158,HAIYAN,2013,Western Pacific,Philippine Sea,1,2013-11-04T12:00:00Z,6.3,145.4,55.0,990.0,Severe Tropical Storm,,val
+2013307N06158,HAIYAN,2013,Western Pacific,Philippine Sea,2,2013-11-05T12:00:00Z,7.1,138.8,95.0,960.0,Category 2 Typhoon,,val
+2013307N06158,HAIYAN,2013,Western Pacific,Philippine Sea,3,2013-11-06T12:00:00Z,7.9,132.8,140.0,920.0,Category 5 Super Typhoon,,val
+2013307N06158,HAIYAN,2013,Western Pacific,Philippine Sea,4,2013-11-07T18:00:00Z,10.4,126.9,170.0,895.0,Category 5 Super Typhoon,,val
+2013307N06158,HAIYAN,2013,Western Pacific,Philippine Sea,5,2013-11-08T00:00:00Z,11.0,125.0,165.0,900.0,Category 5 Super Typhoon,,val
+2013307N06158,HAIYAN,2013,Western Pacific,Philippine Sea,6,2013-11-08T12:00:00Z,11.9,121.2,130.0,930.0,Category 4 Super Typhoon,,val
+2013307N06158,HAIYAN,2013,Western Pacific,Philippine Sea,7,2013-11-09T12:00:00Z,14.5,114.7,100.0,950.0,Category 3 Typhoon,,val
+2013307N06158,HAIYAN,2013,Western Pacific,Philippine Sea,8,2013-11-10T21:00:00Z,21.0,107.5,75.0,975.0,Category 1 Typhoon,,val
+2015293N09266,PATRICIA,2015,Eastern Pacific,Northeast Pacific,0,2015-10-20T18:00:00Z,13.0,-94.0,30.0,1007.0,Tropical Depression,,test
+2015293N09266,PATRICIA,2015,Eastern Pacific,Northeast Pacific,1,2015-10-21T12:00:00Z,13.1,-96.2,40.0,1004.0,Tropical Storm,,test
+2015293N09266,PATRICIA,2015,Eastern Pacific,Northeast Pacific,2,2015-10-22T06:00:00Z,14.0,-99.8,60.0,994.0,Tropical Storm,,test
+2015293N09266,PATRICIA,2015,Eastern Pacific,Northeast Pacific,3,2015-10-22T18:00:00Z,15.0,-102.6,115.0,946.0,Category 4 Major Hurricane,,test
+2015293N09266,PATRICIA,2015,Eastern Pacific,Northeast Pacific,4,2015-10-23T06:00:00Z,16.5,-104.7,175.0,885.0,Category 5 Major Hurricane,,test
+2015293N09266,PATRICIA,2015,Eastern Pacific,Northeast Pacific,5,2015-10-23T12:00:00Z,17.3,-105.1,185.0,872.0,Category 5 Major Hurricane,,test
+2015293N09266,PATRICIA,2015,Eastern Pacific,Northeast Pacific,6,2015-10-23T23:00:00Z,19.4,-105.0,130.0,932.0,Category 4 Major Hurricane,,test
+2015293N09266,PATRICIA,2015,Eastern Pacific,Northeast Pacific,7,2015-10-24T12:00:00Z,23.5,-102.5,30.0,1002.0,Tropical Depression,,test
+2023036S10114,FREDDY,2023,Southern Hemisphere,South Indian Ocean,0,2023-02-06T12:00:00Z,-12.1,115.5,35.0,998.0,Tropical Storm,,train
+2023036S10114,FREDDY,2023,Southern Hemisphere,South Indian Ocean,1,2023-02-11T12:00:00Z,-15.4,91.2,90.0,960.0,Category 2 Tropical Cyclone,,train
+2023036S10114,FREDDY,2023,Southern Hemisphere,South Indian Ocean,2,2023-02-15T12:00:00Z,-15.8,80.4,135.0,935.0,Category 4 Tropical Cyclone,,train
+2023036S10114,FREDDY,2023,Southern Hemisphere,South Indian Ocean,3,2023-02-19T12:00:00Z,-16.8,60.1,145.0,927.0,Category 5 Tropical Cyclone,,train
+2023036S10114,FREDDY,2023,Southern Hemisphere,South Indian Ocean,4,2023-02-21T18:00:00Z,-20.2,48.5,95.0,965.0,Category 2 Tropical Cyclone,,train
+2023036S10114,FREDDY,2023,Southern Hemisphere,South Indian Ocean,5,2023-02-24T12:00:00Z,-22.1,35.5,60.0,988.0,Severe Tropical Storm,,train
+2023036S10114,FREDDY,2023,Southern Hemisphere,South Indian Ocean,6,2023-03-05T12:00:00Z,-21.4,40.5,65.0,985.0,Category 1 Tropical Cyclone,,train
+2023036S10114,FREDDY,2023,Southern Hemisphere,South Indian Ocean,7,2023-03-10T12:00:00Z,-18.2,38.0,110.0,950.0,Category 3 Major Cyclone,,train
+2023036S10114,FREDDY,2023,Southern Hemisphere,South Indian Ocean,8,2023-03-11T18:00:00Z,-17.8,36.9,85.0,968.0,Category 2 Tropical Cyclone,,train
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,0,2013-10-07 12:00:00,11.8,97.6,20.0,,Depression (D),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,1,2013-10-07 15:00:00,12.0,97.0,23.0,,Depression (D),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,2,2013-10-07 18:00:00,12.1,96.4,25.0,,Depression (D),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,3,2013-10-07 21:00:00,12.2,95.9,25.0,,Depression (D),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,4,2013-10-08 00:00:00,12.3,95.6,25.0,,Depression (D),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,5,2013-10-08 03:00:00,12.4,95.5,25.0,,Depression (D),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,6,2013-10-08 06:00:00,12.4,95.2,25.0,,Depression (D),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,7,2013-10-08 09:00:00,12.4,94.9,28.0,,Deep Depression (DD),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,8,2013-10-08 12:00:00,12.4,94.5,25.0,,Depression (D),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,9,2013-10-08 15:00:00,12.5,94.2,30.0,,Deep Depression (DD),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,10,2013-10-08 18:00:00,12.7,94.0,25.0,,Depression (D),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,11,2013-10-08 21:00:00,12.9,93.7,33.0,,Deep Depression (DD),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,12,2013-10-09 00:00:00,13.1,93.5,30.0,,Deep Depression (DD),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,13,2013-10-09 03:00:00,13.2,93.3,30.0,,Deep Depression (DD),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,14,2013-10-09 06:00:00,13.2,92.9,30.0,,Deep Depression (DD),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,15,2013-10-09 09:00:00,13.5,92.5,30.0,,Deep Depression (DD),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,16,2013-10-09 12:00:00,13.6,92.4,35.0,,Cyclonic Storm (CS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,17,2013-10-09 15:00:00,13.7,92.3,35.0,,Cyclonic Storm (CS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,18,2013-10-09 18:00:00,14.0,91.9,40.0,,Cyclonic Storm (CS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,19,2013-10-09 21:00:00,14.1,91.8,45.0,,Cyclonic Storm (CS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,20,2013-10-10 00:00:00,14.5,91.4,45.0,,Cyclonic Storm (CS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,21,2013-10-10 03:00:00,14.6,91.0,55.0,,Severe Cyclonic Storm (SCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,22,2013-10-10 06:00:00,15.0,90.7,65.0,,Very Severe Cyclonic Storm (VSCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,23,2013-10-10 09:00:00,15.1,90.5,70.0,,Very Severe Cyclonic Storm (VSCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,24,2013-10-10 12:00:00,15.4,90.1,75.0,,Very Severe Cyclonic Storm (VSCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,25,2013-10-10 15:00:00,15.5,89.9,90.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,26,2013-10-10 18:00:00,15.6,89.5,95.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,27,2013-10-10 21:00:00,15.6,89.0,100.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,28,2013-10-11 00:00:00,15.9,88.6,110.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,29,2013-10-11 03:00:00,15.9,88.5,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,30,2013-10-11 06:00:00,16.2,88.3,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,31,2013-10-11 09:00:00,16.5,88.0,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,32,2013-10-11 12:00:00,16.8,87.7,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,33,2013-10-11 15:00:00,16.8,87.3,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,34,2013-10-11 18:00:00,16.9,87.0,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,35,2013-10-11 21:00:00,17.1,86.7,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,36,2013-10-12 00:00:00,17.5,86.5,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,37,2013-10-12 03:00:00,17.7,86.0,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,38,2013-10-12 06:00:00,18.1,85.8,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,39,2013-10-12 09:00:00,18.5,85.4,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,40,2013-10-12 12:00:00,18.7,85.2,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,41,2013-10-12 15:00:00,19.1,85.1,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,42,2013-10-12 18:00:00,19.5,84.9,100.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,43,2013-10-12 21:00:00,19.9,84.6,90.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,44,2013-10-13 00:00:00,20.4,84.5,75.0,,Very Severe Cyclonic Storm (VSCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,45,2013-10-13 03:00:00,20.9,84.1,55.0,,Severe Cyclonic Storm (SCS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,46,2013-10-13 06:00:00,21.5,84.0,40.0,,Cyclonic Storm (CS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,47,2013-10-13 09:00:00,22.0,83.9,35.0,,Cyclonic Storm (CS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,48,2013-10-13 12:00:00,22.6,83.9,35.0,,Cyclonic Storm (CS),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,49,2013-10-13 18:00:00,23.0,83.5,30.0,,Deep Depression (DD),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,50,2013-10-14 00:00:00,23.5,84.0,30.0,,Deep Depression (DD),,val
+2013281N12098,PHAILIN,2013,North Indian Ocean,Bay of Bengal,51,2013-10-14 06:00:00,24.5,84.2,25.0,,Depression (D),,val
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,0,2014-10-06 06:00:00,10.7,96.1,15.0,,Low Pressure Area,,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,1,2014-10-06 09:00:00,10.7,96.0,18.0,,Depression (D),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,2,2014-10-06 12:00:00,10.7,95.9,20.0,,Depression (D),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,3,2014-10-06 15:00:00,10.7,95.8,23.0,,Depression (D),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,4,2014-10-06 18:00:00,10.8,95.6,25.0,,Depression (D),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,5,2014-10-06 21:00:00,10.9,95.4,25.0,,Depression (D),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,6,2014-10-07 00:00:00,11.0,95.2,25.0,,Depression (D),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,7,2014-10-07 03:00:00,11.2,95.0,25.0,,Depression (D),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,8,2014-10-07 06:00:00,11.4,94.7,25.0,,Depression (D),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,9,2014-10-07 09:00:00,11.5,94.4,28.0,,Deep Depression (DD),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,10,2014-10-07 12:00:00,11.7,94.1,30.0,,Deep Depression (DD),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,11,2014-10-07 15:00:00,11.8,93.8,30.0,,Deep Depression (DD),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,12,2014-10-07 18:00:00,11.9,93.5,30.0,,Deep Depression (DD),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,13,2014-10-07 21:00:00,12.0,93.2,33.0,,Deep Depression (DD),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,14,2014-10-08 00:00:00,12.2,92.9,30.0,,Deep Depression (DD),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,15,2014-10-08 03:00:00,12.3,92.6,35.0,,Cyclonic Storm (CS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,16,2014-10-08 06:00:00,12.6,92.1,40.0,,Cyclonic Storm (CS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,17,2014-10-08 09:00:00,12.8,91.4,40.0,,Cyclonic Storm (CS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,18,2014-10-08 12:00:00,12.9,90.9,40.0,,Cyclonic Storm (CS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,19,2014-10-08 15:00:00,13.1,90.4,40.0,,Cyclonic Storm (CS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,20,2014-10-08 18:00:00,13.3,90.1,45.0,,Cyclonic Storm (CS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,21,2014-10-08 21:00:00,13.5,89.6,45.0,,Cyclonic Storm (CS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,22,2014-10-09 00:00:00,13.6,89.3,45.0,,Cyclonic Storm (CS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,23,2014-10-09 03:00:00,13.7,89.1,55.0,,Severe Cyclonic Storm (SCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,24,2014-10-09 06:00:00,13.8,88.9,55.0,,Severe Cyclonic Storm (SCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,25,2014-10-09 09:00:00,13.9,88.6,55.0,,Severe Cyclonic Storm (SCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,26,2014-10-09 12:00:00,14.1,88.5,55.0,,Severe Cyclonic Storm (SCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,27,2014-10-09 15:00:00,14.1,88.2,55.0,,Severe Cyclonic Storm (SCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,28,2014-10-09 18:00:00,14.2,88.0,55.0,,Severe Cyclonic Storm (SCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,29,2014-10-09 21:00:00,14.4,87.8,60.0,,Severe Cyclonic Storm (SCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,30,2014-10-10 00:00:00,14.6,87.6,60.0,,Severe Cyclonic Storm (SCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,31,2014-10-10 03:00:00,14.8,87.3,60.0,,Severe Cyclonic Storm (SCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,32,2014-10-10 06:00:00,14.9,87.2,60.0,,Severe Cyclonic Storm (SCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,33,2014-10-10 09:00:00,15.1,87.0,65.0,,Very Severe Cyclonic Storm (VSCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,34,2014-10-10 12:00:00,15.3,86.8,70.0,,Very Severe Cyclonic Storm (VSCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,35,2014-10-10 15:00:00,15.5,86.5,75.0,,Very Severe Cyclonic Storm (VSCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,36,2014-10-10 18:00:00,15.6,86.3,75.0,,Very Severe Cyclonic Storm (VSCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,37,2014-10-10 21:00:00,15.7,86.0,75.0,,Very Severe Cyclonic Storm (VSCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,38,2014-10-11 00:00:00,15.9,85.7,75.0,,Very Severe Cyclonic Storm (VSCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,39,2014-10-11 03:00:00,16.0,85.4,80.0,,Very Severe Cyclonic Storm (VSCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,40,2014-10-11 06:00:00,16.1,85.1,90.0,,Extremely Severe Cyclonic Storm (ESCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,41,2014-10-11 09:00:00,16.1,85.0,90.0,,Extremely Severe Cyclonic Storm (ESCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,42,2014-10-11 12:00:00,16.2,84.9,95.0,,Extremely Severe Cyclonic Storm (ESCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,43,2014-10-11 15:00:00,16.3,84.8,95.0,,Extremely Severe Cyclonic Storm (ESCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,44,2014-10-11 18:00:00,16.6,84.6,100.0,,Extremely Severe Cyclonic Storm (ESCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,45,2014-10-11 21:00:00,16.8,84.4,100.0,,Extremely Severe Cyclonic Storm (ESCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,46,2014-10-12 00:00:00,17.2,84.1,100.0,,Extremely Severe Cyclonic Storm (ESCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,47,2014-10-12 03:00:00,17.4,83.8,100.0,,Extremely Severe Cyclonic Storm (ESCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,48,2014-10-12 06:00:00,17.6,83.4,100.0,,Extremely Severe Cyclonic Storm (ESCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,49,2014-10-12 09:00:00,17.8,83.1,90.0,,Extremely Severe Cyclonic Storm (ESCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,50,2014-10-12 12:00:00,18.0,82.8,60.0,,Severe Cyclonic Storm (SCS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,51,2014-10-12 15:00:00,18.3,82.5,45.0,,Cyclonic Storm (CS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,52,2014-10-12 18:00:00,18.8,82.3,40.0,,Cyclonic Storm (CS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,53,2014-10-12 21:00:00,19.0,82.1,40.0,,Cyclonic Storm (CS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,54,2014-10-13 00:00:00,19.7,81.6,30.0,,Deep Depression (DD),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,55,2014-10-13 03:00:00,20.5,81.5,30.0,,Deep Depression (DD),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,56,2014-10-13 06:00:00,20.8,81.4,30.0,,Deep Depression (DD),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,57,2014-10-13 09:00:00,21.1,81.4,35.0,,Cyclonic Storm (CS),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,58,2014-10-13 12:00:00,21.4,81.4,25.0,,Depression (D),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,59,2014-10-13 18:00:00,22.3,81.5,25.0,,Depression (D),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,60,2014-10-14 00:00:00,24.8,81.5,25.0,,Depression (D),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,61,2014-10-14 03:00:00,25.1,81.6,20.0,,Depression (D),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,62,2014-10-14 06:00:00,25.6,81.7,20.0,,Depression (D),,train
+2014279N11096,HUDHUD,2014,North Indian Ocean,Bay of Bengal,63,2014-10-14 09:00:00,26.3,81.8,20.0,,Depression (D),,train
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,0,2017-11-28 18:00:00,6.0,82.2,30.0,,Deep Depression (DD),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,1,2017-11-28 21:00:00,5.9,82.0,30.0,,Deep Depression (DD),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,2,2017-11-29 00:00:00,5.9,81.7,30.0,,Deep Depression (DD),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,3,2017-11-29 03:00:00,6.0,81.4,25.0,,Depression (D),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,4,2017-11-29 06:00:00,6.1,80.7,25.0,,Depression (D),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,5,2017-11-29 09:00:00,6.2,80.1,33.0,,Deep Depression (DD),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,6,2017-11-29 12:00:00,6.2,79.9,25.0,,Depression (D),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,7,2017-11-29 15:00:00,6.3,79.5,38.0,,Cyclonic Storm (CS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,8,2017-11-29 18:00:00,6.5,79.0,25.0,,Depression (D),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,9,2017-11-29 21:00:00,6.7,78.5,30.0,,Deep Depression (DD),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,10,2017-11-30 00:00:00,7.0,78.1,30.0,,Deep Depression (DD),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,11,2017-11-30 03:00:00,7.5,77.4,35.0,,Cyclonic Storm (CS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,12,2017-11-30 06:00:00,7.8,76.8,40.0,,Cyclonic Storm (CS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,13,2017-11-30 09:00:00,7.9,76.3,45.0,,Cyclonic Storm (CS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,14,2017-11-30 12:00:00,8.2,75.8,45.0,,Cyclonic Storm (CS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,15,2017-11-30 15:00:00,8.3,75.4,45.0,,Cyclonic Storm (CS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,16,2017-11-30 18:00:00,8.5,74.9,45.0,,Cyclonic Storm (CS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,17,2017-11-30 21:00:00,8.6,74.5,45.0,,Cyclonic Storm (CS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,18,2017-12-01 00:00:00,8.8,74.1,50.0,,Severe Cyclonic Storm (SCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,19,2017-12-01 03:00:00,8.8,73.8,55.0,,Severe Cyclonic Storm (SCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,20,2017-12-01 06:00:00,8.9,73.4,60.0,,Severe Cyclonic Storm (SCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,21,2017-12-01 09:00:00,8.9,73.0,65.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,22,2017-12-01 12:00:00,9.0,72.8,65.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,23,2017-12-01 15:00:00,9.1,72.5,65.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,24,2017-12-01 18:00:00,9.2,72.1,70.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,25,2017-12-01 21:00:00,9.3,71.8,75.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,26,2017-12-02 00:00:00,9.5,71.5,80.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,27,2017-12-02 03:00:00,9.6,71.2,80.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,28,2017-12-02 06:00:00,9.8,71.0,85.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,29,2017-12-02 09:00:00,10.2,70.6,85.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,30,2017-12-02 12:00:00,10.5,70.3,85.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,31,2017-12-02 15:00:00,10.7,70.0,85.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,32,2017-12-02 18:00:00,11.0,69.7,85.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,33,2017-12-02 21:00:00,11.2,69.5,85.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,34,2017-12-03 00:00:00,11.5,69.3,85.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,35,2017-12-03 03:00:00,11.9,69.0,80.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,36,2017-12-03 06:00:00,12.2,68.9,75.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,37,2017-12-03 09:00:00,12.4,68.8,75.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,38,2017-12-03 12:00:00,12.9,68.7,75.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,39,2017-12-03 15:00:00,13.1,68.6,75.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,40,2017-12-03 18:00:00,13.5,68.5,75.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,41,2017-12-03 21:00:00,13.9,68.5,75.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,42,2017-12-04 00:00:00,14.3,68.5,70.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,43,2017-12-04 03:00:00,14.5,68.5,65.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,44,2017-12-04 06:00:00,14.8,68.7,65.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,45,2017-12-04 09:00:00,15.1,69.0,65.0,,Very Severe Cyclonic Storm (VSCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,46,2017-12-04 12:00:00,15.6,69.2,60.0,,Severe Cyclonic Storm (SCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,47,2017-12-04 15:00:00,16.1,69.5,60.0,,Severe Cyclonic Storm (SCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,48,2017-12-04 18:00:00,16.6,69.9,55.0,,Severe Cyclonic Storm (SCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,49,2017-12-04 21:00:00,17.0,70.3,55.0,,Severe Cyclonic Storm (SCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,50,2017-12-05 00:00:00,17.5,70.7,50.0,,Severe Cyclonic Storm (SCS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,51,2017-12-05 03:00:00,17.9,71.0,45.0,,Cyclonic Storm (CS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,52,2017-12-05 06:00:00,18.2,71.2,40.0,,Cyclonic Storm (CS),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,53,2017-12-05 09:00:00,18.3,71.4,30.0,,Deep Depression (DD),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,54,2017-12-05 12:00:00,18.5,71.5,30.0,,Deep Depression (DD),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,55,2017-12-05 15:00:00,18.8,71.6,25.0,,Depression (D),,test
+2017333N06082,OCKHI,2017,North Indian Ocean,Bay of Bengal,56,2017-12-05 18:00:00,19.2,71.9,20.0,,Depression (D),,test
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,0,2018-10-08 00:00:00,14.2,88.4,20.0,,Depression (D),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,1,2018-10-08 03:00:00,14.1,88.4,25.0,,Depression (D),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,2,2018-10-08 06:00:00,14.1,88.3,25.0,,Depression (D),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,3,2018-10-08 09:00:00,14.2,88.1,28.0,,Deep Depression (DD),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,4,2018-10-08 12:00:00,14.3,87.9,25.0,,Depression (D),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,5,2018-10-08 15:00:00,14.4,87.7,30.0,,Deep Depression (DD),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,6,2018-10-08 18:00:00,14.5,87.5,30.0,,Deep Depression (DD),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,7,2018-10-08 21:00:00,14.6,87.3,33.0,,Deep Depression (DD),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,8,2018-10-09 00:00:00,14.7,87.1,30.0,,Deep Depression (DD),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,9,2018-10-09 03:00:00,14.7,86.9,30.0,,Deep Depression (DD),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,10,2018-10-09 06:00:00,14.8,86.8,35.0,,Cyclonic Storm (CS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,11,2018-10-09 09:00:00,14.9,86.7,35.0,,Cyclonic Storm (CS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,12,2018-10-09 12:00:00,15.1,86.6,40.0,,Cyclonic Storm (CS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,13,2018-10-09 15:00:00,15.3,86.5,40.0,,Cyclonic Storm (CS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,14,2018-10-09 18:00:00,15.6,86.3,45.0,,Cyclonic Storm (CS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,15,2018-10-09 21:00:00,15.8,86.1,50.0,,Severe Cyclonic Storm (SCS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,16,2018-10-10 00:00:00,16.1,86.0,55.0,,Severe Cyclonic Storm (SCS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,17,2018-10-10 03:00:00,16.5,85.9,60.0,,Severe Cyclonic Storm (SCS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,18,2018-10-10 06:00:00,17.0,85.6,70.0,,Very Severe Cyclonic Storm (VSCS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,19,2018-10-10 09:00:00,17.3,85.4,75.0,,Very Severe Cyclonic Storm (VSCS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,20,2018-10-10 12:00:00,17.6,85.3,80.0,,Very Severe Cyclonic Storm (VSCS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,21,2018-10-10 15:00:00,17.8,85.1,80.0,,Very Severe Cyclonic Storm (VSCS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,22,2018-10-10 18:00:00,18.3,85.0,80.0,,Very Severe Cyclonic Storm (VSCS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,23,2018-10-10 21:00:00,18.6,84.6,80.0,,Very Severe Cyclonic Storm (VSCS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,24,2018-10-11 00:00:00,18.8,84.4,80.0,,Very Severe Cyclonic Storm (VSCS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,25,2018-10-11 03:00:00,18.9,84.1,65.0,,Very Severe Cyclonic Storm (VSCS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,26,2018-10-11 06:00:00,19.2,83.9,60.0,,Severe Cyclonic Storm (SCS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,27,2018-10-11 09:00:00,19.4,83.8,50.0,,Severe Cyclonic Storm (SCS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,28,2018-10-11 12:00:00,19.7,83.8,45.0,,Cyclonic Storm (CS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,29,2018-10-11 15:00:00,19.9,83.9,40.0,,Cyclonic Storm (CS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,30,2018-10-11 18:00:00,20.1,84.2,30.0,,Deep Depression (DD),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,31,2018-10-11 21:00:00,20.3,84.4,48.0,,Severe Cyclonic Storm (SCS),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,32,2018-10-12 00:00:00,20.5,84.7,30.0,,Deep Depression (DD),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,33,2018-10-12 03:00:00,20.7,85.0,30.0,,Deep Depression (DD),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,34,2018-10-12 06:00:00,20.9,85.3,30.0,,Deep Depression (DD),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,35,2018-10-12 09:00:00,20.9,85.5,25.0,,Depression (D),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,36,2018-10-12 12:00:00,21.2,86.1,25.0,,Depression (D),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,37,2018-10-12 18:00:00,21.9,87.2,25.0,,Depression (D),,train
+2018281N14088,TITLI,2018,North Indian Ocean,Bay of Bengal,38,2018-10-12 21:00:00,22.1,87.5,20.0,,Depression (D),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,0,2018-11-10 03:00:00,11.7,92.5,25.0,,Depression (D),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,1,2018-11-10 06:00:00,12.0,92.0,25.0,,Depression (D),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,2,2018-11-10 12:00:00,12.7,90.7,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,3,2018-11-10 15:00:00,12.9,90.2,33.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,4,2018-11-10 18:00:00,13.1,89.8,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,5,2018-11-10 21:00:00,13.2,89.5,35.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,6,2018-11-11 00:00:00,13.4,89.2,35.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,7,2018-11-11 03:00:00,13.4,88.8,35.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,8,2018-11-11 06:00:00,13.4,88.5,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,9,2018-11-11 09:00:00,13.4,88.0,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,10,2018-11-11 12:00:00,13.3,87.7,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,11,2018-11-11 15:00:00,13.2,87.5,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,12,2018-11-11 18:00:00,13.1,87.3,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,13,2018-11-11 21:00:00,13.1,87.2,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,14,2018-11-12 00:00:00,12.9,87.2,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,15,2018-11-12 03:00:00,12.7,87.2,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,16,2018-11-12 06:00:00,12.6,87.3,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,17,2018-11-12 09:00:00,12.7,87.3,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,18,2018-11-12 12:00:00,12.8,87.6,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,19,2018-11-12 15:00:00,13.0,87.6,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,20,2018-11-12 18:00:00,13.3,87.6,45.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,21,2018-11-12 21:00:00,13.4,87.4,45.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,22,2018-11-13 00:00:00,13.6,87.2,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,23,2018-11-13 03:00:00,13.6,87.0,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,24,2018-11-13 06:00:00,13.7,86.6,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,25,2018-11-13 09:00:00,13.6,86.3,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,26,2018-11-13 12:00:00,13.5,86.1,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,27,2018-11-13 15:00:00,13.4,85.9,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,28,2018-11-13 18:00:00,13.3,85.7,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,29,2018-11-13 21:00:00,13.2,85.5,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,30,2018-11-14 00:00:00,13.1,85.4,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,31,2018-11-14 03:00:00,13.0,85.2,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,32,2018-11-14 06:00:00,12.8,85.0,45.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,33,2018-11-14 09:00:00,12.6,84.7,45.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,34,2018-11-14 12:00:00,12.4,84.4,45.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,35,2018-11-14 15:00:00,12.2,84.2,45.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,36,2018-11-14 18:00:00,12.0,83.9,45.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,37,2018-11-14 21:00:00,11.8,83.5,45.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,38,2018-11-15 00:00:00,11.5,83.1,45.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,39,2018-11-15 03:00:00,11.4,82.7,50.0,,Severe Cyclonic Storm (SCS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,40,2018-11-15 06:00:00,11.3,82.2,55.0,,Severe Cyclonic Storm (SCS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,41,2018-11-15 09:00:00,11.1,81.6,55.0,,Severe Cyclonic Storm (SCS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,42,2018-11-15 12:00:00,10.9,81.2,60.0,,Severe Cyclonic Storm (SCS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,43,2018-11-15 15:00:00,10.7,80.7,65.0,,Very Severe Cyclonic Storm (VSCS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,44,2018-11-15 18:00:00,10.6,80.3,70.0,,Very Severe Cyclonic Storm (VSCS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,45,2018-11-15 21:00:00,10.5,79.7,70.0,,Very Severe Cyclonic Storm (VSCS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,46,2018-11-16 00:00:00,10.5,79.1,55.0,,Severe Cyclonic Storm (SCS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,47,2018-11-16 03:00:00,10.4,78.5,45.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,48,2018-11-16 06:00:00,10.5,77.6,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,49,2018-11-16 09:00:00,10.3,76.9,50.0,,Severe Cyclonic Storm (SCS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,50,2018-11-16 12:00:00,10.0,76.3,25.0,,Depression (D),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,51,2018-11-16 15:00:00,9.9,75.8,43.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,52,2018-11-16 18:00:00,9.8,75.3,25.0,,Depression (D),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,53,2018-11-16 21:00:00,9.7,74.7,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,54,2018-11-17 00:00:00,9.7,74.2,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,55,2018-11-17 03:00:00,9.7,73.5,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,56,2018-11-17 06:00:00,9.8,73.0,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,57,2018-11-17 09:00:00,9.9,72.4,40.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,58,2018-11-17 12:00:00,10.0,71.8,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,59,2018-11-17 15:00:00,10.1,71.2,38.0,,Cyclonic Storm (CS),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,60,2018-11-17 18:00:00,10.2,70.7,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,61,2018-11-17 21:00:00,10.3,70.2,33.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,62,2018-11-18 00:00:00,10.4,69.8,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,63,2018-11-18 03:00:00,10.5,69.5,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,64,2018-11-18 06:00:00,10.5,69.1,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,65,2018-11-18 09:00:00,10.6,68.8,23.0,,Depression (D),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,66,2018-11-18 12:00:00,10.6,68.5,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,67,2018-11-18 15:00:00,10.6,68.0,20.0,,Depression (D),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,68,2018-11-18 18:00:00,10.7,67.5,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,69,2018-11-18 21:00:00,10.7,67.1,20.0,,Depression (D),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,70,2018-11-19 00:00:00,10.8,66.6,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,71,2018-11-19 03:00:00,10.9,66.3,30.0,,Deep Depression (DD),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,72,2018-11-19 06:00:00,11.0,65.8,25.0,,Depression (D),,train
+2018314N12093,GAJA,2018,North Indian Ocean,Bay of Bengal,73,2018-11-19 12:00:00,11.2,65.0,25.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,0,2019-10-31 12:00:00,13.9,104.9,25.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,1,2019-10-31 15:00:00,13.9,104.3,23.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,2,2019-10-31 18:00:00,14.0,103.6,20.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,3,2019-10-31 21:00:00,14.2,102.8,18.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,4,2019-11-01 00:00:00,14.3,102.2,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,5,2019-11-01 03:00:00,14.4,101.8,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,6,2019-11-01 06:00:00,14.5,101.4,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,7,2019-11-01 09:00:00,14.5,101.0,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,8,2019-11-01 12:00:00,14.4,100.7,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,9,2019-11-01 15:00:00,14.3,100.4,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,10,2019-11-01 18:00:00,14.2,100.0,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,11,2019-11-01 21:00:00,14.1,99.6,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,12,2019-11-02 00:00:00,14.0,99.3,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,13,2019-11-02 03:00:00,13.9,99.0,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,14,2019-11-02 06:00:00,13.8,98.8,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,15,2019-11-02 09:00:00,13.7,98.6,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,16,2019-11-02 12:00:00,13.6,98.3,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,17,2019-11-02 15:00:00,13.5,98.0,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,18,2019-11-02 18:00:00,13.4,97.6,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,19,2019-11-02 21:00:00,13.3,97.2,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,20,2019-11-03 00:00:00,13.3,96.7,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,21,2019-11-03 03:00:00,13.3,96.3,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,22,2019-11-03 06:00:00,13.3,96.0,15.0,,Low Pressure Area,,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,23,2019-11-03 09:00:00,13.3,95.7,18.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,24,2019-11-03 12:00:00,13.3,95.4,20.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,25,2019-11-03 15:00:00,13.3,95.1,20.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,26,2019-11-03 18:00:00,13.2,94.8,20.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,27,2019-11-03 21:00:00,13.1,94.5,20.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,28,2019-11-04 00:00:00,13.0,94.1,20.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,29,2019-11-04 03:00:00,12.9,93.7,23.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,30,2019-11-04 06:00:00,12.8,93.2,25.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,31,2019-11-04 09:00:00,12.8,92.7,25.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,32,2019-11-04 12:00:00,12.8,92.3,25.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,33,2019-11-04 15:00:00,12.8,91.9,25.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,34,2019-11-04 18:00:00,12.8,91.6,25.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,35,2019-11-04 21:00:00,12.8,91.3,25.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,36,2019-11-05 00:00:00,12.9,91.1,20.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,37,2019-11-05 03:00:00,12.9,90.9,25.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,38,2019-11-05 06:00:00,12.9,90.6,25.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,39,2019-11-05 09:00:00,13.0,90.4,30.0,,Deep Depression (DD),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,40,2019-11-05 12:00:00,13.1,90.1,25.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,41,2019-11-05 15:00:00,13.1,89.9,35.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,42,2019-11-05 18:00:00,13.1,89.8,25.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,43,2019-11-05 21:00:00,13.2,89.8,35.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,44,2019-11-06 00:00:00,13.3,89.8,30.0,,Deep Depression (DD),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,45,2019-11-06 03:00:00,13.3,89.8,30.0,,Deep Depression (DD),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,46,2019-11-06 06:00:00,13.3,89.7,30.0,,Deep Depression (DD),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,47,2019-11-06 09:00:00,13.3,89.7,35.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,48,2019-11-06 12:00:00,13.4,89.7,30.0,,Deep Depression (DD),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,49,2019-11-06 15:00:00,13.6,89.6,38.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,50,2019-11-06 18:00:00,13.9,89.6,35.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,51,2019-11-06 21:00:00,14.1,89.4,43.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,52,2019-11-07 00:00:00,14.4,89.3,35.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,53,2019-11-07 03:00:00,14.8,89.1,35.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,54,2019-11-07 06:00:00,15.2,88.7,40.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,55,2019-11-07 09:00:00,15.4,88.4,45.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,56,2019-11-07 12:00:00,15.8,88.2,45.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,57,2019-11-07 15:00:00,16.0,88.0,50.0,,Severe Cyclonic Storm (SCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,58,2019-11-07 18:00:00,16.3,87.8,55.0,,Severe Cyclonic Storm (SCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,59,2019-11-07 21:00:00,16.6,87.7,60.0,,Severe Cyclonic Storm (SCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,60,2019-11-08 00:00:00,17.0,87.7,65.0,,Very Severe Cyclonic Storm (VSCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,61,2019-11-08 03:00:00,17.3,87.7,65.0,,Very Severe Cyclonic Storm (VSCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,62,2019-11-08 06:00:00,17.7,87.8,70.0,,Very Severe Cyclonic Storm (VSCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,63,2019-11-08 09:00:00,18.2,87.8,70.0,,Very Severe Cyclonic Storm (VSCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,64,2019-11-08 12:00:00,18.6,87.8,75.0,,Very Severe Cyclonic Storm (VSCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,65,2019-11-08 15:00:00,19.1,87.8,75.0,,Very Severe Cyclonic Storm (VSCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,66,2019-11-08 18:00:00,19.3,87.7,75.0,,Very Severe Cyclonic Storm (VSCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,67,2019-11-08 21:00:00,19.6,87.7,75.0,,Very Severe Cyclonic Storm (VSCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,68,2019-11-09 00:00:00,20.0,87.6,75.0,,Very Severe Cyclonic Storm (VSCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,69,2019-11-09 03:00:00,20.4,87.6,70.0,,Very Severe Cyclonic Storm (VSCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,70,2019-11-09 06:00:00,20.6,87.8,70.0,,Very Severe Cyclonic Storm (VSCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,71,2019-11-09 09:00:00,20.9,87.9,70.0,,Very Severe Cyclonic Storm (VSCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,72,2019-11-09 12:00:00,21.2,88.1,70.0,,Very Severe Cyclonic Storm (VSCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,73,2019-11-09 15:00:00,21.4,88.3,60.0,,Severe Cyclonic Storm (SCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,74,2019-11-09 18:00:00,21.6,88.6,60.0,,Severe Cyclonic Storm (SCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,75,2019-11-09 21:00:00,21.8,89.1,50.0,,Severe Cyclonic Storm (SCS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,76,2019-11-10 00:00:00,22.0,89.5,45.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,77,2019-11-10 03:00:00,22.2,89.8,40.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,78,2019-11-10 06:00:00,22.3,90.1,40.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,79,2019-11-10 09:00:00,22.4,90.3,30.0,,Deep Depression (DD),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,80,2019-11-10 12:00:00,22.6,90.6,30.0,,Deep Depression (DD),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,81,2019-11-10 15:00:00,22.6,90.8,35.0,,Cyclonic Storm (CS),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,82,2019-11-10 18:00:00,22.8,91.1,30.0,,Deep Depression (DD),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,83,2019-11-10 21:00:00,22.9,91.3,25.0,,Depression (D),,train
+2019302N11118,BULBUL:MATMO,2019,North Indian Ocean,Bay of Bengal,84,2019-11-11 00:00:00,23.1,91.5,20.0,,Depression (D),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,0,2021-05-23 00:00:00,15.5,90.0,20.0,,Depression (D),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,1,2021-05-23 03:00:00,15.4,89.9,23.0,,Depression (D),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,2,2021-05-23 06:00:00,15.6,89.8,25.0,,Depression (D),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,3,2021-05-23 09:00:00,15.6,89.7,28.0,,Deep Depression (DD),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,4,2021-05-23 12:00:00,15.7,89.6,25.0,,Depression (D),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,5,2021-05-23 15:00:00,15.8,89.5,33.0,,Deep Depression (DD),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,6,2021-05-23 18:00:00,15.8,89.5,30.0,,Deep Depression (DD),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,7,2021-05-23 21:00:00,16.0,89.6,35.0,,Cyclonic Storm (CS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,8,2021-05-24 00:00:00,16.1,89.8,35.0,,Cyclonic Storm (CS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,9,2021-05-24 03:00:00,16.5,89.7,40.0,,Cyclonic Storm (CS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,10,2021-05-24 06:00:00,16.6,89.6,40.0,,Cyclonic Storm (CS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,11,2021-05-24 09:00:00,16.9,89.6,40.0,,Cyclonic Storm (CS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,12,2021-05-24 12:00:00,17.2,89.4,45.0,,Cyclonic Storm (CS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,13,2021-05-24 15:00:00,17.4,89.2,45.0,,Cyclonic Storm (CS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,14,2021-05-24 18:00:00,17.6,89.0,50.0,,Severe Cyclonic Storm (SCS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,15,2021-05-24 21:00:00,17.8,88.9,55.0,,Severe Cyclonic Storm (SCS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,16,2021-05-25 00:00:00,18.1,88.6,55.0,,Severe Cyclonic Storm (SCS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,17,2021-05-25 03:00:00,18.4,88.4,55.0,,Severe Cyclonic Storm (SCS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,18,2021-05-25 06:00:00,18.8,88.2,60.0,,Severe Cyclonic Storm (SCS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,19,2021-05-25 09:00:00,19.1,88.2,60.0,,Severe Cyclonic Storm (SCS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,20,2021-05-25 12:00:00,19.5,88.2,65.0,,Very Severe Cyclonic Storm (VSCS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,21,2021-05-25 15:00:00,19.9,88.0,65.0,,Very Severe Cyclonic Storm (VSCS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,22,2021-05-25 18:00:00,20.3,87.8,70.0,,Very Severe Cyclonic Storm (VSCS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,23,2021-05-25 21:00:00,20.4,87.7,75.0,,Very Severe Cyclonic Storm (VSCS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,24,2021-05-26 00:00:00,20.6,87.6,75.0,,Very Severe Cyclonic Storm (VSCS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,25,2021-05-26 03:00:00,21.1,87.2,75.0,,Very Severe Cyclonic Storm (VSCS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,26,2021-05-26 06:00:00,21.5,86.9,75.0,,Very Severe Cyclonic Storm (VSCS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,27,2021-05-26 09:00:00,21.7,86.6,55.0,,Severe Cyclonic Storm (SCS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,28,2021-05-26 12:00:00,21.9,86.5,45.0,,Cyclonic Storm (CS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,29,2021-05-26 15:00:00,22.2,86.1,40.0,,Cyclonic Storm (CS),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,30,2021-05-26 18:00:00,22.5,85.8,30.0,,Deep Depression (DD),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,31,2021-05-26 21:00:00,22.8,85.7,30.0,,Deep Depression (DD),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,32,2021-05-27 00:00:00,23.1,85.7,30.0,,Deep Depression (DD),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,33,2021-05-27 03:00:00,23.3,85.7,30.0,,Deep Depression (DD),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,34,2021-05-27 06:00:00,23.6,85.6,25.0,,Depression (D),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,35,2021-05-27 12:00:00,24.3,85.3,25.0,,Depression (D),,train
+2021143N15090,YAAS,2021,North Indian Ocean,Bay of Bengal,36,2021-05-27 18:00:00,24.7,84.8,25.0,,Depression (D),,train
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,0,2023-05-08 18:00:00,7.7,91.4,25.0,,Depression (D),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,1,2023-05-08 21:00:00,7.6,91.1,25.0,,Depression (D),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,2,2023-05-09 00:00:00,7.6,90.7,25.0,,Depression (D),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,3,2023-05-09 03:00:00,7.6,90.1,25.0,,Depression (D),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,4,2023-05-09 06:00:00,7.6,89.6,25.0,,Depression (D),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,5,2023-05-09 09:00:00,7.7,89.3,25.0,,Depression (D),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,6,2023-05-09 12:00:00,7.9,89.3,25.0,,Depression (D),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,7,2023-05-09 15:00:00,8.1,89.2,25.0,,Depression (D),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,8,2023-05-09 18:00:00,8.3,89.1,25.0,,Depression (D),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,9,2023-05-09 21:00:00,8.3,89.1,28.0,,Deep Depression (DD),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,10,2023-05-10 00:00:00,8.5,89.0,30.0,,Deep Depression (DD),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,11,2023-05-10 03:00:00,8.8,88.7,30.0,,Deep Depression (DD),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,12,2023-05-10 06:00:00,9.3,88.5,30.0,,Deep Depression (DD),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,13,2023-05-10 09:00:00,9.7,88.4,30.0,,Deep Depression (DD),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,14,2023-05-10 12:00:00,10.1,88.4,30.0,,Deep Depression (DD),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,15,2023-05-10 15:00:00,10.4,88.3,30.0,,Deep Depression (DD),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,16,2023-05-10 18:00:00,10.8,88.3,30.0,,Deep Depression (DD),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,17,2023-05-10 21:00:00,11.0,88.2,33.0,,Deep Depression (DD),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,18,2023-05-11 00:00:00,11.2,88.1,35.0,,Cyclonic Storm (CS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,19,2023-05-11 03:00:00,11.3,88.1,35.0,,Cyclonic Storm (CS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,20,2023-05-11 06:00:00,11.6,88.1,45.0,,Cyclonic Storm (CS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,21,2023-05-11 09:00:00,11.8,88.0,45.0,,Cyclonic Storm (CS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,22,2023-05-11 12:00:00,12.1,88.1,50.0,,Severe Cyclonic Storm (SCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,23,2023-05-11 15:00:00,12.4,88.1,50.0,,Severe Cyclonic Storm (SCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,24,2023-05-11 18:00:00,12.8,88.1,50.0,,Severe Cyclonic Storm (SCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,25,2023-05-11 21:00:00,13.0,88.1,60.0,,Severe Cyclonic Storm (SCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,26,2023-05-12 00:00:00,13.3,88.1,65.0,,Very Severe Cyclonic Storm (VSCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,27,2023-05-12 03:00:00,13.7,88.2,65.0,,Very Severe Cyclonic Storm (VSCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,28,2023-05-12 06:00:00,14.0,88.3,75.0,,Very Severe Cyclonic Storm (VSCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,29,2023-05-12 09:00:00,14.3,88.4,85.0,,Very Severe Cyclonic Storm (VSCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,30,2023-05-12 12:00:00,14.6,88.6,85.0,,Very Severe Cyclonic Storm (VSCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,31,2023-05-12 15:00:00,14.8,88.7,90.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,32,2023-05-12 18:00:00,15.0,88.9,100.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,33,2023-05-12 21:00:00,15.1,89.0,100.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,34,2023-05-13 00:00:00,15.4,89.1,100.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,35,2023-05-13 03:00:00,15.7,89.5,100.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,36,2023-05-13 06:00:00,16.0,90.0,105.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,37,2023-05-13 09:00:00,16.4,90.3,105.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,38,2023-05-13 12:00:00,16.9,90.8,110.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,39,2023-05-13 15:00:00,17.4,91.0,110.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,40,2023-05-13 18:00:00,17.9,91.2,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,41,2023-05-13 21:00:00,18.3,91.4,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,42,2023-05-14 00:00:00,18.7,91.7,115.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,43,2023-05-14 03:00:00,19.3,92.1,110.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,44,2023-05-14 06:00:00,19.9,92.6,100.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,45,2023-05-14 09:00:00,20.4,92.9,90.0,,Extremely Severe Cyclonic Storm (ESCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,46,2023-05-14 12:00:00,21.1,93.3,75.0,,Very Severe Cyclonic Storm (VSCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,47,2023-05-14 15:00:00,22.1,94.1,60.0,,Severe Cyclonic Storm (SCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,48,2023-05-14 18:00:00,23.3,95.2,50.0,,Severe Cyclonic Storm (SCS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,49,2023-05-14 21:00:00,24.3,96.1,35.0,,Cyclonic Storm (CS),,val
+2023129N08091,MOCHA,2023,North Indian Ocean,Bay of Bengal,50,2023-05-15 00:00:00,25.1,97.8,25.0,,Depression (D),,val
