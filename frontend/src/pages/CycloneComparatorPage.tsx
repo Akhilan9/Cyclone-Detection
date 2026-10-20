@@ -1,20 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
-  Layers,
-  Activity,
-  Wind,
-  Gauge,
-  Compass,
-  ArrowRight,
-  TrendingUp,
-  Flame,
   Globe,
-  MapPin,
-  Clock,
-  ShieldAlert,
-  Sparkles,
-  BarChart3,
-  SplitSquareVertical,
+  TrendingUp,
+  Compass,
 } from 'lucide-react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -282,6 +270,11 @@ export const CycloneComparatorPage: React.FC = () => {
           </h2>
           <p style={{ fontSize: '0.84rem', color: '#64748b', maxWidth: '840px', marginTop: '4px', lineHeight: 1.5 }}>
             Side-by-side meteorological comparison of tropical cyclones across basins, contrasting intensification slopes, peak intensity, track geometry, and minimum central barometric pressure.
+            {fetchingDetails && (
+              <span style={{ marginLeft: '10px', fontSize: '0.74rem', color: '#2563eb', fontWeight: 700 }}>
+                • Syncing storm parameters...
+              </span>
+            )}
           </p>
         </div>
 

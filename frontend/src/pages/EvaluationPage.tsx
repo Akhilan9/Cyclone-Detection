@@ -2,16 +2,10 @@ import React, { useEffect, useState } from 'react';
 import {
   Award,
   ShieldCheck,
-  CheckCircle2,
   TrendingUp,
-  Cpu,
-  Layers,
   BarChart3,
   Database,
-  HelpCircle,
-  Sparkles,
-  ArrowRight,
-  Wind,
+  Layers,
 } from 'lucide-react';
 import { api } from '../services/api';
 import type { EvaluationMetrics } from '../types';

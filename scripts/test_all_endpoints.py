@@ -2,6 +2,8 @@ import urllib.request
 import json
 import sys
 
+__test__ = False
+
 def test_endpoint(name, url, method='GET', data=None):
     try:
         req = urllib.request.Request(url, method=method)
