@@ -19,6 +19,7 @@ import {
 import { api } from '../services/api';
 import type { Cyclone, ReportItem } from '../types';
 import { LoadingSpinner } from '../components/common/LoadingSpinner';
+import { CycloneSelectDropdown } from '../components/common/CycloneSelectDropdown';
 
 export const ReportsPage: React.FC = () => {
   const [reports, setReports] = useState<ReportItem[]>([]);
@@ -123,18 +124,15 @@ export const ReportsPage: React.FC = () => {
             <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '8px' }}>
               Target Cyclone
             </label>
-            <select
-              className="select-input"
-              value={selectedCycloneId}
-              onChange={(e) => setSelectedCycloneId(e.target.value)}
-              style={{ width: '100%', padding: '10px 14px' }}
-            >
-              {cyclones.map((c) => (
-                <option key={c.cyclone_id} value={c.cyclone_id}>
-                  {c.name} ({c.season_year}) — {c.highest_imd_stage || 'Cyclonic Storm'} ({c.max_wind_speed_kts} kts)
-                </option>
-              ))}
-            </select>
+            <CycloneSelectDropdown
+              cyclones={cyclones}
+              selectedCycloneId={selectedCycloneId}
+              onSelectCyclone={setSelectedCycloneId}
+              fullWidth={true}
+              accentColor="#2563eb"
+              placeholder="Select Target Cyclone..."
+              idPrefix="reports-target-cyclone"
+            />
 
             {selectedCyclone && (
               <div style={{ marginTop: '10px', padding: '10px 12px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '0.74rem', color: '#64748b' }}>

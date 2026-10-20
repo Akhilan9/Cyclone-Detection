@@ -95,181 +95,197 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
 
   return (
     <header className="app-navbar-header">
-      {/* Brand Logo & Title */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <div
-          style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '10px',
-            background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 2px 8px rgba(37, 99, 235, 0.3)',
-            flexShrink: 0,
-          }}
-        >
-          <Wind size={20} color="#ffffff" />
-        </div>
-        <div>
-          <div style={{ fontSize: '0.98rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
-            CycloFusion <span style={{ color: '#2563eb', fontSize: '0.78rem', fontWeight: 700 }}>AI/ML</span>
+      {/* Top Row: Brand on Left, Live Clock & Status Badges on Right */}
+      <div className="navbar-top-row">
+        {/* Brand Logo & Title */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(37, 99, 235, 0.3)',
+              flexShrink: 0,
+              transition: 'transform 0.2s ease',
+            }}
+          >
+            <Wind size={20} color="#ffffff" />
           </div>
-          <div className="navbar-brand-subtitle" style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 500 }}>
-            Tropical Cyclone Intelligent System • Multi-Source Satellite Platform
+          <div>
+            <div style={{ fontSize: '0.98rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+              CycloFusion <span style={{ color: '#2563eb', fontSize: '0.78rem', fontWeight: 700 }}>AI/ML</span>
+            </div>
+            <div className="navbar-brand-subtitle" style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 500 }}>
+              Tropical Cyclone Intelligent System • Multi-Source Satellite Platform
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side Status Badges */}
+        <div className="navbar-status-badges">
+          {/* Synchronized Live Clock (Local IST & UTC) */}
+          <div
+            onClick={handleCycleTime}
+            title="Live Synchronized Time • Click to toggle format (Combined / Local IST / 24h / UTC)"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '0.74rem',
+              color: '#1e293b',
+              fontWeight: 600,
+              fontFamily: 'var(--font-mono)',
+              backgroundColor: '#f8fafc',
+              padding: '5px 10px',
+              borderRadius: '8px',
+              border: '1px solid #cbd5e1',
+              cursor: 'pointer',
+              userSelect: 'none',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+              transition: 'all 0.18s ease',
+              flexShrink: 0,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = '#2563eb';
+              e.currentTarget.style.backgroundColor = '#eff6ff';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = '#cbd5e1';
+              e.currentTarget.style.backgroundColor = '#f8fafc';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            <Clock size={13} color="#2563eb" />
+            <span>{getFormattedClock()}</span>
+          </div>
+
+          {/* DB Connected Badge */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '0.74rem',
+              padding: '4px 9px',
+              borderRadius: '999px',
+              backgroundColor: status?.database_connected ? '#dcfce7' : '#fee2e2',
+              color: status?.database_connected ? '#16a34a' : '#dc2626',
+              border: `1px solid ${status?.database_connected ? '#bbf7d0' : '#fecaca'}`,
+              fontWeight: 600,
+              flexShrink: 0,
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <div
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: status?.database_connected ? '#16a34a' : '#dc2626',
+              }}
+            />
+            <span>{status?.database_connected ? 'DB Connected' : 'DB Disconnected'}</span>
+          </div>
+
+          {/* Models Online Badge */}
+          <div
+            className="navbar-status-badge-hide-mobile"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '0.74rem',
+              padding: '4px 9px',
+              borderRadius: '999px',
+              backgroundColor: '#eff6ff',
+              color: '#2563eb',
+              border: '1px solid #bfdbfe',
+              fontWeight: 600,
+              flexShrink: 0,
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <Activity size={13} color="#2563eb" />
+            <span>CNN &amp; ConvLSTM Ready</span>
           </div>
         </div>
       </div>
 
-      {/* Center Tabs Navigation with Touch Momentum Scroll */}
-      <nav className="navbar-nav-tabs">
-        {tabs.map((tab) => {
-          const isActive = currentTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              id={`nav-tab-${tab.id}`}
-              data-testid={`nav-tab-${tab.id}`}
-              onClick={() => onSelectTab(tab.id)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '8px 14px',
-                borderRadius: '8px',
-                border: 'none',
-                backgroundColor: isActive ? '#ffffff' : 'transparent',
-                color: isActive ? '#0f172a' : '#64748b',
-                fontWeight: isActive ? 750 : 500,
-                fontSize: '0.84rem',
-                cursor: 'pointer',
-                boxShadow: isActive ? '0 1px 4px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04)' : 'none',
-                transition: 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
-                position: 'relative',
-                flexShrink: 0,
-              }}
-              onMouseEnter={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.backgroundColor = '#e2e8f0';
-                  e.currentTarget.style.color = '#1e293b';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.color = '#64748b';
-                }
-              }}
-            >
-              <div style={{ color: isActive ? '#2563eb' : '#64748b', display: 'flex', alignItems: 'center' }}>
-                {tab.icon}
-              </div>
-              <span>{tab.label}</span>
-              {tab.badge && (
-                <span
-                  style={{
-                    fontSize: '0.66rem',
-                    fontWeight: 700,
-                    padding: '1px 6px',
-                    borderRadius: '999px',
-                    backgroundColor: isActive ? `${tab.badgeColor}18` : '#e2e8f0',
-                    color: isActive ? tab.badgeColor : '#64748b',
-                    border: `1px solid ${isActive ? `${tab.badgeColor}40` : 'transparent'}`,
-                  }}
-                >
-                  {tab.badge}
-                </span>
-              )}
-            </button>
-          );
-        })}
-      </nav>
-
-      {/* Right Side Status Badges */}
-      <div className="navbar-status-badges">
-        {/* Synchronized Live Clock (Local IST & UTC) */}
-        <div
-          onClick={handleCycleTime}
-          title="Live Synchronized Time • Click to toggle format (Combined / Local IST / 24h / UTC)"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            fontSize: '0.74rem',
-            color: '#1e293b',
-            fontWeight: 600,
-            fontFamily: 'var(--font-mono)',
-            backgroundColor: '#f8fafc',
-            padding: '5px 10px',
-            borderRadius: '8px',
-            border: '1px solid #cbd5e1',
-            cursor: 'pointer',
-            userSelect: 'none',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-            transition: 'all 0.15s ease',
-            flexShrink: 0,
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = '#2563eb';
-            e.currentTarget.style.backgroundColor = '#eff6ff';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = '#cbd5e1';
-            e.currentTarget.style.backgroundColor = '#f8fafc';
-          }}
-        >
-          <Clock size={13} color="#2563eb" />
-          <span>{getFormattedClock()}</span>
-        </div>
-
-        {/* DB Connected Badge */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            fontSize: '0.74rem',
-            padding: '4px 9px',
-            borderRadius: '999px',
-            backgroundColor: status?.database_connected ? '#dcfce7' : '#fee2e2',
-            color: status?.database_connected ? '#16a34a' : '#dc2626',
-            border: `1px solid ${status?.database_connected ? '#bbf7d0' : '#fecaca'}`,
-            fontWeight: 600,
-            flexShrink: 0,
-          }}
-        >
-          <div
-            style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              backgroundColor: status?.database_connected ? '#16a34a' : '#dc2626',
-            }}
-          />
-          <span>{status?.database_connected ? 'DB Connected' : 'DB Disconnected'}</span>
-        </div>
-
-        {/* Models Online Badge */}
-        <div
-          className="navbar-status-badge-hide-mobile"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            fontSize: '0.74rem',
-            padding: '4px 9px',
-            borderRadius: '999px',
-            backgroundColor: '#eff6ff',
-            color: '#2563eb',
-            border: '1px solid #bfdbfe',
-            fontWeight: 600,
-            flexShrink: 0,
-          }}
-        >
-          <Activity size={13} color="#2563eb" />
-          <span>CNN &amp; ConvLSTM Ready</span>
-        </div>
+      {/* Dedicated Full Width Tabs Row: All 6 tabs completely visible without clipping */}
+      <div className="navbar-nav-strip">
+        <nav className="navbar-nav-tabs">
+          {tabs.map((tab) => {
+            const isActive = currentTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                id={`nav-tab-${tab.id}`}
+                data-testid={`nav-tab-${tab.id}`}
+                onClick={() => onSelectTab(tab.id)}
+                className={`navbar-tab-item ${isActive ? 'active' : ''}`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  padding: '7px 12px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  backgroundColor: isActive ? '#ffffff' : 'transparent',
+                  color: isActive ? '#0f172a' : '#64748b',
+                  fontWeight: isActive ? 750 : 600,
+                  fontSize: '0.82rem',
+                  cursor: 'pointer',
+                  boxShadow: isActive ? '0 1px 4px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04)' : 'none',
+                  transition: 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
+                  position: 'relative',
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap',
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.backgroundColor = '#e2e8f0';
+                    e.currentTarget.style.color = '#1e293b';
+                    e.currentTarget.style.transform = 'translateY(-1px)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.color = '#64748b';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }
+                }}
+              >
+                <div style={{ color: isActive ? '#2563eb' : '#64748b', display: 'flex', alignItems: 'center' }}>
+                  {tab.icon}
+                </div>
+                <span>{tab.label}</span>
+                {tab.badge && (
+                  <span
+                    style={{
+                      fontSize: '0.66rem',
+                      fontWeight: 700,
+                      padding: '1px 6px',
+                      borderRadius: '999px',
+                      backgroundColor: isActive ? `${tab.badgeColor}18` : '#e2e8f0',
+                      color: isActive ? tab.badgeColor : '#64748b',
+                      border: `1px solid ${isActive ? `${tab.badgeColor}40` : 'transparent'}`,
+                      transition: 'all 0.18s ease',
+                    }}
+                  >
+                    {tab.badge}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </nav>
       </div>
     </header>
   );

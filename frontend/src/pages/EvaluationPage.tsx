@@ -6,6 +6,7 @@ import {
   BarChart3,
   Database,
   Layers,
+  Sparkles,
 } from 'lucide-react';
 import { api } from '../services/api';
 import type { EvaluationMetrics } from '../types';

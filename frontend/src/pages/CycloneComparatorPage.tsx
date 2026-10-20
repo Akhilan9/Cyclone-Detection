@@ -3,6 +3,11 @@ import {
   Globe,
   TrendingUp,
   Compass,
+  ArrowLeftRight,
+  Sparkles,
+  Zap,
+  BarChart2,
+  Layers,
 } from 'lucide-react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -10,6 +15,7 @@ import { api } from '../services/api';
 import { Cyclone, CycloneDetail, TrackPoint } from '../types';
 import { StageBadge } from '../components/common/StageBadge';
 import { LoadingSpinner } from '../components/common/LoadingSpinner';
+import { CycloneSelectDropdown } from '../components/common/CycloneSelectDropdown';
 
 export const CycloneComparatorPage: React.FC = () => {
   const [cyclones, setCyclones] = useState<Cyclone[]>([]);
@@ -180,12 +186,28 @@ export const CycloneComparatorPage: React.FC = () => {
     }
   }, [cycloneA, cycloneB]);
 
+  // Quick Preset Definitions
+  const PRESETS = [
+    { label: 'Katrina vs Haiyan (Cat 5 Clash)', a: 'KATRINA', b: 'HAIYAN' },
+    { label: 'Amphan vs Biparjoy (N. Indian)', a: 'AMPHAN', b: 'BIPARJOY' },
+    { label: 'Patricia vs Freddy (RI vs Longevity)', a: 'PATRICIA', b: 'FREDDY' },
+    { label: 'Mocha vs Fani (Super Storms)', a: 'MOCHA', b: 'FANI' },
+    { label: 'Vardah vs Tauktae (Bay vs Arabian)', a: 'VARDAH', b: 'TAUKTAE' },
+  ];
+
   // Quick Preset Setters
   const applyPreset = (nameA: string, nameB: string) => {
     const cA = cyclones.find((c) => c.name.toUpperCase() === nameA.toUpperCase());
     const cB = cyclones.find((c) => c.name.toUpperCase() === nameB.toUpperCase());
     if (cA) setSelectedIdA(cA.cyclone_id);
     if (cB) setSelectedIdB(cB.cyclone_id);
+  };
+
+  // Interactive Storm Swapper
+  const handleSwapStorms = () => {
+    const tempA = selectedIdA;
+    setSelectedIdA(selectedIdB);
+    setSelectedIdB(tempA);
   };
 
   if (loading) {
@@ -279,63 +301,91 @@ export const CycloneComparatorPage: React.FC = () => {
         </div>
 
         {/* Preset Comparison Pills */}
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          <button
-            onClick={() => applyPreset('KATRINA', 'HAIYAN')}
-            style={{
-              padding: '6px 12px',
-              borderRadius: '8px',
-              border: '1px solid #bfdbfe',
-              backgroundColor: '#eff6ff',
-              color: '#1e40af',
-              fontSize: '0.76rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-            }}
-          >
-            Katrina vs Haiyan (Cat 5 Clash)
-          </button>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+          {PRESETS.map((preset) => {
+            const isMatch =
+              (cycloneA?.name.toUpperCase() === preset.a && cycloneB?.name.toUpperCase() === preset.b) ||
+              (cycloneA?.name.toUpperCase() === preset.b && cycloneB?.name.toUpperCase() === preset.a);
+            return (
+              <button
+                key={preset.label}
+                onClick={() => applyPreset(preset.a, preset.b)}
+                style={{
+                  padding: '7px 13px',
+                  borderRadius: '8px',
+                  border: isMatch ? '1.5px solid #2563eb' : '1px solid #cbd5e1',
+                  backgroundColor: isMatch ? '#eff6ff' : '#ffffff',
+                  color: isMatch ? '#1d4ed8' : '#334155',
+                  fontSize: '0.76rem',
+                  fontWeight: isMatch ? 800 : 600,
+                  cursor: 'pointer',
+                  boxShadow: isMatch ? '0 2px 6px rgba(37, 99, 235, 0.15)' : 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  transition: 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
+                }}
+                onMouseEnter={(e) => {
+                  if (!isMatch) {
+                    e.currentTarget.style.borderColor = '#94a3b8';
+                    e.currentTarget.style.backgroundColor = '#f8fafc';
+                    e.currentTarget.style.transform = 'translateY(-1px)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isMatch) {
+                    e.currentTarget.style.borderColor = '#cbd5e1';
+                    e.currentTarget.style.backgroundColor = '#ffffff';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }
+                }}
+              >
+                {isMatch && <Sparkles size={12} color="#2563eb" />}
+                {preset.label}
+              </button>
+            );
+          })}
 
           <button
-            onClick={() => applyPreset('AMPHAN', 'BIPARJOY')}
+            onClick={handleSwapStorms}
+            title="Swap Storm A and Storm B positions"
             style={{
-              padding: '6px 12px',
+              padding: '7px 12px',
               borderRadius: '8px',
-              border: '1px solid #e2e8f0',
-              backgroundColor: '#ffffff',
-              color: '#334155',
+              border: '1px solid #cbd5e1',
+              backgroundColor: '#f8fafc',
+              color: '#0f172a',
               fontSize: '0.76rem',
               fontWeight: 700,
               cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.18s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#e2e8f0';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#f8fafc';
+              e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
-            Amphan vs Biparjoy (N. Indian)
-          </button>
-
-          <button
-            onClick={() => applyPreset('PATRICIA', 'FREDDY')}
-            style={{
-              padding: '6px 12px',
-              borderRadius: '8px',
-              border: '1px solid #e2e8f0',
-              backgroundColor: '#ffffff',
-              color: '#334155',
-              fontSize: '0.76rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-            }}
-          >
-            Patricia vs Freddy (RI vs Longevity)
+            <ArrowLeftRight size={13} color="#2563eb" />
+            <span>Swap A ⇄ B</span>
           </button>
         </div>
       </div>
 
       {/* Selectors Bar */}
       <div
+        className="comparator-selectors-grid"
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '20px',
+          gridTemplateColumns: '1fr auto 1fr',
+          alignItems: 'center',
+          gap: '16px',
         }}
       >
         {/* Storm A Selector Card */}
@@ -350,40 +400,65 @@ export const CycloneComparatorPage: React.FC = () => {
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0284c7', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0284c7', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               Primary Cyclone (A)
             </span>
             {cycloneA && <StageBadge stage={cycloneA.highest_imd_stage} />}
           </div>
 
-          <select
-            value={selectedIdA}
-            onChange={(e) => setSelectedIdA(e.target.value)}
-            style={{
-              padding: '10px 14px',
-              borderRadius: '8px',
-              border: '1.5px solid #cbd5e1',
-              fontSize: '0.92rem',
-              fontWeight: 700,
-              color: '#0f172a',
-              backgroundColor: '#ffffff',
-              cursor: 'pointer',
-            }}
-          >
-            {cyclones.map((c) => (
-              <option key={`opt-a-${c.cyclone_id}`} value={c.cyclone_id}>
-                {c.name} ({c.season_year}) - {c.basin} [{c.max_wind_speed_kts} kts]
-              </option>
-            ))}
-          </select>
+          <CycloneSelectDropdown
+            cyclones={cyclones}
+            selectedCycloneId={selectedIdA}
+            onSelectCyclone={setSelectedIdA}
+            fullWidth={true}
+            accentColor="#0284c7"
+            placeholder="Select Cyclone A..."
+            idPrefix="comparator-storm-a"
+          />
 
           {cycloneA && (
-            <div style={{ fontSize: '0.78rem', color: '#64748b', display: 'flex', gap: '14px' }}>
-              <span>Basin: <strong>{cycloneA.basin}</strong></span>
-              <span>Subbasin: <strong>{cycloneA.subbasin}</strong></span>
-              <span>Obs: <strong>{cycloneA.track_points.length} points</strong></span>
+            <div style={{ fontSize: '0.76rem', color: '#64748b', display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center', paddingTop: '4px', borderTop: '1px solid #f1f5f9' }}>
+              <span>Basin: <strong style={{ color: '#0f172a' }}>{cycloneA.basin}</strong></span>
+              <span>Subbasin: <strong style={{ color: '#0f172a' }}>{cycloneA.subbasin || 'N/A'}</strong></span>
+              <span>Observations: <strong style={{ color: '#0284c7' }}>{cycloneA.track_points.length} points</strong></span>
             </div>
           )}
+        </div>
+
+        {/* Center Swap Connector */}
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <button
+            onClick={handleSwapStorms}
+            title="Swap Storm A and Storm B"
+            style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '50%',
+              backgroundColor: '#ffffff',
+              border: '2px solid #cbd5e1',
+              boxShadow: '0 4px 12px rgba(15, 23, 42, 0.08)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'all 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
+              flexShrink: 0,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = '#2563eb';
+              e.currentTarget.style.backgroundColor = '#eff6ff';
+              e.currentTarget.style.transform = 'scale(1.12) rotate(180deg)';
+              e.currentTarget.style.boxShadow = '0 6px 16px rgba(37, 99, 235, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = '#cbd5e1';
+              e.currentTarget.style.backgroundColor = '#ffffff';
+              e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(15, 23, 42, 0.08)';
+            }}
+          >
+            <ArrowLeftRight size={18} color="#2563eb" />
+          </button>
         </div>
 
         {/* Storm B Selector Card */}
@@ -398,38 +473,27 @@ export const CycloneComparatorPage: React.FC = () => {
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#e11d48', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#e11d48', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               Benchmark Cyclone (B)
             </span>
             {cycloneB && <StageBadge stage={cycloneB.highest_imd_stage} />}
           </div>
 
-          <select
-            value={selectedIdB}
-            onChange={(e) => setSelectedIdB(e.target.value)}
-            style={{
-              padding: '10px 14px',
-              borderRadius: '8px',
-              border: '1.5px solid #cbd5e1',
-              fontSize: '0.92rem',
-              fontWeight: 700,
-              color: '#0f172a',
-              backgroundColor: '#ffffff',
-              cursor: 'pointer',
-            }}
-          >
-            {cyclones.map((c) => (
-              <option key={`opt-b-${c.cyclone_id}`} value={c.cyclone_id}>
-                {c.name} ({c.season_year}) - {c.basin} [{c.max_wind_speed_kts} kts]
-              </option>
-            ))}
-          </select>
+          <CycloneSelectDropdown
+            cyclones={cyclones}
+            selectedCycloneId={selectedIdB}
+            onSelectCyclone={setSelectedIdB}
+            fullWidth={true}
+            accentColor="#e11d48"
+            placeholder="Select Cyclone B..."
+            idPrefix="comparator-storm-b"
+          />
 
           {cycloneB && (
-            <div style={{ fontSize: '0.78rem', color: '#64748b', display: 'flex', gap: '14px' }}>
-              <span>Basin: <strong>{cycloneB.basin}</strong></span>
-              <span>Subbasin: <strong>{cycloneB.subbasin}</strong></span>
-              <span>Obs: <strong>{cycloneB.track_points.length} points</strong></span>
+            <div style={{ fontSize: '0.76rem', color: '#64748b', display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center', paddingTop: '4px', borderTop: '1px solid #f1f5f9' }}>
+              <span>Basin: <strong style={{ color: '#0f172a' }}>{cycloneB.basin}</strong></span>
+              <span>Subbasin: <strong style={{ color: '#0f172a' }}>{cycloneB.subbasin || 'N/A'}</strong></span>
+              <span>Observations: <strong style={{ color: '#e11d48' }}>{cycloneB.track_points.length} points</strong></span>
             </div>
           )}
         </div>

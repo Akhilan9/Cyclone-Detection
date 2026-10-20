@@ -1,11 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, ChevronDown, Check, Wind, Globe, Layers } from 'lucide-react';
+import { Search, ChevronDown, Check, Wind, Globe, Layers, X } from 'lucide-react';
 import { Cyclone } from '../../types';
 
 interface CycloneSelectDropdownProps {
   cyclones: Cyclone[];
   selectedCycloneId: string;
   onSelectCyclone: (cycloneId: string) => void;
+  fullWidth?: boolean;
+  accentColor?: string;
+  placeholder?: string;
+  idPrefix?: string;
 }
 
 const BASINS = [
@@ -21,6 +25,10 @@ export const CycloneSelectDropdown: React.FC<CycloneSelectDropdownProps> = ({
   cyclones,
   selectedCycloneId,
   onSelectCyclone,
+  fullWidth = false,
+  accentColor = '#2563eb',
+  placeholder = 'Select Cyclone',
+  idPrefix = 'cyc',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -91,37 +99,62 @@ export const CycloneSelectDropdown: React.FC<CycloneSelectDropdownProps> = ({
   const activeBasinColor = getBasinColor(selectedCyclone?.basin || 'North Indian Ocean');
 
   return (
-    <div ref={dropdownRef} style={{ position: 'relative', display: 'inline-block' }}>
+    <div
+      ref={dropdownRef}
+      style={{
+        position: 'relative',
+        display: fullWidth ? 'block' : 'inline-block',
+        width: fullWidth ? '100%' : 'auto',
+      }}
+    >
       {/* Trigger Button */}
       <button
         type="button"
+        id={`${idPrefix}-dropdown-trigger`}
         onClick={() => setIsOpen(!isOpen)}
         style={{
           display: 'flex',
           alignItems: 'center',
           gap: '12px',
-          padding: '8px 14px',
+          padding: '9px 14px',
           backgroundColor: isOpen ? '#f8fafc' : '#ffffff',
-          border: isOpen ? '2px solid #2563eb' : '1.5px solid #cbd5e1',
+          border: isOpen ? `2px solid ${accentColor}` : '1.5px solid #cbd5e1',
           borderRadius: '12px',
           cursor: 'pointer',
-          boxShadow: isOpen ? '0 0 0 4px rgba(37, 99, 235, 0.12)' : '0 1px 3px rgba(0,0,0,0.06)',
+          boxShadow: isOpen ? `0 0 0 4px ${accentColor}20` : '0 1px 3px rgba(0,0,0,0.06)',
           transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-          minWidth: '280px',
+          minWidth: fullWidth ? '100%' : '280px',
+          width: fullWidth ? '100%' : 'auto',
           textAlign: 'left',
+          boxSizing: 'border-box',
+        }}
+        onMouseEnter={(e) => {
+          if (!isOpen) {
+            e.currentTarget.style.borderColor = accentColor;
+            e.currentTarget.style.transform = 'translateY(-1px)';
+            e.currentTarget.style.boxShadow = '0 3px 8px rgba(0,0,0,0.08)';
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!isOpen) {
+            e.currentTarget.style.borderColor = '#cbd5e1';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+          }
         }}
       >
         <div
           style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
+            width: '34px',
+            height: '34px',
+            borderRadius: '9px',
             backgroundColor: activeBadge.bg,
             border: `1px solid ${activeBadge.border}`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0,
+            transition: 'transform 0.2s ease',
           }}
         >
           <Wind size={18} color={activeBadge.color} />
@@ -130,29 +163,46 @@ export const CycloneSelectDropdown: React.FC<CycloneSelectDropdownProps> = ({
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
             <span style={{ fontSize: '0.92rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.01em' }}>
-              {selectedCyclone?.name || 'Select Cyclone'}
+              {selectedCyclone?.name || placeholder}
             </span>
-            <span style={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748b', backgroundColor: '#f1f5f9', padding: '1px 6px', borderRadius: '4px' }}>
-              {selectedCyclone?.season_year}
-            </span>
-            <span style={{ fontSize: '0.62rem', fontWeight: 800, color: activeBasinColor.text, backgroundColor: activeBasinColor.bg, border: `1px solid ${activeBasinColor.border}`, padding: '1px 6px', borderRadius: '4px', textTransform: 'uppercase' }}>
-              {selectedCyclone?.basin}
-            </span>
+            {selectedCyclone && (
+              <>
+                <span style={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748b', backgroundColor: '#f1f5f9', padding: '1px 6px', borderRadius: '4px' }}>
+                  {selectedCyclone.season_year}
+                </span>
+                <span style={{ fontSize: '0.62rem', fontWeight: 800, color: activeBasinColor.text, backgroundColor: activeBasinColor.bg, border: `1px solid ${activeBasinColor.border}`, padding: '1px 6px', borderRadius: '4px', textTransform: 'uppercase' }}>
+                  {selectedCyclone.basin}
+                </span>
+              </>
+            )}
           </div>
-          <div style={{ fontSize: '0.7rem', color: activeBadge.color, fontWeight: 600, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', marginTop: '1px' }}>
+          <div style={{ fontSize: '0.72rem', color: activeBadge.color, fontWeight: 600, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', marginTop: '1px' }}>
             {selectedCyclone?.highest_imd_stage || 'Tropical Disturbance'} • {selectedCyclone?.max_wind_speed_kts || 45} kts
           </div>
         </div>
 
-        <ChevronDown
-          size={18}
-          color="#64748b"
+        <div
           style={{
-            transition: 'transform 0.25s ease',
-            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '24px',
+            height: '24px',
+            borderRadius: '6px',
+            backgroundColor: isOpen ? `${accentColor}15` : 'transparent',
             flexShrink: 0,
+            transition: 'all 0.2s ease',
           }}
-        />
+        >
+          <ChevronDown
+            size={18}
+            color={isOpen ? accentColor : '#64748b'}
+            style={{
+              transition: 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+              transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+            }}
+          />
+        </div>
       </button>
 
       {/* Animated Dropdown Menu */}
@@ -162,17 +212,30 @@ export const CycloneSelectDropdown: React.FC<CycloneSelectDropdownProps> = ({
             position: 'absolute',
             top: 'calc(100% + 8px)',
             left: 0,
-            zIndex: 1050,
-            width: '380px',
+            zIndex: 3200,
+            width: fullWidth ? '100%' : '390px',
+            minWidth: '320px',
+            maxWidth: '100vw',
             backgroundColor: '#ffffff',
             borderRadius: '14px',
-            border: '1px solid #e2e8f0',
-            boxShadow: '0 16px 40px rgba(15, 23, 42, 0.16), 0 4px 12px rgba(15, 23, 42, 0.08)',
-            padding: '10px',
+            border: '1px solid #cbd5e1',
+            boxShadow: '0 20px 48px rgba(15, 23, 42, 0.2), 0 6px 16px rgba(15, 23, 42, 0.1)',
+            padding: '12px',
             animation: 'fadeInScale 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
             overflow: 'hidden',
+            boxSizing: 'border-box',
           }}
         >
+          {/* Header info */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', paddingBottom: '6px', borderBottom: '1px solid #f1f5f9' }}>
+            <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              Select Cyclone ({filteredCyclones.length} Available)
+            </span>
+            <span style={{ fontSize: '0.68rem', color: '#94a3b8' }}>
+              ESC to close
+            </span>
+          </div>
+
           {/* Global Basin Filter Pills */}
           <div style={{ display: 'flex', gap: '4px', overflowX: 'auto', paddingBottom: '8px', marginBottom: '8px', borderBottom: '1px solid #f1f5f9' }}>
             {BASINS.map((b) => {
@@ -183,16 +246,22 @@ export const CycloneSelectDropdown: React.FC<CycloneSelectDropdownProps> = ({
                   type="button"
                   onClick={() => setSelectedBasin(b.id)}
                   style={{
-                    padding: '3px 8px',
+                    padding: '4px 8px',
                     borderRadius: '6px',
                     fontSize: '0.68rem',
                     fontWeight: 700,
                     whiteSpace: 'nowrap',
-                    border: isActive ? '1px solid #2563eb' : '1px solid #e2e8f0',
-                    backgroundColor: isActive ? '#eff6ff' : '#ffffff',
-                    color: isActive ? '#2563eb' : '#64748b',
+                    border: isActive ? `1.5px solid ${accentColor}` : '1px solid #e2e8f0',
+                    backgroundColor: isActive ? `${accentColor}12` : '#ffffff',
+                    color: isActive ? accentColor : '#64748b',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) e.currentTarget.style.backgroundColor = '#f8fafc';
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) e.currentTarget.style.backgroundColor = '#ffffff';
                   }}
                 >
                   {b.label}
@@ -207,17 +276,18 @@ export const CycloneSelectDropdown: React.FC<CycloneSelectDropdownProps> = ({
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              padding: '6px 10px',
+              padding: '7px 10px',
               backgroundColor: '#f8fafc',
               borderRadius: '8px',
-              border: '1px solid #e2e8f0',
+              border: '1.5px solid #e2e8f0',
               marginBottom: '8px',
+              transition: 'border-color 0.2s ease',
             }}
           >
             <Search size={14} color="#64748b" />
             <input
               type="text"
-              placeholder="Search cyclone by name, basin, or year..."
+              placeholder="Search cyclone by name, year, basin, category..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               autoFocus
@@ -226,11 +296,27 @@ export const CycloneSelectDropdown: React.FC<CycloneSelectDropdownProps> = ({
                 border: 'none',
                 background: 'transparent',
                 outline: 'none',
-                fontSize: '0.78rem',
+                fontSize: '0.8rem',
                 color: '#0f172a',
-                fontWeight: 500,
+                fontWeight: 600,
               }}
             />
+            {searchTerm && (
+              <button
+                type="button"
+                onClick={() => setSearchTerm('')}
+                style={{
+                  border: 'none',
+                  background: 'none',
+                  cursor: 'pointer',
+                  padding: '2px',
+                  display: 'flex',
+                  color: '#94a3b8',
+                }}
+              >
+                <X size={14} />
+              </button>
+            )}
           </div>
 
           {/* Cyclones List */}
@@ -260,15 +346,21 @@ export const CycloneSelectDropdown: React.FC<CycloneSelectDropdownProps> = ({
                       padding: '8px 10px',
                       borderRadius: '10px',
                       cursor: 'pointer',
-                      backgroundColor: isSelected ? '#eff6ff' : 'transparent',
-                      border: isSelected ? '1px solid #bfdbfe' : '1px solid transparent',
+                      backgroundColor: isSelected ? `${accentColor}12` : 'transparent',
+                      border: isSelected ? `1px solid ${accentColor}40` : '1px solid transparent',
                       transition: 'all 0.15s ease',
                     }}
                     onMouseEnter={(e) => {
-                      if (!isSelected) e.currentTarget.style.backgroundColor = '#f8fafc';
+                      if (!isSelected) {
+                        e.currentTarget.style.backgroundColor = '#f8fafc';
+                        e.currentTarget.style.transform = 'translateX(3px)';
+                      }
                     }}
                     onMouseLeave={(e) => {
-                      if (!isSelected) e.currentTarget.style.backgroundColor = 'transparent';
+                      if (!isSelected) {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                        e.currentTarget.style.transform = 'translateX(0)';
+                      }
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
@@ -318,7 +410,7 @@ export const CycloneSelectDropdown: React.FC<CycloneSelectDropdownProps> = ({
                           width: '20px',
                           height: '20px',
                           borderRadius: '50%',
-                          backgroundColor: '#2563eb',
+                          backgroundColor: accentColor,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
