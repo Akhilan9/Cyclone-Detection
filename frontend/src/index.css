@@ -536,6 +536,12 @@ body {
   contain: paint;
 }
 
+/* Seamless Leaflet Canvas Ocean Background */
+.leaflet-container {
+  background-color: #aad3df !important;
+  outline: none;
+}
+
 @media (max-width: 900px) {
   .interactive-map-wrapper {
     height: 460px;

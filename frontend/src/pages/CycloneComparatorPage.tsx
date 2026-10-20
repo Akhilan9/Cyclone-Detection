@@ -105,7 +105,9 @@ export const CycloneComparatorPage: React.FC = () => {
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors',
+        minZoom: 1,
         maxZoom: 19,
+        noWrap: false,
       }).addTo(mapRef.current);
     }
 

@@ -161,7 +161,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
     const newTile = L.tileLayer(newUrl, {
       attribution,
-      maxZoom: newMode === 'nasa_gibs' ? 9 : 18,
+      minZoom: 1,
+      maxZoom: newMode === 'nasa_gibs' ? 9 : 19,
+      noWrap: false,
     }).addTo(mapInstanceRef.current);
 
     tileLayerRef.current = newTile;
@@ -199,22 +201,19 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
     if (!mapInstanceRef.current) {
       const map = L.map(mapContainerRef.current, {
-        center: activePoint ? [activePoint.latitude, activePoint.longitude] : [20.0, 0.0],
+        center: activePoint ? [activePoint.latitude, activePoint.longitude] : [20.0, 78.0],
         zoom: 4,
         minZoom: 2,
+        maxZoom: 19,
         worldCopyJump: true,
-        maxBounds: [
-          [-85.0, -180.0],
-          [85.0, 180.0],
-        ],
-        maxBoundsViscosity: 0.85,
         zoomControl: true,
       });
 
       const initialTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        minZoom: 3,
-        maxZoom: 18,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        minZoom: 1,
+        maxZoom: 19,
+        noWrap: false,
       }).addTo(map);
 
       tileLayerRef.current = initialTiles;
