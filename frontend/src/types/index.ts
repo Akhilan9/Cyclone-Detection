@@ -140,6 +140,7 @@ export interface EvaluationMetrics {
   };
   classification_metrics: {
     accuracy: number;
+    adjacent_accuracy?: number;
     macro_precision: number;
     macro_recall: number;
     macro_f1: number;

@@ -77,6 +77,7 @@ def evaluate_classification(
         return {"accuracy": 0.0, "macro_f1": 0.0, "precision": 0.0, "recall": 0.0, "confusion_matrix": []}
 
     acc = float(accuracy_score(t, p))
+    adjacent_acc = float(np.mean(np.abs(t - p) <= 1))
     precision, recall, f1, _ = precision_recall_fscore_support(
         t, p, average="macro", zero_division=0
     )
@@ -84,6 +85,7 @@ def evaluate_classification(
 
     return {
         "accuracy": round(acc, 4),
+        "adjacent_accuracy": round(adjacent_acc, 4),
         "macro_precision": round(float(precision), 4),
         "macro_recall": round(float(recall), 4),
         "macro_f1": round(float(f1), 4),

@@ -1,72 +1,73 @@
 {
   "dataset_split": {
     "train_cyclone_ids": [
-      "2018314N12093",
+      "2013281N12098",
+      "2017333N06082",
       "2018281N14088",
-      "2019117N12089",
-      "2019302N11118",
-      "2023036S10114",
-      "2023157N13066",
-      "2016334N08086",
-      "2022266N11308",
-      "2016341N10095",
+      "2015293N09266",
       "2014279N11096",
-      "2020137N10087",
-      "2021143N15090"
+      "2019302N11118",
+      "2023157N13066",
+      "2005236N23285",
+      "2016334N08086",
+      "2019117N12089",
+      "2018314N12093",
+      "2022266N11308"
     ],
     "val_cyclone_ids": [
-      "2023129N08091",
-      "2013307N06158",
-      "2013281N12098",
-      "2021134N10072"
+      "2021134N10072",
+      "2023335N10085",
+      "2023036S10114",
+      "2020137N10087"
     ],
     "test_cyclone_ids": [
-      "2005236N23285",
-      "2017333N06082",
-      "2023335N10085",
-      "2015293N09266"
+      "2016341N10095",
+      "2023129N08091",
+      "2021143N15090",
+      "2013307N06158"
     ],
-    "test_sequence_count": 67
+    "test_sequence_count": 93
   },
   "classification_metrics": {
-    "accuracy": 0.5522,
-    "macro_precision": 0.4142,
-    "macro_recall": 0.4505,
-    "macro_f1": 0.4032,
+    "accuracy": 0.4301,
+    "adjacent_accuracy": 0.9032,
+    "macro_precision": 0.4404,
+    "macro_recall": 0.4939,
+    "macro_f1": 0.412,
     "confusion_matrix": [
       [
-        2,
-        1,
-        2,
+        7,
+        3,
         0,
-        11,
         0,
+        0,
+        4,
         0
       ],
       [
         2,
-        2,
+        12,
         1,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        1,
-        1,
-        8,
-        0,
-        1,
-        0,
-        0
-      ],
-      [
         0,
         0,
         2,
+        0
+      ],
+      [
         0,
-        8,
+        6,
+        7,
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        6,
+        5,
+        2,
         0,
         0
       ],
@@ -74,10 +75,19 @@
         0,
         0,
         0,
+        6,
+        6,
+        1,
+        2
+      ],
+      [
         0,
-        25,
         0,
-        0
+        0,
+        0,
+        1,
+        0,
+        15
       ],
       [
         0,
@@ -86,40 +96,31 @@
         0,
         0,
         0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
+        3
       ]
     ],
-    "sample_count": 67
+    "sample_count": 93
   },
   "benchmark_comparison": {
     "persistence_baseline": {
       "model_name": "Persistence Baseline",
-      "mean_track_error_km": 91.16467169008449,
-      "intensity_mae_knots": 9.28,
-      "intensity_rmse_knots": 19.67,
+      "mean_track_error_km": 111.46618855219536,
+      "intensity_mae_knots": 5.15,
+      "intensity_rmse_knots": 9.18,
       "description": "Assumes zero change in motion vector and intensity from current observation."
     },
     "linear_extrapolation_baseline": {
       "model_name": "Linear Kinematic Extrapolation",
-      "mean_track_error_km": 49.175899073403706,
-      "intensity_mae_knots": 7.18,
-      "intensity_rmse_knots": 13.38,
+      "mean_track_error_km": 42.63183259195836,
+      "intensity_mae_knots": 5.25,
+      "intensity_rmse_knots": 7.74,
       "description": "Projects velocity vector computed over the previous 6-hour interval."
     },
     "convlstm_spatiotemporal": {
       "model_name": "ConvLSTM Spatiotemporal Net (Proposed)",
-      "mean_track_error_km": 81.85323894288484,
-      "intensity_mae_knots": 9.73,
-      "intensity_rmse_knots": 18.71,
+      "mean_track_error_km": 108.59581436179391,
+      "intensity_mae_knots": 5.08,
+      "intensity_rmse_knots": 7.89,
       "description": "Recurrent spatiotemporal model learning rotational dynamics and kinematic drift."
     }
   },

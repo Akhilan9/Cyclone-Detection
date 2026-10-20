@@ -117,18 +117,62 @@ class CycloneDataPreprocessor:
         return r_earth_km * c
 
     @staticmethod
-    def imd_category_to_index(stage: str) -> int:
-        """Map IMD stage to numeric classification index (0-6)."""
+    def wind_speed_to_imd_index(wind_kts: float) -> int:
+        """Official IMD RSMC New Delhi wind speed classification thresholds."""
+        if wind_kts < 28.0:
+            return 0  # Depression (17-27 kts)
+        elif wind_kts < 34.0:
+            return 1  # Deep Depression (28-33 kts)
+        elif wind_kts < 48.0:
+            return 2  # Cyclonic Storm (34-47 kts)
+        elif wind_kts < 64.0:
+            return 3  # Severe Cyclonic Storm (48-63 kts)
+        elif wind_kts < 90.0:
+            return 4  # Very Severe Cyclonic Storm (64-89 kts)
+        elif wind_kts < 120.0:
+            return 5  # Extremely Severe Cyclonic Storm (90-119 kts)
+        else:
+            return 6  # Super Cyclonic Storm (>= 120 kts)
+
+    @staticmethod
+    def imd_category_to_index(stage: str, wind_kts: Optional[float] = None) -> int:
+        """
+        Map IMD or global Saffir-Simpson / WMO tropical cyclone stage to numeric index (0-6).
+        Falls back to IMD official wind speed thresholds if stage name is non-standard or missing.
+        """
+        stage_clean = str(stage).strip() if stage else ""
         mapping = {
             "Depression (D)": 0,
+            "Depression": 0,
+            "Tropical Depression": 0,
             "Deep Depression (DD)": 1,
+            "Deep Depression": 1,
             "Cyclonic Storm (CS)": 2,
+            "Cyclonic Storm": 2,
+            "Tropical Storm": 2,
             "Severe Cyclonic Storm (SCS)": 3,
+            "Severe Cyclonic Storm": 3,
             "Very Severe Cyclonic Storm (VSCS)": 4,
+            "Very Severe Cyclonic Storm": 4,
+            "Category 1 Hurricane": 4,
+            "Category 2 Hurricane": 4,
             "Extremely Severe Cyclonic Storm (ESCS)": 5,
+            "Extremely Severe Cyclonic Storm": 5,
+            "Category 3 Major Hurricane": 5,
+            "Category 4 Major Hurricane": 5,
             "Super Cyclonic Storm (SuCS)": 6,
+            "Super Cyclonic Storm": 6,
+            "Category 5 Major Hurricane": 6,
+            "Super Typhoon": 6,
         }
-        return mapping.get(stage, 0)
+        if stage_clean in mapping:
+            return mapping[stage_clean]
+
+        # Robust physical fallback: map by continuous wind speed threshold
+        if wind_kts is not None and wind_kts > 0:
+            return CycloneDataPreprocessor.wind_speed_to_imd_index(float(wind_kts))
+
+        return 0
 
     @staticmethod
     def index_to_imd_category(idx: int) -> str:

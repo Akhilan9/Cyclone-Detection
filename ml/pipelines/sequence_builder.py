@@ -99,7 +99,9 @@ class SpatiotemporalSequenceBuilder:
                         cand_path = os.path.join(base_dir, "data", "raw", "satellite_images", f"{c_id}_real_tir.png")
                         if os.path.exists(cand_path):
                             try:
-                                img_arr = self.preprocessor.preprocess_image(cand_path)
+                                base_img = self.preprocessor.preprocess_image(cand_path)
+                                norm_w = min(max(wind / 125.0, 0.18), 1.0)
+                                img_arr = np.clip(base_img * norm_w * 1.25, 0.0, 1.0)
                                 real_img_found = True
                             except Exception:
                                 real_img_found = False
@@ -117,7 +119,7 @@ class SpatiotemporalSequenceBuilder:
                 tgt_lon = float(target_pt.get("longitude", 0.0))
                 tgt_wind = float(target_pt.get("wind_speed_kts", 25.0))
                 tgt_stage = target_pt.get("imd_stage", "Depression (D)")
-                tgt_class = self.preprocessor.imd_category_to_index(tgt_stage)
+                tgt_class = self.preprocessor.imd_category_to_index(tgt_stage, wind_kts=tgt_wind)
 
                 X_images_list.append(np.stack(images_seq, axis=0))  # (T, H, W, C)
                 X_coords_list.append(np.array(coords_seq, dtype=np.float32))  # (T, 2)

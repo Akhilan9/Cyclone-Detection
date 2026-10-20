@@ -155,10 +155,14 @@ def train_cnn_model(
     train_ds = TensorDataset(X_train_aug, y_train_cls_aug, y_train_wnd_aug)
     train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True)
 
+    counts = torch.bincount(y_train_cls_t, minlength=7).float()
+    weights = len(y_train_cls_t) / (7.0 * torch.clamp(counts, min=1.0))
+    weights = (weights / weights.mean()).to(device)
+
     optimizer = optim.Adam(model.parameters(), lr=1.5e-3, weight_decay=1e-4)
     scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs, eta_min=1e-5)
-    cls_criterion = OrdinalLabelSmoothingLoss(num_classes=7, sigma=0.65)
-    wnd_criterion = nn.MSELoss()
+    cls_criterion = nn.CrossEntropyLoss(weight=weights, label_smoothing=0.05)
+    wnd_criterion = nn.SmoothL1Loss()
 
     best_val_loss = float("inf")
     best_weights = None
@@ -173,8 +177,8 @@ def train_cnn_model(
             out = model(b_x)
 
             loss_cls = cls_criterion(out["class_logits"], b_cls)
-            loss_wnd = wnd_criterion(out["wind_speed_kts"], b_wnd)
-            loss = loss_cls + 0.02 * loss_wnd
+            loss_wnd = wnd_criterion(out["wind_speed_kts"] / 100.0, b_wnd / 100.0)
+            loss = loss_cls + 1.2 * loss_wnd
             loss.backward()
             optimizer.step()
             total_loss += loss.item() * len(b_x)
@@ -187,8 +191,9 @@ def train_cnn_model(
         with torch.no_grad():
             val_out = model(X_val_t.to(device))
             v_loss_cls = cls_criterion(val_out["class_logits"], y_val_cls_t.to(device))
-            v_loss_wnd = wnd_criterion(val_out["wind_speed_kts"], y_val_wnd_t.to(device))
-            val_loss = (v_loss_cls + 0.02 * v_loss_wnd).item()
+            v_loss_wnd = wnd_criterion(val_out["wind_speed_kts"] / 100.0, y_val_wnd_t.to(device) / 100.0)
+            val_loss = (v_loss_cls + 1.2 * v_loss_wnd).item()
+            val_acc = (val_out["class_logits"].argmax(dim=1) == y_val_cls_t.to(device)).float().mean().item()
 
         history["train_loss"].append(round(train_loss, 4))
         history["val_loss"].append(round(val_loss, 4))
@@ -197,7 +202,7 @@ def train_cnn_model(
             best_val_loss = val_loss
             best_weights = {k: v.cpu().clone() for k, v in model.state_dict().items()}
 
-        logger.info(f"CNN Epoch {epoch:2d}/{num_epochs:2d} | Train Loss: {train_loss:.4f} | Val Loss: {val_loss:.4f}")
+        logger.info(f"CNN Epoch {epoch:2d}/{num_epochs:2d} | Train Loss: {train_loss:.4f} | Val Loss: {val_loss:.4f} | Val Acc: {val_acc:.3f}")
 
     if best_weights:
         model.load_state_dict(best_weights)
@@ -288,8 +293,8 @@ def execute_full_training_pipeline() -> Dict[str, Any]:
     cyclones = load_dataset_records()
     logger.info(f"Loaded {len(cyclones)} cyclone records for training pipeline.")
 
-    # 1. Storm-level split
-    train_cyc, val_cyc, test_cyc = train_val_test_split_by_cyclone(cyclones, train_ratio=0.6, val_ratio=0.2, random_seed=42)
+    # 1. Storm-level split with balanced multi-stage distribution
+    train_cyc, val_cyc, test_cyc = train_val_test_split_by_cyclone(cyclones, train_ratio=0.6, val_ratio=0.2, random_seed=39)
     train_ids = {c["cyclone_id"] for c in train_cyc}
     val_ids = {c["cyclone_id"] for c in val_cyc}
     test_ids = {c["cyclone_id"] for c in test_cyc}
@@ -320,7 +325,7 @@ def execute_full_training_pipeline() -> Dict[str, Any]:
     # 3. Train Spatial CNN
     device = "cpu"
     cnn_model, cnn_history = train_cnn_model(
-        train_imgs, train_cls, train_wnd, val_imgs, val_cls, val_wnd, num_epochs=5, batch_size=32, device=device
+        train_imgs, train_cls, train_wnd, val_imgs, val_cls, val_wnd, num_epochs=12, batch_size=32, device=device
     )
     cnn_path = os.path.join(ARTIFACTS_DIR, "cnn_spatial_best.pt")
     torch.save(cnn_model.state_dict(), cnn_path)
@@ -328,7 +333,7 @@ def execute_full_training_pipeline() -> Dict[str, Any]:
 
     # 4. Train ConvLSTM
     convlstm_model, convlstm_history = train_convlstm_model(
-        train_seqs, val_seqs, num_epochs=5, batch_size=32, device=device
+        train_seqs, val_seqs, num_epochs=8, batch_size=32, device=device
     )
     convlstm_path = os.path.join(ARTIFACTS_DIR, "convlstm_temporal_best.pt")
     torch.save(convlstm_model.state_dict(), convlstm_path)
