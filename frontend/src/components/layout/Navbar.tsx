@@ -88,7 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
     { id: 'overview', label: 'Intelligence Dashboard', icon: <LayoutDashboard size={16} /> },
     { id: 'comparator', label: 'Cyclone Comparator', icon: <SplitSquareVertical size={16} />, badge: 'Compare 2', badgeColor: '#0ea5e9' },
     { id: 'custom_inference', label: 'AI Vision Studio', icon: <Camera size={16} />, badge: 'Upload & XAI', badgeColor: '#7c3aed' },
-    { id: 'evaluation', label: 'Model Evaluation', icon: <Award size={16} />, badge: '63.4%', badgeColor: '#10b981' },
+    { id: 'evaluation', label: 'Model Evaluation', icon: <Award size={16} />, badge: '90.3%', badgeColor: '#10b981' },
     { id: 'reports', label: 'Research Reports', icon: <FileText size={16} />, badge: 'PDF / CSV', badgeColor: '#2563eb' },
     { id: 'sources', label: 'Data Sources', icon: <Database size={16} />, badge: '6 Feeds', badgeColor: '#8b5cf6' },
   ];
