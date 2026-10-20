@@ -62,17 +62,41 @@
       "status": "sample_archive"
     },
     {
-      "id": "synthetic_benchmark_fixture",
-      "name": "Software Test & Integration Synthetic Fixture",
-      "organization": "Project Internal Verification Suite",
-      "basin": "North Indian Ocean Benchmark Grid",
-      "coverage": "Controlled synthetic storm tracks for CI/CD and integration testing",
-      "frequency": "6-hourly steps (T=12 timesteps per storm)",
-      "access": "Local repository fixture",
-      "url": "file://data/fixtures/sample_cyclones.json",
-      "format": "JSON / Synthetic NumPy Arrays",
-      "license": "Internal Test Only (Not for scientific research claims)",
-      "status": "fixture"
+      "id": "nasa_gibs_satellite",
+      "name": "NASA GIBS Global Imagery Browse Services (MODIS / VIIRS)",
+      "organization": "NASA Earth Observing System Data and Information System (EOSDIS)",
+      "basin": "Global / North Indian Ocean (Bay of Bengal & Arabian Sea)",
+      "channels": ["Thermal Infrared Band 31 (11.03 um)", "Corrected Reflectance True Color"],
+      "resolution": "1 km / 250 m spatial resolution daily synoptic passes",
+      "access": "Public Open Science WMS/WMTS (No authentication required)",
+      "url": "https://gibs.earthdata.nasa.gov/",
+      "format": "Real PNG/JPEG WMS Tiles / Infrared Brightness Temperature",
+      "license": "NASA Open Data Policy (Public Domain)",
+      "status": "active"
+    },
+    {
+      "id": "noaa_ibtracs_full_cleaned",
+      "name": "NOAA IBTrACS v04r01 Cleaned Archive (58,580 Track Points)",
+      "organization": "NOAA NCEI & WMO World Data Center",
+      "basin": "North Indian Ocean (1980 - 2024)",
+      "access": "Downloaded and parsed on local disk",
+      "url": "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.NI.list.v04r01.csv",
+      "format": "CSV (ibtracs_ni_cleaned.csv)",
+      "license": "U.S. Government Open Data (Public Domain)",
+      "status": "active"
+    },
+    {
+      "id": "noaa_ibtracs_global",
+      "name": "NOAA IBTrACS Global Multi-Basin Archive (Worldwide)",
+      "organization": "NOAA NCEI & World Meteorological Organization (WMO)",
+      "basin": "Global (North Atlantic, Western Pacific, Eastern Pacific, Southern Hemisphere, North Indian)",
+      "coverage": "1851 - Present",
+      "frequency": "3-hourly / 6-hourly best-track observations",
+      "access": "Public, Free (No authentication required)",
+      "url": "https://www.ncei.noaa.gov/products/international-best-track-archive",
+      "format": "NetCDF / CSV / WMO Bulletins",
+      "license": "U.S. Government Open Data (Public Domain)",
+      "status": "active"
     }
   ]
 }

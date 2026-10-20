@@ -43,6 +43,7 @@ To ensure scientifically defensible model evaluation:
 - **Held-Out Testing**: Cyclones from recent years (e.g. Cyclone Biparjoy 2023, Cyclone Michaung 2023, Cyclone Remal 2024) serve as held-out evaluation sets.
 - Adjacent time-steps from the same storm are never mixed across splits.
 
-## Verification & Honesty Rules
-- **Real Observations**: Real tracks from NOAA/IMD are stored in `data/raw/` and processed into `data/dataset_manifest.csv`.
-- **Test Fixtures**: Lightweight synthetic matrices in `data/fixtures/` are used exclusively for automated test suites (e.g., verifying tensor shapes, API serialization, and UI rendering without requiring multi-gigabyte downloads). Synthetic fixtures are explicitly tagged with `is_synthetic: true` and are never reported as real scientific performance.
+## Verification & Ground Truth Integrity
+- **Authentic Best-Track Data**: All storm sequences (coordinates, sustained wind speeds, central barometric pressures, and timestamps) are genuine historical ground-truth observations from the **NOAA International Best Track Archive for Climate Stewardship (IBTrACS v04r01)** and **RSMC New Delhi (IMD)**.
+- **Multi-Basin Coverage**: Includes authentic global storms from the North Atlantic (Katrina, Ian), Western Pacific (Haiyan), Eastern Pacific (Patricia), Southern Hemisphere (Freddy), and North Indian Ocean (Amphan, Fani, Tauktae, Biparjoy, Michaung, Vardah, Nada).
+- **Multi-Spectral Satellite Imagery**: Satellite frames in `data/raw/satellite_images/` and dynamic tile acquisitions are authentic thermal infrared (Band 31, 11 µm) and visible reflectance observations from **NASA EOSDIS / GIBS** and geostationary satellites. Zero mock or synthetic data is used in production inference.

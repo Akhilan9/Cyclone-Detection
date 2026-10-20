@@ -9,17 +9,19 @@ export const StageBadge: React.FC<StageBadgeProps> = ({ stage, className = '' })
   if (!stage) return <span className={`badge badge-d ${className}`}>Unknown</span>;
 
   let badgeClass = 'badge-d';
-  if (stage.includes('Super')) {
+  const s = stage.toLowerCase();
+
+  if (s.includes('super') || s.includes('cat 5') || s.includes('category 5')) {
     badgeClass = 'badge-sucs';
-  } else if (stage.includes('Extremely Severe')) {
+  } else if (s.includes('extremely') || s.includes('cat 4') || s.includes('category 4')) {
     badgeClass = 'badge-escs';
-  } else if (stage.includes('Very Severe')) {
+  } else if (s.includes('very severe') || s.includes('cat 3') || s.includes('category 3') || s.includes('major hurricane')) {
     badgeClass = 'badge-vscs';
-  } else if (stage.includes('Severe')) {
+  } else if (s.includes('severe') || s.includes('cat 2') || s.includes('category 2') || s.includes('typhoon')) {
     badgeClass = 'badge-scs';
-  } else if (stage.includes('Cyclonic Storm')) {
+  } else if (s.includes('cyclonic storm') || s.includes('cat 1') || s.includes('category 1') || s.includes('tropical storm')) {
     badgeClass = 'badge-cs';
-  } else if (stage.includes('Deep Depression')) {
+  } else if (s.includes('deep depression')) {
     badgeClass = 'badge-dd';
   }
 

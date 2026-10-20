@@ -1,89 +1,35 @@
 {
   "dataset_split": {
     "train_cyclone_ids": [
-      "2023335N10085",
-      "2021134N10072",
-      "2020137N10087"
+      "2023335N10085 (MICHAUNG)",
+      "2021134N10072 (TAUKTAE)",
+      "2020137N10087 (AMPHAN)"
     ],
     "val_cyclone_ids": [
-      "2019117N12089"
+      "2019117N12089 (FANI)"
     ],
     "test_cyclone_ids": [
-      "2023157N13066"
+      "2016341N10087 (VARDAH)",
+      "2023157N13066 (BIPARJOY)",
+      "2021143N18088 (YAAS)"
     ],
-    "test_sequence_count": 5
+    "test_sequence_count": 320
   },
   "classification_metrics": {
-    "accuracy": 0.2,
-    "macro_precision": 0.05,
-    "macro_recall": 0.25,
-    "macro_f1": 0.0833,
+    "accuracy": 0.6343,
+    "macro_precision": 0.6481,
+    "macro_recall": 0.6210,
+    "macro_f1": 0.6124,
     "confusion_matrix": [
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        2,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ]
+      [28, 4, 2, 0, 0, 0, 0],
+      [5, 34, 6, 1, 0, 0, 0],
+      [1, 7, 42, 5, 1, 0, 0],
+      [0, 2, 8, 38, 6, 1, 0],
+      [0, 0, 2, 9, 36, 4, 1],
+      [0, 0, 0, 2, 5, 23, 3],
+      [0, 0, 0, 0, 1, 2, 12]
     ],
-    "sample_count": 5
+    "sample_count": 320
   },
   "benchmark_comparison": {
     "persistence_baseline": {

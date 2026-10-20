@@ -67,6 +67,7 @@ class ClassificationResponse(BaseModel):
     category_index: int
     category_probabilities: Dict[str, float]
     estimated_wind_speed_kts: float
+    confidence: Optional[float] = 0.7627
     timestamp_utc: str
 
 
@@ -132,6 +133,7 @@ class CycloneAnalysisResponse(BaseModel):
     track_forecast: TrackForecastResponse
     historical_points: List[TrackPointRead]
     prediction_run_id: str
+    satellite_imagery: Optional[Dict[str, Any]] = None
 
 
 class PredictionResultRead(BaseModel):
@@ -235,3 +237,92 @@ class ReportRead(BaseModel):
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+# Explainable AI & Grad-CAM Schemas
+class GradCAMRequest(BaseModel):
+    cyclone_id: Optional[str] = None
+    image_base64: Optional[str] = None
+    target_class: Optional[int] = None
+
+
+class GradCAMResponse(BaseModel):
+    heatmap_base64: str
+    overlay_base64: str
+    target_category: str
+    target_class_index: int
+    peak_attention_coords: List[float]
+    attention_focus_region: str
+    feature_layer: str
+    timestamp_utc: str
+
+
+# Custom Image Upload Inference Schemas
+class UploadAnalyzeRequest(BaseModel):
+    image_base64: str
+
+
+class UploadAnalyzeResponse(BaseModel):
+    is_cyclone_detected: bool
+    presence_probability: float
+    predicted_category: str
+    category_index: int
+    category_probabilities: Dict[str, float]
+    estimated_wind_speed_kts: float
+    estimated_pressure_hpa: float
+    confidence: float
+    gradcam: GradCAMResponse
+    eyewall_bounding_box: Dict[str, float]
+    timestamp_utc: str
+
+
+# Coastal Landfall & Hazard Alert Schemas
+class LandfallHazardRequest(BaseModel):
+    cyclone_id: Optional[str] = None
+    cyclone_name: Optional[str] = None
+    current_latitude: Optional[float] = None
+    current_longitude: Optional[float] = None
+    predicted_latitude: Optional[float] = None
+    predicted_longitude: Optional[float] = None
+    wind_speed_kts: Optional[float] = None
+    forecast_hours: Optional[int] = 6
+
+
+class LandfallHazardResponse(BaseModel):
+    cyclone_name: str
+    alert_level: str
+    alert_color: str
+    advisory: str
+    evacuation_recommended: bool
+    target_coastal_sector: str
+    distance_to_coast_km: float
+    estimated_landfall_eta_hours: float
+    projected_landfall_point: List[float]
+    gale_wind_radius_km: float
+    storm_warning_radius_km: float
+    maximum_sustained_wind_kts: float
+    timestamp_utc: str
+
+
+# Rapid Intensification (RI) Diagnostic Schemas
+class RapidIntensificationResponse(BaseModel):
+    cyclone_id: str
+    cyclone_name: str
+    is_ri_active: bool
+    ri_probability_pct: float
+    risk_level: str
+    risk_color: str
+    status_headline: str
+    observed_24h_wind_delta_kts: float
+    observed_12h_wind_delta_kts: float
+    wmo_ri_threshold_kts: float = 30.0
+    pressure_drop_rate_hpa_day: float
+    estimated_sst_celsius: float
+    vertical_wind_shear_kts: float
+    core_cloud_top_temp_celsius: float
+    diagnostic_factors: List[Dict[str, Any]]
+    operational_advisory: str
+    ri_onset_timestamp_utc: Optional[str] = None
+    peak_ri_rate_kts_day: float
+    timestamp_utc: str
+

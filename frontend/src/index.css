@@ -271,3 +271,301 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* Dropdown popover animation */
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(-4px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN SYSTEM & MOBILE ADAPTATION
+   Breakpoints:
+   - Desktop / XL: > 1180px
+   - Laptop / Tablet Landscape: 820px - 1179px
+   - Mobile / Tablet Portrait: < 820px
+   - Small Mobile: < 480px
+   ========================================================================== */
+
+/* Main App Container */
+.app-main-container {
+  flex: 1;
+  padding: 24px 28px;
+  max-width: 1480px;
+  margin: 0 auto;
+  width: 100%;
+  overflow-y: auto;
+  transition: padding 0.2s ease;
+}
+
+@media (max-width: 900px) {
+  .app-main-container {
+    padding: 16px 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-main-container {
+    padding: 12px 10px;
+  }
+}
+
+/* Header & Navbar Responsiveness */
+.app-navbar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 28px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 2500;
+  flex-wrap: wrap;
+  gap: 12px;
+  transition: padding 0.2s ease;
+}
+
+@media (max-width: 1024px) {
+  .app-navbar-header {
+    padding: 10px 16px;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-navbar-header {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+  .navbar-brand-subtitle {
+    display: none !important;
+  }
+}
+
+/* Horizontally Scrollable Smooth Nav Tabs on Small Screens */
+.navbar-nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #f1f5f9;
+  padding: 4px 6px;
+  borderRadius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  max-width: 100%;
+}
+
+.navbar-nav-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .navbar-nav-tabs {
+    order: 3;
+    width: 100%;
+    margin-top: 4px;
+    padding: 4px 4px;
+  }
+}
+
+/* Right Status Badges container */
+.navbar-status-badges {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .navbar-status-badges {
+    gap: 6px;
+  }
+  .navbar-status-badge-hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Dashboard Header & Title */
+.dashboard-title {
+  font-size: clamp(1.25rem, 3.2vw, 1.9rem);
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.dashboard-subtitle {
+  font-size: clamp(0.75rem, 1.8vw, 0.875rem);
+  color: #64748b;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* Dashboard Controls Toolbar */
+.dashboard-toolbar {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+@media (max-width: 820px) {
+  .dashboard-toolbar {
+    padding: 12px 14px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .dashboard-toolbar-item {
+    width: 100% !important;
+  }
+  .dashboard-toolbar-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  .dashboard-toolbar-indicators {
+    width: 100%;
+    justify-content: space-around !important;
+    padding-top: 8px;
+    border-top: 1px solid #f1f5f9;
+  }
+}
+
+/* 4 Metric Summary Cards Grid */
+.dashboard-metric-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .dashboard-metric-cards {
+    gap: 10px;
+  }
+}
+
+/* 3-Column Mid Grid (Satellite, ConvLSTM, Temporal) */
+.dashboard-mid-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+}
+
+.dashboard-col-satellite {
+  grid-column: span 5;
+}
+
+.dashboard-col-prediction {
+  grid-column: span 4;
+}
+
+.dashboard-col-temporal {
+  grid-column: span 3;
+}
+
+@media (max-width: 1180px) and (min-width: 821px) {
+  .dashboard-col-satellite {
+    grid-column: span 12;
+  }
+  .dashboard-col-prediction {
+    grid-column: span 7;
+  }
+  .dashboard-col-temporal {
+    grid-column: span 5;
+  }
+}
+
+@media (max-width: 820px) {
+  .dashboard-mid-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .dashboard-col-satellite,
+  .dashboard-col-prediction,
+  .dashboard-col-temporal {
+    grid-column: span 12 !important;
+    width: 100% !important;
+  }
+}
+
+/* Responsive Table Container (prevents full page zoom out / horizontal bleed) */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Touch-optimized thumbnail strip */
+.thumbnail-strip-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .thumbnail-strip-container {
+    gap: 6px;
+  }
+}
+
+/* Responsive Map Wrapper */
+.interactive-map-wrapper {
+  height: 560px;
+  width: 100%;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 16px;
+  contain: paint;
+}
+
+@media (max-width: 900px) {
+  .interactive-map-wrapper {
+    height: 460px;
+  }
+}
+
+@media (max-width: 600px) {
+  .interactive-map-wrapper {
+    height: 390px;
+    border-radius: 12px;
+  }
+}
+
+/* Utility Responsive Grids */
+.responsive-grid-auto-220 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 14px;
+}
+
+.responsive-grid-auto-320 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 640px) {
+  .responsive-grid-auto-320 {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+}

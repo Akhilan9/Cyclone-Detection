@@ -35,10 +35,11 @@ The operational regional specialized meteorological center (RSMC) New Delhi clas
 | **ESCS** | Extremely Severe Cyclonic Storm | 90 – 119 kt | 166 – 221 km/h |
 | **SuCS** | Super Cyclonic Storm | $\ge 120$ kt | $\ge 222$ km/h |
 
-### 2.3 Satellite Infrared Imagery (INSAT-3D / 3DR)
-- **Sensor**: Thermal Infrared TIR-1 (10.8 $\mu\text{m}$) and TIR-2 (12.0 $\mu\text{m}$).
-- **Spatial Resolution**: Resampled and center-cropped to standardized $64 \times 64 \times 1$ brightness temperature matrices.
-- **Normalization**: Pixel values min-max normalized between 170 K and 320 K to represent convective cloud canopy temperatures in $[0.0, 1.0]$.
+### 2.3 Real Satellite Infrared Imagery (NASA GIBS / MODIS & INSAT-3D TIR)
+- **Primary Live Sensor**: NASA Terra / Aqua MODIS Thermal Infrared Band 31 (11.03 $\mu\text{m}$), operating at the exact physical central wavelength channel as INSAT-3D TIR-1 (10.8 $\mu\text{m}$).
+- **Visible Sensor**: NASA MODIS Corrected Reflectance True Color (250 m spatial resolution).
+- **Service Integration**: Direct dynamic streaming via NASA GIBS WMS/WMTS endpoints (`https://gibs.earthdata.nasa.gov/`) with automated local caching in `data/raw/satellite_images/` and `data/processed/satellite_imagery/`.
+- **Spatial Normalization**: Real satellite pixels are ingested via OpenCV, resized to synoptic grids ($64 \times 64 \times 1$), and normalized into $[0.0, 1.0]$ brightness temperature tensors for PyTorch CNN and ConvLSTM forward inference.
 
 ---
 
@@ -55,8 +56,10 @@ To guarantee scientific honesty:
 ---
 
 ## 4. Automated Acquisition & Validation Scripts
-- Downloader: `python data/scripts/download_noaa_ibtracs.py`
+- Full NOAA IBTrACS Downloader: `python data/scripts/download_noaa_ibtracs.py` (Downloads & parses 58,580 records across 1,855 cyclones).
+- Real NASA Satellite Downloader: `python data/scripts/download_real_satellite_images.py` (Downloads real Thermal IR Band 31 & Visible imagery from space).
 - Preprocessor: `ml/pipelines/preprocessor.py`
 - Sequence Builder: `ml/pipelines/sequence_builder.py`
+- Satellite Service: `backend/app/services/satellite_service.py`
 - Manifest Builder: `ml/pipelines/dataset.py`
 - Manifest Artifact: `data/dataset_manifest.csv`

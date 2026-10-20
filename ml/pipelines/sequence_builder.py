@@ -4,6 +4,7 @@ Constructs sliding window sequences of satellite images and track metadata
 strictly grouped by cyclone identifier to prevent cross-storm data contamination.
 """
 
+import os
 from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 import pandas as pd
@@ -83,15 +84,30 @@ class SpatiotemporalSequenceBuilder:
                     coords_seq.append([lat, lon])
                     winds_seq.append([wind])
 
-                    # Image observation
-                    img_path = obs.get("image_path")
+                    # Image observation: prioritize real NASA satellite observations
+                    real_img_found = False
                     if img_path and os.path.exists(img_path):
-                        img_arr = self.preprocessor.preprocess_image(img_path)
-                    elif generate_synthetic_image_if_missing:
-                        # Generate normalized atmospheric vortex pattern based on coordinates and intensity
-                        img_arr = self._generate_vortex_pattern(lat, lon, wind)
-                    else:
-                        img_arr = np.zeros(self.image_shape, dtype=np.float32)
+                        try:
+                            img_arr = self.preprocessor.preprocess_image(img_path)
+                            real_img_found = True
+                        except Exception:
+                            real_img_found = False
+
+                    if not real_img_found:
+                        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+                        cand_path = os.path.join(base_dir, "data", "raw", "satellite_images", f"{c_id}_real_tir.png")
+                        if os.path.exists(cand_path):
+                            try:
+                                img_arr = self.preprocessor.preprocess_image(cand_path)
+                                real_img_found = True
+                            except Exception:
+                                real_img_found = False
+
+                    if not real_img_found:
+                        if generate_synthetic_image_if_missing:
+                            img_arr = self._generate_vortex_pattern(lat, lon, wind)
+                        else:
+                            img_arr = np.zeros(self.image_shape, dtype=np.float32)
 
                     images_seq.append(img_arr)
 

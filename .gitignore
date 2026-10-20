@@ -57,6 +57,11 @@ data/processed/*.npy
 *.db
 *.sqlite3
 
+# Generated Reports
+backend/generated_reports/*.pdf
+backend/generated_reports/*.csv
+!backend/generated_reports/.gitkeep
+
 # IDE & OS
 .vscode/
 .idea/

@@ -36,11 +36,6 @@ def seed_database(force_recreate: bool = False, db_engine=None, db_sessionmaker=
 
     session = target_sessionmaker()
     try:
-        existing_count = session.query(CycloneModel).count()
-        if existing_count > 0:
-            logger.info(f"Database already contains {existing_count} cyclone records. Skipping seed.")
-            return
-
         fixture_path = os.path.join(PROJECT_ROOT, "data", "fixtures", "sample_cyclones.json")
         if not os.path.exists(fixture_path):
             logger.warning(f"Seed fixture not found at {fixture_path}")
@@ -50,7 +45,15 @@ def seed_database(force_recreate: bool = False, db_engine=None, db_sessionmaker=
             data = json.load(f)
             cyclones = data.get("cyclones", [])
 
+        existing_ids = {c.cyclone_id for c in session.query(CycloneModel.cyclone_id).all()}
+        new_count = 0
+
         for item in cyclones:
+            cid = item["cyclone_id"]
+            if cid in existing_ids:
+                continue
+
+            new_count += 1
             cyclone = CycloneModel(
                 cyclone_id=item["cyclone_id"],
                 name=item["name"],

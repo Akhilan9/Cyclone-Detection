@@ -42,6 +42,7 @@ export interface ClassificationResult {
   category_index: number;
   category_probabilities: Record<string, number>;
   estimated_wind_speed_kts: number;
+  confidence?: number;
   timestamp_utc: string;
 }
 
@@ -86,6 +87,15 @@ export interface AnalysisResponse {
   track_forecast: TrackForecastResult;
   historical_points: TrackPoint[];
   prediction_run_id: string;
+  satellite_imagery?: {
+    cyclone_id: string;
+    has_real_imagery: boolean;
+    tir_image_base64?: string;
+    visible_image_base64?: string;
+    sensor: string;
+    provider: string;
+    resolution: string;
+  };
 }
 
 export interface SystemStatus {
@@ -159,3 +169,80 @@ export interface ReportItem {
   file_size_bytes: number;
   created_at: string;
 }
+
+export interface GradCAMResult {
+  heatmap_base64: string;
+  overlay_base64: string;
+  target_category: string;
+  target_class_index: number;
+  peak_attention_coords: [number, number];
+  attention_focus_region: string;
+  feature_layer: string;
+  timestamp_utc: string;
+}
+
+export interface UploadAnalyzeResult {
+  is_cyclone_detected: boolean;
+  presence_probability: number;
+  predicted_category: string;
+  category_index: number;
+  category_probabilities: Record<string, number>;
+  estimated_wind_speed_kts: number;
+  estimated_pressure_hpa: number;
+  confidence: number;
+  gradcam: GradCAMResult;
+  eyewall_bounding_box: {
+    ymin: number;
+    xmin: number;
+    ymax: number;
+    xmax: number;
+  };
+  timestamp_utc: string;
+}
+
+export interface LandfallHazardResult {
+  cyclone_name: string;
+  alert_level: string;
+  alert_color: string;
+  advisory: string;
+  evacuation_recommended: boolean;
+  target_coastal_sector: string;
+  distance_to_coast_km: number;
+  estimated_landfall_eta_hours: number;
+  projected_landfall_point: [number, number];
+  gale_wind_radius_km: number;
+  storm_warning_radius_km: number;
+  maximum_sustained_wind_kts: number;
+  timestamp_utc: string;
+}
+
+export interface DiagnosticFactor {
+  name: string;
+  value: string;
+  threshold: string;
+  status: 'extreme' | 'favorable' | 'moderate' | 'unfavorable';
+  description: string;
+}
+
+export interface RapidIntensificationResult {
+  cyclone_id: string;
+  cyclone_name: string;
+  is_ri_active: boolean;
+  ri_probability_pct: number;
+  risk_level: 'EXTREME_RI_ACTIVE' | 'HIGH_RISK' | 'MODERATE' | 'LOW';
+  risk_color: string;
+  status_headline: string;
+  observed_24h_wind_delta_kts: number;
+  observed_12h_wind_delta_kts: number;
+  wmo_ri_threshold_kts: number;
+  pressure_drop_rate_hpa_day: number;
+  estimated_sst_celsius: number;
+  vertical_wind_shear_kts: number;
+  core_cloud_top_temp_celsius: number;
+  diagnostic_factors: DiagnosticFactor[];
+  operational_advisory: string;
+  ri_onset_timestamp_utc?: string | null;
+  peak_ri_rate_kts_day: number;
+  timestamp_utc: string;
+}
+

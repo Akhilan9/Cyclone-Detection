@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Navbar, NavTab } from './components/layout/Navbar';
 import { IntelligenceDashboard } from './pages/IntelligenceDashboard';
+import { CycloneComparatorPage } from './pages/CycloneComparatorPage';
+import { CustomInferencePage } from './pages/CustomInferencePage';
 import { EvaluationPage } from './pages/EvaluationPage';
 import { ReportsPage } from './pages/ReportsPage';
 import { DataSourcesPage } from './pages/DataSourcesPage';
@@ -12,6 +14,10 @@ export const App: React.FC = () => {
     switch (currentTab) {
       case 'overview':
         return <IntelligenceDashboard />;
+      case 'comparator':
+        return <CycloneComparatorPage />;
+      case 'custom_inference':
+        return <CustomInferencePage />;
       case 'evaluation':
         return <EvaluationPage />;
       case 'reports':
@@ -26,16 +32,7 @@ export const App: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', backgroundColor: '#f8fafc' }}>
       <Navbar currentTab={currentTab} onSelectTab={setCurrentTab} />
-      <main
-        style={{
-          flex: 1,
-          padding: '24px 28px',
-          maxWidth: '1480px',
-          margin: '0 auto',
-          width: '100%',
-          overflowY: 'auto',
-        }}
-      >
+      <main className="app-main-container">
         {renderContent()}
       </main>
     </div>

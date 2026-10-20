@@ -24,9 +24,18 @@ from backend.app.schemas.schemas import (
     CycloneAnalysisRequest,
     CycloneAnalysisResponse,
     PredictionRunRead,
+    GradCAMRequest,
+    GradCAMResponse,
+    UploadAnalyzeRequest,
+    UploadAnalyzeResponse,
+    LandfallHazardRequest,
+    LandfallHazardResponse,
+    RapidIntensificationResponse,
 )
 from backend.app.services.cyclone_service import CycloneService
 from backend.app.services.inference_service import InferenceEngine
+from backend.app.services.satellite_service import SatelliteService
+from backend.app.services.ri_service import RapidIntensificationService
 
 router = APIRouter()
 
@@ -190,8 +199,16 @@ def analyze_cyclone_comprehensively(
     past_winds = [p.wind_speed_kts or 35.0 for p in pts]
     latest_pt = pts[-1]
 
-    # Generate or extract image for latest observation
-    img_array = engine.decode_image_input(preset=cyclone.name.lower())
+    # Ingest real NASA satellite imagery (Thermal IR Band 31) if available, with physical pattern fallback
+    real_sat_path = SatelliteService.get_real_satellite_image_path(cyclone.cyclone_id, "tir")
+    if real_sat_path:
+        img_array = SatelliteService.load_preprocessed_tensor(cyclone.cyclone_id)
+    else:
+        img_array = engine.seq_builder._generate_vortex_pattern(
+            lat=latest_pt.latitude,
+            lon=latest_pt.longitude,
+            wind_kts=latest_pt.wind_speed_kts or 45.0,
+        )
 
     # 1. Detection
     detect_res = engine.detect_presence(img_array)
@@ -249,6 +266,8 @@ def analyze_cyclone_comprehensively(
     db.add(result_record)
     db.commit()
 
+    sat_preview = SatelliteService.get_base64_satellite_preview(cyclone.cyclone_id)
+
     return CycloneAnalysisResponse(
         cyclone_id=cyclone.cyclone_id,
         cyclone_name=cyclone.name,
@@ -259,6 +278,7 @@ def analyze_cyclone_comprehensively(
         track_forecast=TrackForecastResponse(cyclone_id=cyclone.cyclone_id, **track_fc),
         historical_points=pts,
         prediction_run_id=run_id,
+        satellite_imagery=sat_preview,
     )
 
 
@@ -275,3 +295,121 @@ def get_prediction_run(
             detail=f"Prediction run with ID '{prediction_id}' was not found.",
         )
     return run
+
+
+@router.post("/predictions/gradcam", response_model=GradCAMResponse)
+def get_gradcam_attention(
+    request: GradCAMRequest,
+    db: Session = Depends(get_db),
+):
+    """
+    Generate Explainable AI (Grad-CAM) saliency attention heatmap
+    for spatial CNN feature visualization.
+    """
+    engine = InferenceEngine.get_instance()
+    if not engine.models_loaded:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Trained Spatial CNN model checkpoint is not loaded.",
+        )
+
+    preset = None
+    if request.cyclone_id:
+        cyclone = CycloneService.get_cyclone_by_id(db, request.cyclone_id)
+        if cyclone:
+            preset = cyclone.name.lower()
+
+    img_array = engine.decode_image_input(request.image_base64, preset=preset)
+    gradcam_res = engine.generate_gradcam(img_array, target_class=request.target_class)
+    return GradCAMResponse(**gradcam_res)
+
+
+@router.post("/predictions/upload-analyze", response_model=UploadAnalyzeResponse)
+def analyze_custom_uploaded_image(request: UploadAnalyzeRequest):
+    """
+    Run full end-to-end AI detection, classification, wind speed estimation,
+    and Explainable AI (Grad-CAM) on an arbitrary user-uploaded satellite image.
+    """
+    engine = InferenceEngine.get_instance()
+    if not engine.models_loaded:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Trained AI models are not loaded.",
+        )
+
+    if not request.image_base64 or len(request.image_base64) < 100:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid image payload. Please provide a valid base64-encoded satellite image.",
+        )
+
+    try:
+        res = engine.analyze_uploaded_image(request.image_base64)
+        return UploadAnalyzeResponse(
+            is_cyclone_detected=res["is_cyclone_detected"],
+            presence_probability=res["presence_probability"],
+            predicted_category=res["predicted_category"],
+            category_index=res["category_index"],
+            category_probabilities=res["category_probabilities"],
+            estimated_wind_speed_kts=res["estimated_wind_speed_kts"],
+            estimated_pressure_hpa=res["estimated_pressure_hpa"],
+            confidence=res["confidence"],
+            gradcam=GradCAMResponse(**res["gradcam"]),
+            eyewall_bounding_box=res["eyewall_bounding_box"],
+            timestamp_utc=res["timestamp_utc"],
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Error processing uploaded satellite image: {str(e)}",
+        )
+
+
+@router.post("/predictions/landfall-hazard", response_model=LandfallHazardResponse)
+def get_coastal_landfall_hazard(
+    request: LandfallHazardRequest,
+    db: Session = Depends(get_db),
+):
+    """
+    Compute projected coastal landfall sector, ETA, danger radii,
+    and official IMD Disaster Warning color codes.
+    """
+    engine = InferenceEngine.get_instance()
+    cyclone_name = request.cyclone_name or "Cyclone"
+    curr_lat = request.current_latitude or 14.0
+    curr_lon = request.current_longitude or 82.0
+    pred_lat = request.predicted_latitude or (curr_lat + 1.2)
+    pred_lon = request.predicted_longitude or (curr_lon - 1.5)
+    wind_kts = request.wind_speed_kts or 65.0
+
+    if request.cyclone_id:
+        cyclone = CycloneService.get_cyclone_by_id(db, request.cyclone_id)
+        if cyclone:
+            cyclone_name = cyclone.name
+            if cyclone.track_points:
+                last_pt = cyclone.track_points[-1]
+                curr_lat = last_pt.latitude
+                curr_lon = last_pt.longitude
+                wind_kts = last_pt.wind_speed_kts or cyclone.max_wind_speed_kts or 65.0
+
+    res = engine.compute_landfall_and_hazard(
+        cyclone_name=cyclone_name,
+        current_lat=curr_lat,
+        current_lon=curr_lon,
+        wind_speed_kts=wind_kts,
+        predicted_lat=pred_lat,
+        predicted_lon=pred_lon,
+        forecast_hours=request.forecast_hours or 6,
+    )
+    return LandfallHazardResponse(**res)
+
+
+@router.get("/predictions/rapid-intensification/{cyclone_id}", response_model=RapidIntensificationResponse)
+def get_rapid_intensification_diagnostics(cyclone_id: str):
+    """
+    Evaluate Rapid Intensification (RI) risk, 24h wind surge threshold (+30 kts),
+    central pressure drop rate, SST thermal energy, and operational alert protocol.
+    """
+    res = RapidIntensificationService.evaluate_cyclone_ri(cyclone_id)
+    return RapidIntensificationResponse(**res)
+
