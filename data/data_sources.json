@@ -53,7 +53,12 @@
       "name": "INSAT-3D / 3DR Thermal Infrared Satellite Imagery",
       "organization": "ISRO / MOSDAC & IMD",
       "basin": "Indian Ocean & South Asia (Coverage: 40E to 120E, 40S to 40N)",
-      "channels": ["TIR-1 (10.8 um)", "TIR-2 (12.0 um)", "MIR (3.9 um)", "WV (6.8 um)"],
+      "channels": [
+        "TIR-1 (10.8 um)",
+        "TIR-2 (12.0 um)",
+        "MIR (3.9 um)",
+        "WV (6.8 um)"
+      ],
       "resolution": "4 km spatial resolution, 30-minute interval",
       "access": "Open access research archive via MOSDAC (requires registration for live bulk download) / Historical public samples",
       "url": "https://www.mosdac.gov.in/",
@@ -66,7 +71,10 @@
       "name": "NASA GIBS Global Imagery Browse Services (MODIS / VIIRS)",
       "organization": "NASA Earth Observing System Data and Information System (EOSDIS)",
       "basin": "Global / North Indian Ocean (Bay of Bengal & Arabian Sea)",
-      "channels": ["Thermal Infrared Band 31 (11.03 um)", "Corrected Reflectance True Color"],
+      "channels": [
+        "Thermal Infrared Band 31 (11.03 um)",
+        "Corrected Reflectance True Color"
+      ],
       "resolution": "1 km / 250 m spatial resolution daily synoptic passes",
       "access": "Public Open Science WMS/WMTS (No authentication required)",
       "url": "https://gibs.earthdata.nasa.gov/",
