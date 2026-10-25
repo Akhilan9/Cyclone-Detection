@@ -137,6 +137,8 @@ export const SatelliteCycloneScanner: React.FC<Props> = ({
     <div
       className="white-card"
       style={{
+        position: 'relative',
+        zIndex: isDropdownOpen ? 150 : 20,
         background: '#ffffff',
         borderRadius: '16px',
         padding: '24px',
@@ -208,10 +210,12 @@ export const SatelliteCycloneScanner: React.FC<Props> = ({
           padding: '16px',
           borderRadius: '12px',
           border: '1px solid #e2e8f0',
+          position: 'relative',
+          zIndex: isDropdownOpen ? 160 : 2,
         }}
       >
         {/* Custom Interactive Sector Dropdown */}
-        <div ref={dropdownRef} style={{ position: 'relative' }}>
+        <div ref={dropdownRef} style={{ position: 'relative', zIndex: isDropdownOpen ? 170 : 1 }}>
           <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#64748b', marginBottom: '6px' }}>
             SURVEILLANCE SECTOR &amp; BASIN:
           </label>
@@ -264,12 +268,12 @@ export const SatelliteCycloneScanner: React.FC<Props> = ({
                 top: 'calc(100% + 6px)',
                 left: 0,
                 right: 0,
-                zIndex: 100,
+                zIndex: 99999,
                 background: '#ffffff',
                 border: '1px solid #cbd5e1',
                 borderRadius: '10px',
-                boxShadow: '0 12px 28px rgba(0,0,0,0.12)',
-                maxHeight: '260px',
+                boxShadow: '0 20px 48px rgba(15, 23, 42, 0.22), 0 6px 16px rgba(15, 23, 42, 0.1)',
+                maxHeight: '280px',
                 overflowY: 'auto',
               }}
             >
