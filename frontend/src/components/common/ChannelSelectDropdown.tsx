@@ -87,7 +87,7 @@ export const ChannelSelectDropdown: React.FC<ChannelSelectDropdownProps> = ({
   const ActiveIcon = activeChannel.icon;
 
   return (
-    <div ref={dropdownRef} style={{ position: 'relative', display: 'inline-block' }}>
+    <div ref={dropdownRef} style={{ position: 'relative', display: 'inline-block', zIndex: isOpen ? 9999 : 1 }}>
       {/* Trigger Button */}
       <button
         type="button"
@@ -165,7 +165,7 @@ export const ChannelSelectDropdown: React.FC<ChannelSelectDropdownProps> = ({
             position: 'absolute',
             top: 'calc(100% + 8px)',
             left: 0,
-            zIndex: 1050,
+            zIndex: 99999,
             width: '320px',
             backgroundColor: '#ffffff',
             borderRadius: '14px',

@@ -30,7 +30,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', backgroundColor: 'transparent' }}>
       <Navbar currentTab={currentTab} onSelectTab={setCurrentTab} />
       <main className="app-main-container">
         {renderContent()}

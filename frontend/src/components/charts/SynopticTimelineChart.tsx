@@ -144,7 +144,7 @@ export const SynopticTimelineChart: React.FC<SynopticTimelineChartProps> = ({
         borderRadius: '14px',
         backgroundColor: '#ffffff',
         border: '1px solid #e2e8f0',
-        boxShadow: '0 4px 16px rgba(15, 23, 42, 0.05)',
+        boxShadow: '0 2px 12px rgba(15, 23, 42, 0.04)',
         display: 'flex',
         flexDirection: 'column',
         gap: '16px',
@@ -167,11 +167,12 @@ export const SynopticTimelineChart: React.FC<SynopticTimelineChartProps> = ({
                 fontSize: '0.7rem',
                 fontWeight: 800,
                 color: '#2563eb',
-                backgroundColor: '#eff6ff',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
                 padding: '3px 8px',
                 borderRadius: '6px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em',
+                border: '1px solid rgba(37, 99, 235, 0.25)',
               }}
             >
               Synoptic Analytics
@@ -181,9 +182,9 @@ export const SynopticTimelineChart: React.FC<SynopticTimelineChartProps> = ({
                 style={{
                   fontSize: '0.7rem',
                   fontWeight: 800,
-                  color: '#dc2626',
-                  backgroundColor: '#fef2f2',
-                  border: '1px solid #fecaca',
+                  color: '#f87171',
+                  backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                  border: '1px solid rgba(239, 68, 68, 0.4)',
                   padding: '3px 8px',
                   borderRadius: '6px',
                   display: 'flex',
@@ -196,7 +197,7 @@ export const SynopticTimelineChart: React.FC<SynopticTimelineChartProps> = ({
               </span>
             )}
             {basin && (
-              <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>
+              <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600 }}>
                 • {basin}
               </span>
             )}
@@ -213,7 +214,7 @@ export const SynopticTimelineChart: React.FC<SynopticTimelineChartProps> = ({
             }}
           >
             <Activity size={18} color="#2563eb" />
-            Intensity & Pressure Evolution Timeline ({cycloneName})
+            Intensity &amp; Pressure Evolution Timeline ({cycloneName})
           </h3>
           <p style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '2px' }}>
             Dual-variable synoptic curve showing maximum sustained wind speed (knots) and central barometric pressure (hPa) with 24h ConvLSTM forecast.
@@ -235,7 +236,7 @@ export const SynopticTimelineChart: React.FC<SynopticTimelineChartProps> = ({
               Peak Wind
             </div>
             <div style={{ fontSize: '1.05rem', fontWeight: 900, color: '#0284c7' }}>
-              {peakWind} <span style={{ fontSize: '0.72rem', fontWeight: 600 }}>kts</span>
+              {peakWind} <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#64748b' }}>kts</span>
             </div>
           </div>
 
@@ -252,14 +253,14 @@ export const SynopticTimelineChart: React.FC<SynopticTimelineChartProps> = ({
               Min Pressure
             </div>
             <div style={{ fontSize: '1.05rem', fontWeight: 900, color: '#9333ea' }}>
-              {minPressure} <span style={{ fontSize: '0.72rem', fontWeight: 600 }}>hPa</span>
+              {minPressure} <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#64748b' }}>hPa</span>
             </div>
           </div>
 
           <div
             style={{
               backgroundColor: isRapidIntensification ? '#fef2f2' : '#f8fafc',
-              border: `1px solid ${isRapidIntensification ? '#fecaca' : '#e2e8f0'}`,
+              border: `1px solid ${isRapidIntensification ? '#fca5a5' : '#e2e8f0'}`,
               borderRadius: '8px',
               padding: '6px 12px',
               textAlign: 'center',
@@ -269,7 +270,7 @@ export const SynopticTimelineChart: React.FC<SynopticTimelineChartProps> = ({
               Peak 24h ΔV
             </div>
             <div style={{ fontSize: '1.05rem', fontWeight: 900, color: isRapidIntensification ? '#dc2626' : '#0f172a' }}>
-              +{max24hSurge} <span style={{ fontSize: '0.72rem', fontWeight: 600 }}>kts</span>
+              +{max24hSurge} <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#64748b' }}>kts</span>
             </div>
           </div>
         </div>
@@ -306,7 +307,7 @@ export const SynopticTimelineChart: React.FC<SynopticTimelineChartProps> = ({
                   y1={y}
                   x2={width - padRight}
                   y2={y}
-                  stroke="#f1f5f9"
+                  stroke="#e2e8f0"
                   strokeDasharray="4 4"
                   strokeWidth="1"
                 />
@@ -315,7 +316,7 @@ export const SynopticTimelineChart: React.FC<SynopticTimelineChartProps> = ({
                   y={y + 3}
                   textAnchor="end"
                   fontSize="9"
-                  fill="#94a3b8"
+                  fill="#64748b"
                   fontWeight="600"
                 >
                   {thr} kt
@@ -533,8 +534,9 @@ export const SynopticTimelineChart: React.FC<SynopticTimelineChartProps> = ({
               style={{
                 fontSize: '0.7rem',
                 fontWeight: 700,
-                color: activePoint.isForecast ? '#d97706' : '#2563eb',
-                backgroundColor: activePoint.isForecast ? '#fef3c7' : '#dbeafe',
+                color: activePoint.isForecast ? '#b45309' : '#0369a1',
+                backgroundColor: activePoint.isForecast ? '#fef3c7' : '#e0f2fe',
+                border: activePoint.isForecast ? '1px solid #fde68a' : '1px solid #bae6fd',
                 padding: '2px 8px',
                 borderRadius: '6px',
               }}
@@ -560,7 +562,7 @@ export const SynopticTimelineChart: React.FC<SynopticTimelineChartProps> = ({
               </strong>
             </div>
 
-            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#334155' }}>
+            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#059669' }}>
               {activePoint.stage}
             </div>
           </div>

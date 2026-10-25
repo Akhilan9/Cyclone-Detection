@@ -136,28 +136,26 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
               alignItems: 'center',
               gap: '6px',
               fontSize: '0.74rem',
-              color: '#1e293b',
+              color: '#334155',
               fontWeight: 600,
               fontFamily: 'var(--font-mono)',
               backgroundColor: '#f8fafc',
               padding: '5px 10px',
               borderRadius: '8px',
-              border: '1px solid #cbd5e1',
+              border: '1px solid #e2e8f0',
               cursor: 'pointer',
               userSelect: 'none',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
               transition: 'all 0.18s ease',
               flexShrink: 0,
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = '#2563eb';
-              e.currentTarget.style.backgroundColor = '#eff6ff';
-              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.backgroundColor = '#f1f5f9';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = '#cbd5e1';
+              e.currentTarget.style.borderColor = '#e2e8f0';
               e.currentTarget.style.backgroundColor = '#f8fafc';
-              e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
             <Clock size={13} color="#2563eb" />
@@ -171,11 +169,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
               alignItems: 'center',
               gap: '6px',
               fontSize: '0.74rem',
-              padding: '4px 9px',
+              padding: '4px 10px',
               borderRadius: '999px',
-              backgroundColor: status?.database_connected ? '#dcfce7' : '#fee2e2',
-              color: status?.database_connected ? '#16a34a' : '#dc2626',
-              border: `1px solid ${status?.database_connected ? '#bbf7d0' : '#fecaca'}`,
+              backgroundColor: status?.database_connected ? '#ecfdf5' : '#fef2f2',
+              color: status?.database_connected ? '#065f46' : '#991b1b',
+              border: `1px solid ${status?.database_connected ? '#a7f3d0' : '#fecaca'}`,
               fontWeight: 600,
               flexShrink: 0,
               transition: 'all 0.2s ease',
@@ -186,7 +184,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
                 width: '6px',
                 height: '6px',
                 borderRadius: '50%',
-                backgroundColor: status?.database_connected ? '#16a34a' : '#dc2626',
+                backgroundColor: status?.database_connected ? '#10b981' : '#ef4444',
               }}
             />
             <span>{status?.database_connected ? 'DB Connected' : 'DB Disconnected'}</span>
@@ -200,10 +198,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
               alignItems: 'center',
               gap: '6px',
               fontSize: '0.74rem',
-              padding: '4px 9px',
+              padding: '4px 10px',
               borderRadius: '999px',
               backgroundColor: '#eff6ff',
-              color: '#2563eb',
+              color: '#1e40af',
               border: '1px solid #bfdbfe',
               fontWeight: 600,
               flexShrink: 0,
@@ -233,15 +231,15 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '8px',
-                  padding: '7px 12px',
+                  padding: '7px 14px',
                   borderRadius: '8px',
-                  border: 'none',
+                  border: isActive ? '1px solid #cbd5e1' : '1px solid transparent',
                   backgroundColor: isActive ? '#ffffff' : 'transparent',
-                  color: isActive ? '#0f172a' : '#64748b',
-                  fontWeight: isActive ? 750 : 600,
+                  color: isActive ? '#2563eb' : '#64748b',
+                  fontWeight: isActive ? 700 : 500,
                   fontSize: '0.82rem',
                   cursor: 'pointer',
-                  boxShadow: isActive ? '0 1px 4px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04)' : 'none',
+                  boxShadow: isActive ? '0 1px 4px rgba(0,0,0,0.06)' : 'none',
                   transition: 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
                   position: 'relative',
                   flexShrink: 0,
@@ -249,20 +247,20 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive) {
-                    e.currentTarget.style.backgroundColor = '#e2e8f0';
-                    e.currentTarget.style.color = '#1e293b';
+                    e.currentTarget.style.backgroundColor = 'rgba(30, 41, 59, 0.6)';
+                    e.currentTarget.style.color = '#f1f5f9';
                     e.currentTarget.style.transform = 'translateY(-1px)';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive) {
                     e.currentTarget.style.backgroundColor = 'transparent';
-                    e.currentTarget.style.color = '#64748b';
+                    e.currentTarget.style.color = '#94a3b8';
                     e.currentTarget.style.transform = 'translateY(0)';
                   }
                 }}
               >
-                <div style={{ color: isActive ? '#2563eb' : '#64748b', display: 'flex', alignItems: 'center' }}>
+                <div style={{ color: isActive ? '#38bdf8' : '#64748b', display: 'flex', alignItems: 'center' }}>
                   {tab.icon}
                 </div>
                 <span>{tab.label}</span>
@@ -273,9 +271,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
                       fontWeight: 700,
                       padding: '1px 6px',
                       borderRadius: '999px',
-                      backgroundColor: isActive ? `${tab.badgeColor}18` : '#e2e8f0',
-                      color: isActive ? tab.badgeColor : '#64748b',
-                      border: `1px solid ${isActive ? `${tab.badgeColor}40` : 'transparent'}`,
+                      backgroundColor: isActive ? `${tab.badgeColor}25` : 'rgba(255, 255, 255, 0.08)',
+                      color: isActive ? tab.badgeColor : '#94a3b8',
+                      border: `1px solid ${isActive ? `${tab.badgeColor}50` : 'rgba(255, 255, 255, 0.06)'}`,
                       transition: 'all 0.18s ease',
                     }}
                   >

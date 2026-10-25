@@ -105,6 +105,7 @@ export const CycloneSelectDropdown: React.FC<CycloneSelectDropdownProps> = ({
         position: 'relative',
         display: fullWidth ? 'block' : 'inline-block',
         width: fullWidth ? '100%' : 'auto',
+        zIndex: isOpen ? 9999 : 1,
       }}
     >
       {/* Trigger Button */}
@@ -212,7 +213,7 @@ export const CycloneSelectDropdown: React.FC<CycloneSelectDropdownProps> = ({
             position: 'absolute',
             top: 'calc(100% + 8px)',
             left: 0,
-            zIndex: 3200,
+            zIndex: 99999,
             width: fullWidth ? '100%' : '390px',
             minWidth: '320px',
             maxWidth: '100vw',

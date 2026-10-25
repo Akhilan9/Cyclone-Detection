@@ -326,3 +326,37 @@ class RapidIntensificationResponse(BaseModel):
     peak_ri_rate_kts_day: float
     timestamp_utc: str
 
+
+# Automated Multi-Source Satellite Detection & Early Warning Scanner Schemas
+class NewCycloneDetectionRequest(BaseModel):
+    satellite_source: str = "INSAT-3DR Multi-Spectral"
+    basin: str = "North Indian Ocean"
+    sector_name: str = "Bay of Bengal"
+    scan_coordinates: Optional[List[float]] = None  # [lat, lon]
+    image_base64: Optional[str] = None
+    forecast_horizon_hours: int = 48
+    register_in_system: bool = True
+
+
+class NewCycloneDetectionResponse(BaseModel):
+    detection_id: str
+    storm_designation: str
+    is_cyclone_detected: bool
+    detection_probability: float
+    confidence_level: str
+    structural_pattern: str  # Curved Banding, Central Dense Overcast (CDO), Eye Pattern, Shear
+    estimated_imd_stage: str
+    estimated_wind_kts: float
+    estimated_pressure_hpa: float
+    vortex_center: List[float]  # [lat, lon]
+    satellite_source: str
+    sensor_band: str
+    observation_timestamp_utc: str
+    image_preview_base64: Optional[str] = None
+    historical_formation_track: List[TrackPointRead] = []
+    projected_track: List[PredictedTrackPoint] = []
+    landfall_hazard: Optional[LandfallHazardResponse] = None
+    rapid_intensification: Optional[RapidIntensificationResponse] = None
+    disaster_advisory: Dict[str, Any]
+    registered_cyclone_id: Optional[str] = None
+

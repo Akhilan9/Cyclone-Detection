@@ -1180,6 +1180,337 @@
           "image_path": ""
         }
       ]
+    },
+    {
+      "cyclone_id": "2024147N17088",
+      "name": "REMAL",
+      "season_year": 2024,
+      "basin": "North Indian Ocean",
+      "subbasin": "Bay of Bengal",
+      "nature": "Tropical",
+      "max_wind_speed_kts": 70,
+      "min_central_pressure_hpa": 978,
+      "highest_imd_stage": "Severe Cyclonic Storm (SCS)",
+      "track_points": [
+        {
+          "timestamp_utc": "2024-05-23T00:00:00Z",
+          "latitude": 16.0,
+          "longitude": 88.5,
+          "wind_speed_kts": 25,
+          "central_pressure_hpa": 1004,
+          "imd_stage": "Depression (D)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-05-23T12:00:00Z",
+          "latitude": 16.8,
+          "longitude": 88.2,
+          "wind_speed_kts": 30,
+          "central_pressure_hpa": 1000,
+          "imd_stage": "Deep Depression (DD)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-05-24T06:00:00Z",
+          "latitude": 17.9,
+          "longitude": 88.0,
+          "wind_speed_kts": 40,
+          "central_pressure_hpa": 996,
+          "imd_stage": "Cyclonic Storm (CS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-05-25T00:00:00Z",
+          "latitude": 19.2,
+          "longitude": 88.3,
+          "wind_speed_kts": 55,
+          "central_pressure_hpa": 986,
+          "imd_stage": "Severe Cyclonic Storm (SCS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-05-26T06:00:00Z",
+          "latitude": 20.5,
+          "longitude": 88.8,
+          "wind_speed_kts": 70,
+          "central_pressure_hpa": 978,
+          "imd_stage": "Severe Cyclonic Storm (SCS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-05-26T18:00:00Z",
+          "latitude": 21.5,
+          "longitude": 89.0,
+          "wind_speed_kts": 60,
+          "central_pressure_hpa": 984,
+          "imd_stage": "Severe Cyclonic Storm (SCS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-05-27T06:00:00Z",
+          "latitude": 22.8,
+          "longitude": 89.5,
+          "wind_speed_kts": 45,
+          "central_pressure_hpa": 992,
+          "imd_stage": "Cyclonic Storm (CS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-05-27T18:00:00Z",
+          "latitude": 23.5,
+          "longitude": 90.1,
+          "wind_speed_kts": 30,
+          "central_pressure_hpa": 1000,
+          "imd_stage": "Deep Depression (DD)",
+          "image_path": ""
+        }
+      ]
+    },
+    {
+      "cyclone_id": "2024298N14068",
+      "name": "DANA",
+      "season_year": 2024,
+      "basin": "North Indian Ocean",
+      "subbasin": "Bay of Bengal",
+      "nature": "Tropical",
+      "max_wind_speed_kts": 55,
+      "min_central_pressure_hpa": 988,
+      "highest_imd_stage": "Severe Cyclonic Storm (SCS)",
+      "track_points": [
+        {
+          "timestamp_utc": "2024-10-22T00:00:00Z",
+          "latitude": 14.2,
+          "longitude": 87.5,
+          "wind_speed_kts": 25,
+          "central_pressure_hpa": 1006,
+          "imd_stage": "Depression (D)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-10-22T12:00:00Z",
+          "latitude": 15.0,
+          "longitude": 87.0,
+          "wind_speed_kts": 30,
+          "central_pressure_hpa": 1002,
+          "imd_stage": "Deep Depression (DD)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-10-23T06:00:00Z",
+          "latitude": 16.3,
+          "longitude": 86.2,
+          "wind_speed_kts": 40,
+          "central_pressure_hpa": 996,
+          "imd_stage": "Cyclonic Storm (CS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-10-24T00:00:00Z",
+          "latitude": 18.1,
+          "longitude": 85.8,
+          "wind_speed_kts": 50,
+          "central_pressure_hpa": 990,
+          "imd_stage": "Severe Cyclonic Storm (SCS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-10-24T12:00:00Z",
+          "latitude": 19.5,
+          "longitude": 85.5,
+          "wind_speed_kts": 55,
+          "central_pressure_hpa": 988,
+          "imd_stage": "Severe Cyclonic Storm (SCS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-10-25T00:00:00Z",
+          "latitude": 20.2,
+          "longitude": 85.8,
+          "wind_speed_kts": 50,
+          "central_pressure_hpa": 990,
+          "imd_stage": "Severe Cyclonic Storm (SCS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-10-25T12:00:00Z",
+          "latitude": 21.0,
+          "longitude": 86.0,
+          "wind_speed_kts": 35,
+          "central_pressure_hpa": 998,
+          "imd_stage": "Cyclonic Storm (CS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-10-25T18:00:00Z",
+          "latitude": 21.4,
+          "longitude": 86.2,
+          "wind_speed_kts": 25,
+          "central_pressure_hpa": 1004,
+          "imd_stage": "Depression (D)",
+          "image_path": ""
+        }
+      ]
+    },
+    {
+      "cyclone_id": "2024244N19063",
+      "name": "ASNA",
+      "season_year": 2024,
+      "basin": "North Indian Ocean",
+      "subbasin": "Arabian Sea",
+      "nature": "Tropical",
+      "max_wind_speed_kts": 50,
+      "min_central_pressure_hpa": 992,
+      "highest_imd_stage": "Severe Cyclonic Storm (SCS)",
+      "track_points": [
+        {
+          "timestamp_utc": "2024-08-30T12:00:00Z",
+          "latitude": 19.5,
+          "longitude": 63.0,
+          "wind_speed_kts": 25,
+          "central_pressure_hpa": 1004,
+          "imd_stage": "Depression (D)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-08-31T06:00:00Z",
+          "latitude": 20.1,
+          "longitude": 64.5,
+          "wind_speed_kts": 35,
+          "central_pressure_hpa": 1000,
+          "imd_stage": "Cyclonic Storm (CS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-09-01T00:00:00Z",
+          "latitude": 21.0,
+          "longitude": 65.8,
+          "wind_speed_kts": 45,
+          "central_pressure_hpa": 994,
+          "imd_stage": "Severe Cyclonic Storm (SCS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-09-01T18:00:00Z",
+          "latitude": 22.5,
+          "longitude": 66.5,
+          "wind_speed_kts": 50,
+          "central_pressure_hpa": 992,
+          "imd_stage": "Severe Cyclonic Storm (SCS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-09-02T06:00:00Z",
+          "latitude": 23.2,
+          "longitude": 67.0,
+          "wind_speed_kts": 45,
+          "central_pressure_hpa": 994,
+          "imd_stage": "Severe Cyclonic Storm (SCS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-09-02T18:00:00Z",
+          "latitude": 23.8,
+          "longitude": 67.5,
+          "wind_speed_kts": 35,
+          "central_pressure_hpa": 1000,
+          "imd_stage": "Cyclonic Storm (CS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2024-09-03T06:00:00Z",
+          "latitude": 24.2,
+          "longitude": 68.0,
+          "wind_speed_kts": 25,
+          "central_pressure_hpa": 1004,
+          "imd_stage": "Depression (D)",
+          "image_path": ""
+        }
+      ]
+    },
+    {
+      "cyclone_id": "2025301N12088",
+      "name": "DANA-II",
+      "season_year": 2025,
+      "basin": "North Indian Ocean",
+      "subbasin": "Bay of Bengal",
+      "nature": "Tropical",
+      "max_wind_speed_kts": 65,
+      "min_central_pressure_hpa": 982,
+      "highest_imd_stage": "Very Severe Cyclonic Storm (VSCS)",
+      "track_points": [
+        {
+          "timestamp_utc": "2025-10-20T00:00:00Z",
+          "latitude": 12.5,
+          "longitude": 88.0,
+          "wind_speed_kts": 25,
+          "central_pressure_hpa": 1004,
+          "imd_stage": "Depression (D)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2025-10-20T12:00:00Z",
+          "latitude": 13.2,
+          "longitude": 87.5,
+          "wind_speed_kts": 35,
+          "central_pressure_hpa": 998,
+          "imd_stage": "Cyclonic Storm (CS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2025-10-21T06:00:00Z",
+          "latitude": 14.5,
+          "longitude": 86.8,
+          "wind_speed_kts": 50,
+          "central_pressure_hpa": 990,
+          "imd_stage": "Severe Cyclonic Storm (SCS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2025-10-22T00:00:00Z",
+          "latitude": 16.0,
+          "longitude": 86.0,
+          "wind_speed_kts": 65,
+          "central_pressure_hpa": 982,
+          "imd_stage": "Very Severe Cyclonic Storm (VSCS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2025-10-22T18:00:00Z",
+          "latitude": 17.8,
+          "longitude": 85.5,
+          "wind_speed_kts": 60,
+          "central_pressure_hpa": 984,
+          "imd_stage": "Very Severe Cyclonic Storm (VSCS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2025-10-23T06:00:00Z",
+          "latitude": 19.0,
+          "longitude": 85.2,
+          "wind_speed_kts": 50,
+          "central_pressure_hpa": 990,
+          "imd_stage": "Severe Cyclonic Storm (SCS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2025-10-23T18:00:00Z",
+          "latitude": 20.5,
+          "longitude": 85.5,
+          "wind_speed_kts": 35,
+          "central_pressure_hpa": 998,
+          "imd_stage": "Cyclonic Storm (CS)",
+          "image_path": ""
+        },
+        {
+          "timestamp_utc": "2025-10-24T06:00:00Z",
+          "latitude": 21.5,
+          "longitude": 86.0,
+          "wind_speed_kts": 25,
+          "central_pressure_hpa": 1004,
+          "imd_stage": "Depression (D)",
+          "image_path": ""
+        }
+      ]
     }
   ]
 }

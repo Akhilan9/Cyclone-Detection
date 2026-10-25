@@ -247,3 +247,74 @@ export interface RapidIntensificationResult {
   timestamp_utc: string;
 }
 
+export interface ActiveCyclone {
+  storm_id: string;
+  name: string;
+  basin: string;
+  category: string;
+  latitude: number;
+  longitude: number;
+  max_wind_kts: number;
+  central_pressure_hpa?: number | null;
+  movement_dir?: string | null;
+  movement_speed_kts?: number | null;
+  source: string;
+  advisory_time_utc: string;
+  is_active: boolean;
+  forecast_track?: Array<{
+    step_hours: number;
+    latitude: number;
+    longitude: number;
+    wind_kts: number;
+  }> | null;
+}
+
+export interface SurveillanceSector {
+  sector_name: string;
+  basin: string;
+  subbasin: string;
+  satellite_source: string;
+  sensor_band: string;
+  center_coordinates: [number, number];
+  target_coastal_zone: string;
+  status: string;
+}
+
+export interface DisasterAdvisory {
+  bulletin_id: string;
+  headline: string;
+  alert_level: string;
+  alert_color: string;
+  port_warning: string;
+  maritime_advisory: string;
+  landfall_target: string;
+  estimated_landfall_eta: string;
+  storm_surge_estimate: string;
+  evacuation_directive: string;
+  key_actions: string[];
+  issued_at_utc: string;
+}
+
+export interface NewCycloneDetectionResult {
+  detection_id: string;
+  storm_designation: string;
+  is_cyclone_detected: boolean;
+  detection_probability: number;
+  confidence_level: string;
+  structural_pattern: string;
+  estimated_imd_stage: string;
+  estimated_wind_kts: number;
+  estimated_pressure_hpa: number;
+  vortex_center: [number, number];
+  satellite_source: string;
+  sensor_band: string;
+  observation_timestamp_utc: string;
+  image_preview_base64?: string;
+  historical_formation_track: TrackPoint[];
+  projected_track: PredictedTrackPoint[];
+  landfall_hazard?: LandfallHazardResult;
+  rapid_intensification?: RapidIntensificationResult;
+  disaster_advisory: DisasterAdvisory;
+  registered_cyclone_id?: string;
+}
+

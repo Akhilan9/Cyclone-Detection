@@ -28,7 +28,7 @@ interface InteractiveMapProps {
 export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   observedPoints = [],
   predictedPoints = [],
-  cycloneName = 'VARDAH',
+  cycloneName = 'CYCLONE',
   height = '560px',
   landfallData = null,
 }) => {
@@ -431,32 +431,6 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       `);
       layersGroup.addLayer(stormCircle);
 
-      // Coastal Landfall Point Marker
-      if (landfallData && landfallData.projected_landfall_point) {
-        bounds.push(landfallData.projected_landfall_point);
-        const landfallIcon = L.divIcon({
-          className: 'landfall-beacon',
-          html: `<div style="width: 28px; height: 28px; border-radius: 50%; background: ${landfallData.alert_color}; border: 3px solid #ffffff; box-shadow: 0 0 16px ${landfallData.alert_color}; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: bold;">⚡</div>`,
-          iconSize: [28, 28],
-          iconAnchor: [14, 14],
-        });
-        const landfallMarker = L.marker(landfallData.projected_landfall_point, { icon: landfallIcon });
-        landfallMarker.bindPopup(`
-          <div style="font-family: sans-serif; font-size: 12px; line-height: 1.4; padding: 4px;">
-            <span style="display: inline-block; padding: 2px 8px; border-radius: 4px; background: ${landfallData.alert_color}; color: #ffffff; font-weight: bold; font-size: 10px; margin-bottom: 4px;">
-              ${landfallData.alert_level}
-            </span><br/>
-            <strong style="color: #0f172a; font-size: 13px;">Projected Landfall Sector:</strong><br/>
-            <strong style="color: #2563eb;">${landfallData.target_coastal_sector}</strong><br/>
-            <strong>Distance to Coast:</strong> ${landfallData.distance_to_coast_km} km<br/>
-            <strong>Estimated Landfall ETA:</strong> ~${landfallData.estimated_landfall_eta_hours} hrs<br/>
-            <div style="margin-top: 6px; font-size: 11px; color: #475569; border-top: 1px solid #e2e8f0; padding-top: 4px;">
-              ${landfallData.advisory}
-            </div>
-          </div>
-        `);
-        layersGroup.addLayer(landfallMarker);
-      }
     }
 
     if (bounds.length > 0 && selectedPointIndex === null) {

@@ -49,6 +49,8 @@ frontend/build/
 # Large Datasets & Model Checkpoints (raw data excluded, lightweight test fixtures and final trained weights kept)
 data/raw/*
 !data/raw/.gitkeep
+!data/raw/satellite_images/
+!data/raw/satellite_images/**
 data/processed/*.h5
 data/processed/*.npy
 !data/fixtures/

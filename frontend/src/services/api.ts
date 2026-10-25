@@ -19,6 +19,9 @@ import type {
   UploadAnalyzeResult,
   LandfallHazardResult,
   RapidIntensificationResult,
+  ActiveCyclone,
+  NewCycloneDetectionResult,
+  SurveillanceSector,
 } from '../types';
 
 const API_BASE = '/api/v1';
@@ -157,4 +160,31 @@ export const api = {
 
   getRapidIntensification: (cycloneId: string) =>
     request<RapidIntensificationResult>(`/predictions/rapid-intensification/${encodeURIComponent(cycloneId)}`),
+
+  getActiveCyclones: (forceRefresh = false) =>
+    request<ActiveCyclone[]>(`/active-cyclones?force_refresh=${forceRefresh}`),
+
+  getSurveillanceSectors: () =>
+    request<{ sectors: SurveillanceSector[]; total: number }>('/scanner/sectors'),
+
+  scanNewCyclone: (payload: {
+    sector_name?: string;
+    satellite_source?: string;
+    scan_coordinates?: [number, number];
+    image_base64?: string;
+    forecast_horizon_hours?: number;
+    register_in_system?: boolean;
+  }) =>
+    request<NewCycloneDetectionResult>('/scanner/detect-new', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+
+  scanLiveInfrared: (params: { lat: number; lon: number; sector?: string; register?: boolean }) =>
+    request<NewCycloneDetectionResult>(
+      `/scanner/live-infrared-scan?lat=${params.lat}&lon=${params.lon}&sector=${encodeURIComponent(
+        params.sector || 'Bay of Bengal'
+      )}&register=${params.register ?? true}`,
+      { method: 'POST' }
+    ),
 };

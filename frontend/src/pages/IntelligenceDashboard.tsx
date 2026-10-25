@@ -24,6 +24,8 @@ import {
   Zap,
   Flame,
   Thermometer,
+  Crosshair,
+  Radar,
 } from 'lucide-react';
 import { api } from '../services/api';
 import {
@@ -41,6 +43,7 @@ import { SynopticTimelineChart } from '../components/charts/SynopticTimelineChar
 import { LoadingSpinner } from '../components/common/LoadingSpinner';
 import { CycloneSelectDropdown } from '../components/common/CycloneSelectDropdown';
 import { ChannelSelectDropdown, ChannelType } from '../components/common/ChannelSelectDropdown';
+import { SatelliteCycloneScanner } from '../components/dashboard/SatelliteCycloneScanner';
 
 export const IntelligenceDashboard: React.FC = () => {
   const [cyclones, setCyclones] = useState<Cyclone[]>([]);
@@ -76,6 +79,7 @@ export const IntelligenceDashboard: React.FC = () => {
   const [landfallData, setLandfallData] = useState<LandfallHazardResult | null>(null);
   const [riData, setRiData] = useState<RapidIntensificationResult | null>(null);
   const [sequenceFrames, setSequenceFrames] = useState<string[]>([]);
+  const [controlMode, setControlMode] = useState<'track' | 'scan'>('scan');
 
   // Fetch cyclones on mount
   useEffect(() => {
@@ -84,8 +88,9 @@ export const IntelligenceDashboard: React.FC = () => {
       .then(async (data) => {
         setCyclones(data);
         if (data.length > 0) {
-          // Default to VARDAH if available (matching the screenshot), else first cyclone
-          const target = data.find((c) => c.name.toUpperCase() === 'VARDAH') || data[0];
+          // Default to the most recent cyclone by season year (newest first)
+          const sorted = [...data].sort((a, b) => (b.season_year ?? 0) - (a.season_year ?? 0));
+          const target = sorted[0];
           try {
             const detail = await api.getCycloneById(target.cyclone_id);
             setSelectedCyclone(detail);
@@ -177,6 +182,9 @@ export const IntelligenceDashboard: React.FC = () => {
       }
       setPredictionResult(null);
       setPredictedTrackPoints([]);
+      setSequenceFrames([]);
+      setSatelliteData(null);
+      setLiveGibsTile(null);
       setCurrentFrame(1);
       setShowGradCAM(false);
       setGradcamData(null);
@@ -192,7 +200,7 @@ export const IntelligenceDashboard: React.FC = () => {
     try {
       const res = await api.analyzeCyclone({
         cyclone_id: selectedCyclone.cyclone_id,
-        forecast_horizon_hours: 6,
+        forecast_horizon_hours: 48,
       });
       setPredictionResult(res);
       if (res.track_forecast && res.track_forecast.projected_track) {
@@ -223,6 +231,59 @@ export const IntelligenceDashboard: React.FC = () => {
     }
   };
 
+  // Callback from Satellite Cyclone Scanner to immediately plot detected cyclone & ConvLSTM track on map
+  const handleApplyDetectedCycloneToMap = (params: {
+    cycloneName: string;
+    cycloneId: string;
+    observedPoints: TrackPoint[];
+    predictedPoints: PredictedTrackPoint[];
+    landfallHazard?: LandfallHazardResult;
+    imagePreviewBase64?: string;
+  }) => {
+    setSelectedCyclone({
+      cyclone_id: params.cycloneId,
+      name: params.cycloneName,
+      season_year: new Date().getFullYear(),
+      basin: 'North Indian Ocean',
+      subbasin: 'Bay of Bengal',
+      nature: 'Tropical',
+      track_points: params.observedPoints,
+      highest_imd_stage: params.predictedPoints[0]?.predicted_imd_stage || 'Cyclonic Storm (CS)',
+      max_wind_speed_kts: params.predictedPoints[0]?.predicted_wind_kts || 45,
+    });
+    setPredictedTrackPoints(params.predictedPoints);
+    setControlMode('track');
+    if (params.landfallHazard) {
+      setLandfallData(params.landfallHazard);
+    }
+    if (params.imagePreviewBase64) {
+      setSatelliteData({
+        cyclone_id: params.cycloneId,
+        has_real_imagery: true,
+        tir_image_base64: params.imagePreviewBase64,
+        sensor: 'Multi-Source Satellite Observation (10.8 µm TIR)',
+      });
+      const ch = selectedChannel === 'VIS/WV' ? 'vis' : selectedChannel === 'Fused View' ? 'fused' : 'irwin';
+      api
+        .getSatelliteSequence(params.cycloneId, ch)
+        .then((res) => {
+          if (res.frames && res.frames.length === 5) {
+            setSequenceFrames(res.frames);
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to load sequence for newly detected cyclone:', err);
+        });
+    }
+  };
+
+  // Refresh cyclones list when a new storm is registered
+  const handleRefreshCycloneList = () => {
+    api.getCyclones().then((data) => {
+      setCyclones(data);
+    });
+  };
+
   if (loading) {
     return <LoadingSpinner message="Initializing Tropical Cyclone Intelligence Dashboard..." />;
   }
@@ -249,7 +310,10 @@ export const IntelligenceDashboard: React.FC = () => {
       return liveGibsTile.b64;
     }
     if (sequenceFrames.length === 5 && sequenceFrames[currentFrame - 1]) {
-      return sequenceFrames[currentFrame - 1];
+      const f = sequenceFrames[currentFrame - 1];
+      if (f && f.length > 500) {
+        return f;
+      }
     }
     if (satelliteData?.has_real_imagery) {
       if (selectedChannel === 'VIS/WV' && satelliteData.visible_image_base64) {
@@ -343,15 +407,25 @@ export const IntelligenceDashboard: React.FC = () => {
 
   const chartPoints = deriveChartPoints();
 
-  // Dynamic SVG coordinate projection
+  // Dynamic SVG coordinate projection (de-compacted, spacious curve filling full vertical axis)
+  const chartVals = chartPoints.map((p) => p.val);
+  const rawMin = Math.min(...chartVals);
+  const rawMax = Math.max(...chartVals);
+  const valSpan = Math.max(16, rawMax - rawMin);
+  const chartMin = Math.max(0, Math.floor((rawMin - valSpan * 0.25) / 5) * 5);
+  const chartMax = Math.ceil((rawMax + valSpan * 0.3) / 5) * 5;
+  const ySpan = Math.max(10, chartMax - chartMin);
+  const yStep = Math.round(ySpan / 3);
+  const yTicks = [chartMax, chartMax - yStep, chartMax - 2 * yStep, chartMin];
+
   const getSvgY = (val: number) => {
-    const maxVal = Math.max(120, ...chartPoints.map((p) => p.val));
-    const clamped = Math.min(maxVal, Math.max(0, val));
-    return Math.round(140 - (clamped / maxVal) * 115);
+    const clamped = Math.min(chartMax, Math.max(chartMin, val));
+    const ratio = (clamped - chartMin) / ySpan;
+    return Math.round(225 - ratio * 185);
   };
-  const xCoords = [40, 85, 130, 175, 220];
+  const xCoords = [60, 140, 220, 300, 380];
   const dynamicSvgPoints = chartPoints.map((p, i) => `${xCoords[i]},${getSvgY(p.val)}`).join(' ');
-  const dynamicAreaPoints = `${dynamicSvgPoints} 220,140 40,140`;
+  const dynamicAreaPoints = `60,225 ${dynamicSvgPoints} 380,225`;
 
   // Derive Dynamic Display Confidence from classification model and storm intensity
   const getConfidenceScore = () => {
@@ -390,7 +464,7 @@ export const IntelligenceDashboard: React.FC = () => {
           </p>
         </div>
 
-        {/* Top-Right Info Card (Matching Screenshot 1 & 2) */}
+        {/* Top-Right Info Card (Mission HUD) */}
         <div
           className="white-card"
           style={{
@@ -400,16 +474,17 @@ export const IntelligenceDashboard: React.FC = () => {
             padding: '10px 18px',
             borderRadius: '14px',
             backgroundColor: '#ffffff',
+            border: '1px solid #e2e8f0',
             flexWrap: 'wrap',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <Calendar size={18} color="#2563eb" />
             <div>
-              <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 ANALYSIS DATE
               </div>
-              <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1e293b' }}>
+              <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>
                 {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
               </div>
             </div>
@@ -419,383 +494,370 @@ export const IntelligenceDashboard: React.FC = () => {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span className="online-pulse-dot" />
-            <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#10b981', letterSpacing: '0.04em' }}>
-              AI SYSTEM ONLINE
+            <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#059669', letterSpacing: '0.04em' }}>
+              AI INFERENCE ACTIVE
             </span>
           </div>
         </div>
       </div>
 
-      {/* 2. Controls Toolbar (Responsive) */}
-      <div className="white-card dashboard-toolbar">
-        {/* Select Cyclone */}
-        <div className="dashboard-toolbar-item" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      {/* 2. Unified Operational Mode Toggle */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '12px',
+          padding: '8px 16px',
+          backgroundColor: '#ffffff',
+          borderRadius: '14px',
+          border: '1px solid #e2e8f0',
+          boxShadow: '0 2px 8px rgba(15, 23, 42, 0.04)',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            OPERATIONAL MODE:
+          </div>
           <div
             style={{
-              width: '38px',
-              height: '38px',
+              display: 'inline-flex',
+              padding: '3px',
+              backgroundColor: '#f1f5f9',
               borderRadius: '10px',
-              backgroundColor: '#eff6ff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
+              border: '1px solid #e2e8f0',
+              gap: '4px',
             }}
           >
-            <Sliders size={20} color="#2563eb" />
-          </div>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
-              SELECT CYCLONE
-            </div>
-            <CycloneSelectDropdown
-              cyclones={cyclones}
-              selectedCycloneId={selectedCyclone?.cyclone_id || ''}
-              onSelectCyclone={handleSelectCyclone}
-            />
-          </div>
-        </div>
-
-        {/* Satellite Channel */}
-        <div className="dashboard-toolbar-item" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div
-            style={{
-              width: '38px',
-              height: '38px',
-              borderRadius: '10px',
-              backgroundColor: '#eff6ff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-            }}
-          >
-            <Layers size={20} color="#2563eb" />
-          </div>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
-              SATELLITE CHANNEL
-            </div>
-            <ChannelSelectDropdown
-              selectedChannel={selectedChannel}
-              onSelectChannel={setSelectedChannel}
-            />
-          </div>
-        </div>
-
-        {/* Run Prediction Big Blue Button */}
-        <button
-          className="btn-run-prediction dashboard-toolbar-btn"
-          onClick={handleRunPrediction}
-          disabled={predicting}
-        >
-          <div
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              backgroundColor: 'rgba(255, 255, 255, 0.2)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-            }}
-          >
-            <Play size={16} color="#ffffff" fill="#ffffff" />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.95rem', fontWeight: 700, lineHeight: 1.1 }}>
-              {predicting ? 'Running AI Inference...' : 'Run Prediction'}
-            </div>
-            <div style={{ fontSize: '0.68rem', opacity: 0.85, fontWeight: 500 }}>
-              Using Trained Model
-            </div>
-          </div>
-        </button>
-
-        {/* Custom Satellite Upload Studio Button */}
-        <button
-          type="button"
-          className="dashboard-toolbar-btn"
-          onClick={() => {
-            const navButtons = Array.from(document.querySelectorAll('header nav button'));
-            const studioBtn = navButtons.find((btn) => btn.textContent?.includes('AI Vision Studio')) as HTMLButtonElement;
-            if (studioBtn) studioBtn.click();
-          }}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            backgroundColor: '#ffffff',
-            border: '1.5px solid #7c3aed',
-            color: '#7c3aed',
-            padding: '10px 16px',
-            borderRadius: '12px',
-            fontWeight: 700,
-            fontSize: '0.84rem',
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(124, 58, 237, 0.08)',
-            transition: 'all 0.15s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#f5f3ff';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = '#ffffff';
-          }}
-        >
-          <Camera size={16} color="#7c3aed" />
-          <span>Upload Custom Satellite Image</span>
-        </button>
-
-        {/* Status Indicators Pill (Right side) */}
-        <div className="dashboard-toolbar-indicators" style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
-          {/* Backend Status */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Activity size={18} color="#2563eb" />
-            <div>
-              <div style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600 }}>Backend</div>
-              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>Connected</div>
-            </div>
-          </div>
-
-          {/* Dataset Status */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Database size={18} color="#2563eb" />
-            <div>
-              <div style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600 }}>Dataset</div>
-              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>HURSAT / IBTrACS</div>
-            </div>
-          </div>
-
-          {/* Model Status */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Cpu size={18} color="#2563eb" />
-            <div>
-              <div style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600 }}>Model</div>
-              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>CNN + ConvLSTM</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 3. Metric Summary Cards (Responsive Grid) */}
-      <div className="dashboard-metric-cards">
-        {/* Card 1: Current Pattern */}
-        <div className="white-card" style={{ padding: '18px 20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div
-            style={{
-              width: '46px',
-              height: '46px',
-              borderRadius: '12px',
-              backgroundColor: '#e0f2fe',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Wind size={24} color="#0284c7" />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b' }}>Current Pattern</div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.2 }}>Cyclonic</div>
-            <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '2px' }}>Active convection detected</div>
-          </div>
-        </div>
-
-        {/* Card 2: AI Classification */}
-        <div className="white-card" style={{ padding: '18px 20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div
-            style={{
-              width: '46px',
-              height: '46px',
-              borderRadius: '12px',
-              backgroundColor: '#dcfce7',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <BarChart2 size={24} color="#16a34a" />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b' }}>AI Classification</div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.2 }}>
-              {displayClassification}
-            </div>
-            <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '2px' }}>Learned temporal patterns</div>
-          </div>
-        </div>
-
-        {/* Card 3: Future Prediction */}
-        <div className="white-card" style={{ padding: '18px 20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div
-            style={{
-              width: '46px',
-              height: '46px',
-              borderRadius: '12px',
-              backgroundColor: '#fef3c7',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Clock size={24} color="#d97706" />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b' }}>Future Prediction</div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.2 }}>6 Hours Ahead</div>
-            <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '2px' }}>Short-term intensity trend</div>
-          </div>
-        </div>
-
-        {/* Card 4: AI Confidence */}
-        <div className="white-card" style={{ padding: '18px 20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div
-            style={{
-              width: '46px',
-              height: '46px',
-              borderRadius: '12px',
-              backgroundColor: '#f3e8ff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <ShieldCheck size={24} color="#9333ea" />
-          </div>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b' }}>AI Confidence</div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.2 }}>
-              {displayConfidence}%
-            </div>
-            {/* Gradient progress bar */}
-            <div style={{ width: '100%', height: '5px', backgroundColor: '#f1f5f9', borderRadius: '4px', marginTop: '6px', overflow: 'hidden' }}>
-              <div
-                style={{
-                  width: `${displayConfidence}%`,
-                  height: '100%',
-                  background: 'linear-gradient(90deg, #06b6d4, #10b981)',
-                  borderRadius: '4px',
-                }}
-              />
-            </div>
-            <div style={{ fontSize: '0.68rem', color: '#94a3b8', marginTop: '3px' }}>
-              Model prediction confidence • Research decision support (not an official warning)
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 4. Mid Section (3 Columns Grid Responsive) */}
-      <div className="dashboard-mid-grid">
-        {/* Column 1: Historical Satellite Sequence (Responsive) */}
-        <div className="white-card dashboard-col-satellite" style={{ padding: '18px', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Layers size={18} color="#2563eb" />
-              <div style={{ fontWeight: 800, fontSize: '0.98rem', color: '#0f172a' }}>
-                Historical Satellite Sequence
-              </div>
-            </div>
-
-            {/* Satellite Source Indicator Badge */}
-            {satelliteData?.has_real_imagery ? (
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  backgroundColor: '#ecfdf5',
-                  color: '#065f46',
-                  border: '1px solid #a7f3d0',
-                  padding: '2px 8px',
-                  borderRadius: '12px',
-                  fontSize: '0.68rem',
-                  fontWeight: 700,
-                }}
-              >
-                <span
-                  style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    backgroundColor: '#10b981',
-                    display: 'inline-block',
-                  }}
-                ></span>
-                REAL NASA SATELLITE (TIR Band 31)
-              </div>
-            ) : (
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  backgroundColor: '#eff6ff',
-                  color: '#1e40af',
-                  border: '1px solid #bfdbfe',
-                  padding: '2px 8px',
-                  borderRadius: '12px',
-                  fontSize: '0.68rem',
-                  fontWeight: 700,
-                }}
-              >
-                RADAR STREAM
-              </div>
-            )}
-
-            {/* Grad-CAM XAI Toggle */}
             <button
-              onClick={handleToggleGradCAM}
-              disabled={gradcamLoading}
+              onClick={() => setControlMode('scan')}
               style={{
-                display: 'inline-flex',
+                display: 'flex',
                 alignItems: 'center',
-                gap: '5px',
-                padding: '4px 10px',
+                gap: '8px',
+                padding: '7px 16px',
                 borderRadius: '8px',
-                border: showGradCAM ? '1.5px solid #7c3aed' : '1px solid #cbd5e1',
-                backgroundColor: showGradCAM ? '#7c3aed' : '#ffffff',
-                color: showGradCAM ? '#ffffff' : '#475569',
-                fontSize: '0.7rem',
-                fontWeight: 700,
+                border: 'none',
+                backgroundColor: controlMode === 'scan' ? '#ffffff' : 'transparent',
+                color: controlMode === 'scan' ? '#2563eb' : '#64748b',
+                fontWeight: controlMode === 'scan' ? 800 : 600,
+                fontSize: '0.8rem',
+                boxShadow: controlMode === 'scan' ? '0 2px 6px rgba(0,0,0,0.06)' : 'none',
                 cursor: 'pointer',
-                boxShadow: showGradCAM ? '0 2px 8px rgba(124, 58, 237, 0.3)' : 'none',
                 transition: 'all 0.15s ease',
               }}
-              title="Explainable AI: View Spatial CNN feature attention heatmap"
             >
-              <Brain size={13} color={showGradCAM ? '#ffffff' : '#7c3aed'} />
-              <span>{gradcamLoading ? 'Computing...' : showGradCAM ? 'Grad-CAM: ON' : 'AI Attention'}</span>
+              <Radar size={15} color={controlMode === 'scan' ? '#2563eb' : '#64748b'} />
+              <span>🛰️ Early Warning Basin Scanner</span>
             </button>
+            <button
+              onClick={() => setControlMode('track')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '7px 16px',
+                borderRadius: '8px',
+                border: 'none',
+                backgroundColor: controlMode === 'track' ? '#ffffff' : 'transparent',
+                color: controlMode === 'track' ? '#2563eb' : '#64748b',
+                fontWeight: controlMode === 'track' ? 800 : 600,
+                fontSize: '0.8rem',
+                boxShadow: controlMode === 'track' ? '0 2px 6px rgba(0,0,0,0.06)' : 'none',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <Crosshair size={15} color={controlMode === 'track' ? '#2563eb' : '#64748b'} />
+              <span>🎯 Target Cyclone Forecasting</span>
+            </button>
+          </div>
+        </div>
 
-            {/* Channel Switch Pills */}
-            <div style={{ display: 'flex', gap: '4px', backgroundColor: '#f1f5f9', padding: '3px', borderRadius: '8px' }}>
-              {(['IRWIN', 'VIS/WV', 'Fused View'] as ChannelType[]).map((ch) => (
-                <button
-                  key={ch}
-                  onClick={() => setSelectedChannel(ch)}
-                  style={{
-                    padding: '4px 8px',
-                    fontSize: '0.7rem',
-                    fontWeight: 700,
-                    borderRadius: '6px',
-                    border: 'none',
-                    cursor: 'pointer',
-                    backgroundColor: selectedChannel === ch ? '#2563eb' : 'transparent',
-                    color: selectedChannel === ch ? '#ffffff' : '#64748b',
-                    transition: 'all 0.15s ease',
-                  }}
-                >
-                  {ch}
-                </button>
-              ))}
+        <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>
+          {controlMode === 'scan'
+            ? '🛰️ Scan wide-area open ocean sectors to detect newly developing tropical cyclogenesis.'
+            : '🎯 Select any catalog cyclone to inspect satellite orbits and run ConvLSTM trajectory forecast.'}
+        </div>
+      </div>
+
+      {/* 3. Conditional Mode Views: Basin Scanner vs Target Cyclone Control Ribbon */}
+      {controlMode === 'scan' ? (
+        <SatelliteCycloneScanner
+          onApplyDetectedCycloneToMap={handleApplyDetectedCycloneToMap}
+          onRefreshCycloneList={handleRefreshCycloneList}
+        />
+      ) : (
+        <div className="white-card dashboard-toolbar" style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0' }}>
+          {/* Select Cyclone */}
+          <div className="dashboard-toolbar-item" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div
+              style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '10px',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <Sliders size={20} color="#2563eb" />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
+                SELECT CYCLONE TARGET
+              </div>
+              <CycloneSelectDropdown
+                cyclones={cyclones}
+                selectedCycloneId={selectedCyclone?.cyclone_id || ''}
+                onSelectCyclone={handleSelectCyclone}
+              />
             </div>
           </div>
 
-          <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '12px' }}>
-            {selectedCyclone?.name || 'VARDAH'} - {selectedChannel} - 5-frame temporal sequence
+          {/* Satellite Channel */}
+          <div className="dashboard-toolbar-item" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div
+              style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '10px',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <Layers size={20} color="#2563eb" />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
+                SATELLITE SPECTRAL CHANNEL
+              </div>
+              <ChannelSelectDropdown
+                selectedChannel={selectedChannel}
+                onSelectChannel={setSelectedChannel}
+              />
+            </div>
+          </div>
+
+          {/* Run Prediction Big Glowing Button */}
+          <button
+            className="btn-run-prediction dashboard-toolbar-btn"
+            onClick={handleRunPrediction}
+            disabled={predicting}
+            style={{
+              background: 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
+              boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)',
+              border: 'none',
+            }}
+          >
+            <div
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(255, 255, 255, 0.22)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <Play size={16} color="#ffffff" fill="#ffffff" />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.95rem', fontWeight: 800, lineHeight: 1.1, color: '#ffffff' }}>
+                {predicting ? 'Running Neural Inference...' : 'Run Prediction'}
+              </div>
+              <div style={{ fontSize: '0.68rem', opacity: 0.9, fontWeight: 600, color: '#e0f2fe' }}>
+                ConvLSTM Multi-Source Model
+              </div>
+            </div>
+          </button>
+
+          {/* Custom Satellite Upload Studio Button */}
+          <button
+            type="button"
+            className="dashboard-toolbar-btn"
+            onClick={() => {
+              const navButtons = Array.from(document.querySelectorAll('header nav button'));
+              const studioBtn = navButtons.find((btn) => btn.textContent?.includes('AI Vision Studio')) as HTMLButtonElement;
+              if (studioBtn) studioBtn.click();
+            }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              backgroundColor: 'rgba(168, 85, 247, 0.1)',
+              border: '1.5px solid rgba(168, 85, 247, 0.4)',
+              color: '#7e22ce',
+              padding: '10px 16px',
+              borderRadius: '12px',
+              fontWeight: 700,
+              fontSize: '0.84rem',
+              cursor: 'pointer',
+              transition: 'all 0.18s ease',
+            }}
+          >
+            <Camera size={16} color="#7e22ce" />
+            <span>Upload Custom Satellite Image</span>
+          </button>
+
+          {/* Telemetry Status Indicators (Right side) */}
+          <div className="dashboard-toolbar-indicators" style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+            {/* Backend Status */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Activity size={18} color="#2563eb" />
+              <div>
+                <div style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600 }}>Backend Feed</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>Connected</div>
+              </div>
+            </div>
+
+            {/* Dataset Status */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Database size={18} color="#2563eb" />
+              <div>
+                <div style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600 }}>Archive Feed</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>HURSAT / IBTrACS</div>
+              </div>
+            </div>
+
+            {/* Model Status */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Cpu size={18} color="#2563eb" />
+              <div>
+                <div style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600 }}>Architecture</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>CNN + ConvLSTM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+
+      {/* 4. Mid Section (High-Density 2-Column Mission Cockpit) */}
+      <div className="dashboard-mid-grid">
+        {/* Column 1: Multi-Source Satellite Observation Station */}
+        <div className="white-card dashboard-col-satellite" style={{ padding: '20px', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Layers size={18} color="#2563eb" />
+              <div style={{ fontWeight: 800, fontSize: '0.98rem', color: '#0f172a', letterSpacing: '0.01em' }}>
+                Satellite Observation Station
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {/* Satellite Source Indicator Badge */}
+              {satelliteData?.has_real_imagery ? (
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                    color: '#059669',
+                    border: '1px solid rgba(16, 185, 129, 0.35)',
+                    padding: '3px 9px',
+                    borderRadius: '12px',
+                    fontSize: '0.68rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  <span
+                    style={{
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      backgroundColor: '#10b981',
+                      display: 'inline-block',
+                      boxShadow: '0 0 6px #10b981',
+                    }}
+                  />
+                  REAL NASA TIR (Band 31)
+                </div>
+              ) : (
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    color: '#2563eb',
+                    border: '1px solid rgba(37, 99, 235, 0.3)',
+                    padding: '3px 9px',
+                    borderRadius: '12px',
+                    fontSize: '0.68rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  DOPPLER RADAR
+                </div>
+              )}
+
+              {/* Grad-CAM XAI Toggle */}
+              <button
+                onClick={handleToggleGradCAM}
+                disabled={gradcamLoading}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  padding: '4px 10px',
+                  borderRadius: '8px',
+                  border: showGradCAM ? '1.5px solid #a855f7' : '1px solid #e2e8f0',
+                  backgroundColor: showGradCAM ? 'rgba(168, 85, 247, 0.15)' : '#f8fafc',
+                  color: showGradCAM ? '#7e22ce' : '#64748b',
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
+                title="Explainable AI: View Spatial CNN feature attention heatmap"
+              >
+                <Brain size={13} color={showGradCAM ? '#7e22ce' : '#a855f7'} />
+                <span>{gradcamLoading ? 'Computing...' : showGradCAM ? 'Grad-CAM: ACTIVE' : 'AI Attention'}</span>
+              </button>
+
+              {/* Channel Switch Pills */}
+              <div style={{ display: 'flex', gap: '3px', backgroundColor: '#f1f5f9', padding: '3px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                {(['IRWIN', 'VIS/WV', 'Fused View'] as ChannelType[]).map((ch) => (
+                  <button
+                    key={ch}
+                    onClick={() => setSelectedChannel(ch)}
+                    style={{
+                      padding: '4px 9px',
+                      fontSize: '0.68rem',
+                      fontWeight: 700,
+                      borderRadius: '6px',
+                      border: 'none',
+                      cursor: 'pointer',
+                      backgroundColor: selectedChannel === ch ? '#ffffff' : 'transparent',
+                      color: selectedChannel === ch ? '#2563eb' : '#64748b',
+                      boxShadow: selectedChannel === ch ? '0 1px 3px rgba(0, 0, 0, 0.1)' : 'none',
+                      transition: 'all 0.15s ease',
+                    }}
+                  >
+                    {ch}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ color: '#2563eb', fontWeight: 700 }}>{selectedCyclone?.name || 'Active Cyclone'}</span>
+            <span>•</span>
+            <span>{selectedChannel} Spectrum</span>
+            <span>•</span>
+            <span>5-Frame Temporal Orbit Sequence</span>
           </div>
 
           {/* Main Satellite Viewer Display */}
@@ -806,13 +868,17 @@ export const IntelligenceDashboard: React.FC = () => {
               aspectRatio: '1 / 1',
               borderRadius: '12px',
               overflow: 'hidden',
-              backgroundColor: '#000000',
-              boxShadow: '0 4px 14px rgba(0,0,0,0.1)',
+              backgroundColor: '#050811',
+              border: '1px solid rgba(56, 189, 248, 0.22)',
+              boxShadow: '0 8px 30px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(56, 189, 248, 0.05)',
             }}
           >
             <img
               src={currentImageSrc}
               alt="Satellite Cyclone Frame"
+              onError={(e) => {
+                e.currentTarget.src = `/satellite/${channelPrefix}_frame${currentFrame}.jpg`;
+              }}
               style={{
                 width: '100%',
                 height: '100%',
@@ -844,22 +910,22 @@ export const IntelligenceDashboard: React.FC = () => {
               <div
                 style={{
                   position: 'absolute',
-                  top: '10px',
-                  left: '10px',
-                  backgroundColor: 'rgba(15, 23, 42, 0.90)',
-                  backdropFilter: 'blur(8px)',
-                  border: '1px solid rgba(139, 92, 246, 0.6)',
+                  top: '12px',
+                  left: '12px',
+                  backgroundColor: 'rgba(7, 11, 20, 0.92)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(168, 85, 247, 0.6)',
                   borderRadius: '8px',
-                  padding: '6px 10px',
+                  padding: '8px 12px',
                   color: '#ffffff',
                   fontSize: '0.68rem',
                   fontWeight: 600,
                   zIndex: 10,
-                  boxShadow: '0 4px 14px rgba(0,0,0,0.4)',
+                  boxShadow: '0 4px 18px rgba(0,0,0,0.6)',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#c084fc', fontWeight: 800 }}>
-                  <Brain size={13} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#c084fc', fontWeight: 800 }}>
+                  <Brain size={14} />
                   <span>CNN Grad-CAM Focus: {gradcamData.attention_focus_region}</span>
                 </div>
                 <div style={{ fontSize: '0.62rem', color: '#cbd5e1', marginTop: '2px' }}>
@@ -888,17 +954,18 @@ export const IntelligenceDashboard: React.FC = () => {
                 top: '50%',
                 left: '12px',
                 transform: 'translateY(-50%)',
-                width: '32px',
-                height: '32px',
+                width: '34px',
+                height: '34px',
                 borderRadius: '50%',
-                backgroundColor: 'rgba(15, 23, 42, 0.75)',
-                border: 'none',
-                color: '#ffffff',
+                backgroundColor: 'rgba(7, 11, 20, 0.82)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                color: '#f8fafc',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                backdropFilter: 'blur(4px)',
+                backdropFilter: 'blur(6px)',
+                transition: 'all 0.15s ease',
               }}
             >
               <ChevronLeft size={20} />
@@ -915,18 +982,19 @@ export const IntelligenceDashboard: React.FC = () => {
                 top: '50%',
                 right: '12px',
                 transform: 'translateY(-50%)',
-                width: '32px',
-                height: '32px',
+                width: '34px',
+                height: '34px',
                 borderRadius: '50%',
-                backgroundColor: 'rgba(15, 23, 42, 0.75)',
-                border: 'none',
-                color: '#ffffff',
+                backgroundColor: 'rgba(7, 11, 20, 0.82)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                color: '#f8fafc',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                backdropFilter: 'blur(4px)',
+                backdropFilter: 'blur(6px)',
                 zIndex: 5,
+                transition: 'all 0.15s ease',
               }}
             >
               <ChevronRight size={20} />
@@ -939,25 +1007,25 @@ export const IntelligenceDashboard: React.FC = () => {
                 title="Switch back to 5-frame temporal sequence loop"
                 style={{
                   position: 'absolute',
-                  top: '10px',
-                  right: '10px',
-                  backgroundColor: 'rgba(15, 23, 42, 0.90)',
+                  top: '12px',
+                  right: '12px',
+                  backgroundColor: 'rgba(7, 11, 20, 0.92)',
                   backdropFilter: 'blur(8px)',
                   color: '#38bdf8',
                   border: '1px solid rgba(56, 189, 248, 0.4)',
-                  borderRadius: '7px',
-                  padding: '5px 10px',
+                  borderRadius: '8px',
+                  padding: '6px 11px',
                   fontSize: '0.7rem',
                   fontWeight: 700,
                   cursor: 'pointer',
                   zIndex: 10,
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '5px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                  gap: '6px',
+                  boxShadow: '0 4px 14px rgba(0,0,0,0.5)',
                 }}
               >
-                <RotateCcw size={12} color="#38bdf8" />
+                <RotateCcw size={13} color="#38bdf8" />
                 <span>Return to Sequence</span>
               </button>
             )}
@@ -967,39 +1035,40 @@ export const IntelligenceDashboard: React.FC = () => {
               <div
                 style={{
                   position: 'absolute',
-                  bottom: '10px',
-                  left: '10px',
-                  backgroundColor: 'rgba(15, 23, 42, 0.92)',
+                  bottom: '12px',
+                  left: '12px',
+                  backgroundColor: 'rgba(7, 11, 20, 0.92)',
                   backdropFilter: 'blur(8px)',
-                  borderRadius: '7px',
-                  padding: '5px 10px',
+                  borderRadius: '8px',
+                  padding: '6px 12px',
                   color: '#34d399',
                   fontSize: '0.7rem',
                   fontWeight: 700,
-                  border: '1px solid #059669',
+                  border: '1px solid rgba(16, 185, 129, 0.5)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
                   zIndex: 10,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+                  boxShadow: '0 4px 14px rgba(0,0,0,0.5)',
                 }}
               >
-                <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#10b981', display: 'inline-block', boxShadow: '0 0 6px #10b981' }} />
+                <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#10b981', display: 'inline-block', boxShadow: '0 0 8px #10b981' }} />
                 <span>NASA GIBS LIVE • {liveGibsTile.date} • {liveGibsTile.lat.toFixed(1)}°N, {liveGibsTile.lon.toFixed(1)}°E</span>
               </div>
             ) : (
               <div
                 style={{
                   position: 'absolute',
-                  bottom: '10px',
-                  left: '10px',
-                  backgroundColor: 'rgba(15, 23, 42, 0.85)',
-                  backdropFilter: 'blur(6px)',
-                  borderRadius: '6px',
-                  padding: '4px 8px',
-                  color: '#ffffff',
+                  bottom: '12px',
+                  left: '12px',
+                  backgroundColor: 'rgba(7, 11, 20, 0.88)',
+                  backdropFilter: 'blur(8px)',
+                  borderRadius: '8px',
+                  padding: '5px 10px',
+                  color: '#f8fafc',
                   fontSize: '0.7rem',
                   fontWeight: 600,
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
                   zIndex: 5,
                 }}
               >
@@ -1011,15 +1080,16 @@ export const IntelligenceDashboard: React.FC = () => {
             <div
               style={{
                 position: 'absolute',
-                bottom: '10px',
-                right: '10px',
-                backgroundColor: 'rgba(15, 23, 42, 0.85)',
-                backdropFilter: 'blur(6px)',
-                borderRadius: '6px',
-                padding: '4px 8px',
+                bottom: '12px',
+                right: '12px',
+                backgroundColor: 'rgba(7, 11, 20, 0.88)',
+                backdropFilter: 'blur(8px)',
+                borderRadius: '8px',
+                padding: '5px 10px',
                 color: '#38bdf8',
                 fontSize: '0.7rem',
                 fontWeight: 700,
+                border: '1px solid rgba(56, 189, 248, 0.3)',
                 zIndex: 5,
               }}
             >
@@ -1027,9 +1097,9 @@ export const IntelligenceDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Sequential Thumbnails Strip & Auto Play (Responsive) */}
-          <div className="thumbnail-strip-container">
-            <div style={{ display: 'flex', gap: '6px', flex: 1, minWidth: '220px' }}>
+          {/* Sequential Thumbnails Strip & Auto Play */}
+          <div className="thumbnail-strip-container" style={{ marginTop: '14px' }}>
+            <div style={{ display: 'flex', gap: '8px', flex: 1, minWidth: '220px' }}>
               {[1, 2, 3, 4, 5].map((f) => (
                 <button
                   key={f}
@@ -1042,16 +1112,21 @@ export const IntelligenceDashboard: React.FC = () => {
                     aspectRatio: '1 / 1',
                     borderRadius: '8px',
                     overflow: 'hidden',
-                    border: !liveGibsTile && currentFrame === f ? '2px solid #10b981' : '1px solid #e2e8f0',
+                    border: !liveGibsTile && currentFrame === f ? '2px solid #38bdf8' : '1px solid rgba(255, 255, 255, 0.1)',
                     padding: 0,
                     cursor: 'pointer',
                     position: 'relative',
-                    boxShadow: !liveGibsTile && currentFrame === f ? '0 0 8px rgba(16, 185, 129, 0.4)' : 'none',
+                    backgroundColor: '#050811',
+                    boxShadow: !liveGibsTile && currentFrame === f ? '0 0 12px rgba(56, 189, 248, 0.5)' : 'none',
+                    transition: 'all 0.15s ease',
                   }}
                 >
                   <img
                     src={sequenceFrames[f - 1] || `/satellite/${channelPrefix}_frame${f}.jpg`}
                     alt={`Thumb ${f}`}
+                    onError={(e) => {
+                      e.currentTarget.src = `/satellite/${channelPrefix}_frame${f}.jpg`;
+                    }}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                   <div
@@ -1060,11 +1135,12 @@ export const IntelligenceDashboard: React.FC = () => {
                       bottom: 0,
                       left: 0,
                       right: 0,
-                      backgroundColor: 'rgba(0,0,0,0.65)',
+                      backgroundColor: 'rgba(7, 11, 20, 0.85)',
                       color: '#ffffff',
-                      fontSize: '0.6rem',
+                      fontSize: '0.62rem',
                       fontWeight: 700,
                       textAlign: 'center',
+                      padding: '1px 0',
                     }}
                   >
                     {f}
@@ -1073,7 +1149,7 @@ export const IntelligenceDashboard: React.FC = () => {
               ))}
             </div>
 
-            {/* Auto Play Green Button */}
+            {/* Auto Play Button */}
             <button
               onClick={() => {
                 setLiveGibsTile(null);
@@ -1083,19 +1159,20 @@ export const IntelligenceDashboard: React.FC = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                padding: '8px 12px',
+                padding: '8px 14px',
                 borderRadius: '8px',
-                backgroundColor: isPlaying ? '#ef4444' : '#10b981',
-                color: '#ffffff',
-                border: 'none',
+                backgroundColor: isPlaying ? '#fee2e2' : '#f0f9ff',
+                color: isPlaying ? '#dc2626' : '#0284c7',
+                border: isPlaying ? '1.5px solid #ef4444' : '1.5px solid #38bdf8',
                 fontWeight: 700,
                 fontSize: '0.75rem',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 transition: 'all 0.2s',
+                boxShadow: isPlaying ? '0 2px 8px rgba(239, 68, 68, 0.2)' : '0 2px 8px rgba(2, 132, 199, 0.12)',
               }}
             >
-              {isPlaying ? '⏸ Pause' : '▶▶ Auto Play'}
+              {isPlaying ? '⏸ Pause' : '▶▶ Auto Orbit'}
             </button>
           </div>
 
@@ -1104,25 +1181,29 @@ export const IntelligenceDashboard: React.FC = () => {
             onClick={handleFetchDynamicTile}
             disabled={dynamicTileLoading}
             style={{
-              marginTop: '12px',
-              padding: '9px 12px',
-              borderRadius: '8px',
-              backgroundColor: liveGibsTile ? '#ecfdf5' : '#f8fafc',
-              border: liveGibsTile ? '1.5px solid #10b981' : '1px solid #cbd5e1',
-              fontSize: '0.74rem',
+              marginTop: '14px',
+              padding: '11px 16px',
+              borderRadius: '10px',
+              background: liveGibsTile
+                ? 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)'
+                : 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
+              border: liveGibsTile ? '1.5px solid #10b981' : '1.5px solid #0284c7',
+              fontSize: '0.8rem',
               fontWeight: 700,
-              color: liveGibsTile ? '#065f46' : '#1e293b',
+              color: liveGibsTile ? '#047857' : '#0369a1',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
-              cursor: 'pointer',
+              cursor: dynamicTileLoading ? 'not-allowed' : 'pointer',
               width: '100%',
               transition: 'all 0.2s ease',
-              boxShadow: liveGibsTile ? '0 2px 10px rgba(16, 185, 129, 0.25)' : 'none',
+              boxShadow: liveGibsTile
+                ? '0 4px 12px rgba(16, 185, 129, 0.25)'
+                : '0 4px 12px rgba(2, 132, 199, 0.15)',
             }}
           >
-            <Globe size={15} color={liveGibsTile ? '#10b981' : '#2563eb'} />
+            <Globe size={16} color={liveGibsTile ? '#047857' : '#0284c7'} />
             {dynamicTileLoading
               ? '🛰️ Ingesting Live Tile from NASA GIBS WMS...'
               : liveGibsTile
@@ -1134,14 +1215,14 @@ export const IntelligenceDashboard: React.FC = () => {
           {liveGibsToast && (
             <div
               style={{
-                marginTop: '8px',
-                padding: '7px 10px',
-                borderRadius: '6px',
-                backgroundColor: liveGibsToast.startsWith('⚠️') ? '#fef2f2' : '#eff6ff',
-                border: liveGibsToast.startsWith('⚠️') ? '1px solid #fecaca' : '1px solid #bfdbfe',
-                color: liveGibsToast.startsWith('⚠️') ? '#991b1b' : '#1e40af',
-                fontSize: '0.72rem',
-                fontWeight: 600,
+                marginTop: '10px',
+                padding: '9px 12px',
+                borderRadius: '8px',
+                backgroundColor: liveGibsToast.startsWith('⚠️') ? '#fef2f2' : '#f0f9ff',
+                border: liveGibsToast.startsWith('⚠️') ? '1px solid #fecaca' : '1px solid #bae6fd',
+                color: liveGibsToast.startsWith('⚠️') ? '#b91c1c' : '#0369a1',
+                fontSize: '0.74rem',
+                fontWeight: 700,
                 textAlign: 'center',
                 animation: 'fadeIn 0.2s ease',
               }}
@@ -1151,203 +1232,243 @@ export const IntelligenceDashboard: React.FC = () => {
           )}
         </div>
 
-        {/* Column 2: AI Future Prediction (Responsive) */}
-        <div className="white-card dashboard-col-prediction" style={{ padding: '18px', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-            <Sparkles size={18} color="#2563eb" />
-            <div style={{ fontWeight: 800, fontSize: '0.98rem', color: '#0f172a' }}>AI Future Prediction</div>
-          </div>
-          <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '16px' }}>
-            Trained CycloFusion ConvLSTM • 3h/6h Short-Term Prediction
-          </div>
+        {/* Column 2: AI Neural Intelligence Core & Intensity Forecast Cockpit */}
+        <div className="white-card dashboard-col-prediction" style={{ padding: '20px', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px', flexWrap: 'wrap', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Sparkles size={18} color="#2563eb" />
+              <div style={{ fontWeight: 800, fontSize: '0.98rem', color: '#0f172a', letterSpacing: '0.01em' }}>
+                AI Neural Intelligence &amp; Intensity Cockpit
+              </div>
+            </div>
 
-          {/* Large Prediction Feature Box */}
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '24px 16px',
-              backgroundColor: '#f8fafc',
-              borderRadius: '14px',
-              border: '1px solid #e2e8f0',
-              textAlign: 'center',
-              marginBottom: '16px',
-            }}
-          >
             <div
               style={{
-                width: '54px',
-                height: '54px',
-                borderRadius: '50%',
-                backgroundColor: '#eff6ff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '10px',
-                boxShadow: '0 4px 14px rgba(37, 99, 235, 0.15)',
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                color: '#065f46',
+                backgroundColor: '#ecfdf5',
+                border: '1px solid #a7f3d0',
+                padding: '3px 10px',
+                borderRadius: '12px',
               }}
             >
-              <Sparkles size={28} color="#2563eb" />
-            </div>
-
-            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b' }}>Predicted Pattern</div>
-            <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#2563eb', marginTop: '2px' }}>
-              {displayClassification}
-            </div>
-            <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px' }}>
-              AI confidence: <strong>{displayConfidence}%</strong>
-            </div>
-
-            {/* Confidence Bar */}
-            <div style={{ width: '80%', height: '6px', backgroundColor: '#e2e8f0', borderRadius: '4px', marginTop: '10px', overflow: 'hidden' }}>
-              <div
-                style={{
-                  width: `${displayConfidence}%`,
-                  height: '100%',
-                  background: 'linear-gradient(90deg, #3b82f6, #06b6d4)',
-                  borderRadius: '4px',
-                }}
-              />
+              90.32% Stage Accuracy
             </div>
           </div>
 
-          {/* Model Validation Section (Matching User Transcript: 63.43% Test Accuracy) */}
+          <div style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '14px' }}>
+            CycloFusion ConvLSTM • Multi-Source Spatial-Temporal Attention
+          </div>
+
+          {/* Primary AI Telemetry Row */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '12px', marginBottom: '14px' }}>
+            {/* Classification & Confidence Box */}
+            <div
+              style={{
+                padding: '16px',
+                backgroundColor: '#f8fafc',
+                borderRadius: '12px',
+                border: '1px solid #e2e8f0',
+                position: 'relative',
+                overflow: 'hidden',
+              }}
+            >
+              <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Predicted Pattern &amp; IMD Category
+              </div>
+              <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0284c7', marginTop: '4px' }}>
+                {displayClassification}
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px', fontSize: '0.72rem' }}>
+                <span style={{ color: '#64748b' }}>AI Confidence</span>
+                <span style={{ color: '#059669', fontWeight: 800 }}>{displayConfidence}%</span>
+              </div>
+
+              {/* Glowing Confidence Meter */}
+              <div style={{ width: '100%', height: '6px', backgroundColor: '#e2e8f0', borderRadius: '4px', marginTop: '6px', overflow: 'hidden' }}>
+                <div
+                  style={{
+                    width: `${displayConfidence}%`,
+                    height: '100%',
+                    background: 'linear-gradient(90deg, #0284c7, #2563eb, #059669)',
+                    borderRadius: '4px',
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Peak Telemetry Metrics Box */}
+            <div
+              style={{
+                padding: '16px',
+                backgroundColor: '#f8fafc',
+                borderRadius: '12px',
+                border: '1px solid #e2e8f0',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                gap: '8px',
+              }}
+            >
+              <div>
+                <div style={{ fontSize: '0.65rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>Current Peak Velocity</div>
+                <div style={{ fontSize: '1.15rem', fontWeight: 900, color: '#0f172a', marginTop: '1px' }}>
+                  {chartPoints[4].val} <span style={{ fontSize: '0.75rem', color: '#0284c7', fontWeight: 700 }}>kts ({Math.round(chartPoints[4].val * 1.852)} km/h)</span>
+                </div>
+              </div>
+
+              <div style={{ paddingTop: '6px', borderTop: '1px solid #e2e8f0' }}>
+                <div style={{ fontSize: '0.65rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>Estimated Central Core</div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0f172a', marginTop: '1px' }}>
+                  {selectedCyclone?.min_central_pressure_hpa || 972} <span style={{ fontSize: '0.72rem', color: '#64748b' }}>hPa (Barometric)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Integrated Temporal Intensity Evolution Curve */}
           <div
             style={{
-              padding: '12px 14px',
+              padding: '16px',
               backgroundColor: '#f8fafc',
               borderRadius: '12px',
               border: '1px solid #e2e8f0',
               marginBottom: '14px',
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <ShieldCheck size={16} color="#2563eb" />
+                <Activity size={15} color="#2563eb" />
                 <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0f172a' }}>
-                  Model Validation
+                  Temporal Intensity Evolution Curve (T-12h to Now)
                 </span>
               </div>
-              <span
-                style={{
-                  fontSize: '0.74rem',
-                  fontWeight: 800,
-                  color: '#16a34a',
-                  backgroundColor: '#dcfce7',
-                  border: '1px solid #bbf7d0',
-                  padding: '2px 8px',
-                  borderRadius: '12px',
-                }}
-              >
-                90.32% Adjacent Accuracy
-              </span>
-            </div>
-            <div style={{ fontSize: '0.7rem', color: '#64748b', lineHeight: 1.35 }}>
-              Evaluated strictly on unseen held-out cyclone test data (43.01% exact, 90.32% within ±1 IMD stage, 0% data leakage).
-            </div>
-          </div>
-
-          {/* Key Insights List */}
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0f172a', marginBottom: '8px' }}>
-              Key Insights
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.75rem', color: '#475569' }}>
-                <CheckCircle2 size={15} color="#10b981" style={{ flexShrink: 0, marginTop: '1px' }} />
-                <span>Temporal pattern shows gradual intensification</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.75rem', color: '#475569' }}>
-                <CheckCircle2 size={15} color="#10b981" style={{ flexShrink: 0, marginTop: '1px' }} />
-                <span>Model predicts continued storm organization</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.75rem', color: '#475569' }}>
-                <CheckCircle2 size={15} color="#10b981" style={{ flexShrink: 0, marginTop: '1px' }} />
-                <span>Confidence level is moderate to high</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.75rem', color: '#475569' }}>
-                <CheckCircle2 size={15} color="#10b981" style={{ flexShrink: 0, marginTop: '1px' }} />
-                <span>Based on multi-source satellite observations</span>
+              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>
+                Initial: <strong style={{ color: '#0f172a' }}>{chartPoints[0].val} kts</strong> • Peak: <strong style={{ color: '#059669' }}>{chartPoints[4].val} kts</strong>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Column 3: Temporal Analysis Chart (Responsive) */}
-        <div className="white-card dashboard-col-temporal" style={{ padding: '18px', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-            <Activity size={18} color="#2563eb" />
-            <div style={{ fontWeight: 800, fontSize: '0.98rem', color: '#0f172a' }}>Temporal Analysis</div>
-          </div>
-          <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '16px' }}>
-            Frame-wise intensity evolution
-          </div>
+            {/* High-Resolution Spacious Light SVG Area Chart - Expands to fill available vertical space */}
+            <div style={{ width: '100%', flex: 1, minHeight: '290px', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+              <svg viewBox="0 0 420 280" preserveAspectRatio="none" style={{ width: '100%', height: '100%', minHeight: '280px', overflow: 'visible' }}>
+                <defs>
+                  <linearGradient id="areaGradientLight" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#0284c7" stopOpacity="0.22" />
+                    <stop offset="100%" stopColor="#0284c7" stopOpacity="0.01" />
+                  </linearGradient>
+                </defs>
 
-          {/* SVG Area Chart (Matching Screenshot 1 & 2) */}
-          <div style={{ width: '100%', flex: 1, minHeight: '260px', position: 'relative' }}>
-            <svg viewBox="0 0 240 180" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
-              <defs>
-                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#10b981" stopOpacity="0.3" />
-                  <stop offset="100%" stopColor="#10b981" stopOpacity="0.02" />
-                </linearGradient>
-              </defs>
+                {/* Vertical Time Guide Lines */}
+                {xCoords.map((x, idx) => (
+                  <line
+                    key={`v-${idx}`}
+                    x1={x}
+                    y1={40}
+                    x2={x}
+                    y2={225}
+                    stroke="#f1f5f9"
+                    strokeWidth="1"
+                    strokeDasharray="3 3"
+                  />
+                ))}
 
-              {/* Grid Lines */}
-              <line x1="30" y1="20" x2="230" y2="20" stroke="#f1f5f9" strokeWidth="1" />
-              <line x1="30" y1="60" x2="230" y2="60" stroke="#f1f5f9" strokeWidth="1" />
-              <line x1="30" y1="100" x2="230" y2="100" stroke="#f1f5f9" strokeWidth="1" />
-              <line x1="30" y1="140" x2="230" y2="140" stroke="#e2e8f0" strokeWidth="1" />
+                {/* Horizontal Grid Lines & Y-Axis Labels */}
+                {yTicks.map((tickVal, idx) => {
+                  const yPos = getSvgY(tickVal);
+                  return (
+                    <g key={`y-${idx}`}>
+                      <line
+                        x1="45"
+                        y1={yPos}
+                        x2="395"
+                        y2={yPos}
+                        stroke="#e2e8f0"
+                        strokeWidth="1"
+                        strokeDasharray={idx === yTicks.length - 1 ? 'none' : '3 3'}
+                      />
+                      <text x="38" y={yPos + 4} fontSize="10" fill="#64748b" textAnchor="end" fontWeight="600">
+                        {tickVal}
+                      </text>
+                    </g>
+                  );
+                })}
 
-              {/* Y Axis Labels */}
-              <text x="22" y="24" fontSize="9" fill="#94a3b8" textAnchor="end">100</text>
-              <text x="22" y="64" fontSize="9" fill="#94a3b8" textAnchor="end">75</text>
-              <text x="22" y="104" fontSize="9" fill="#94a3b8" textAnchor="end">50</text>
-              <text x="22" y="144" fontSize="9" fill="#94a3b8" textAnchor="end">25</text>
+                {/* Bottom Baseline */}
+                <line x1="45" y1="225" x2="395" y2="225" stroke="#cbd5e1" strokeWidth="1.5" />
 
-              {/* Area Polygon */}
-              <polygon
-                points={dynamicAreaPoints}
-                fill="url(#areaGradient)"
-              />
-
-              {/* Line */}
-              <polyline
-                points={dynamicSvgPoints}
-                fill="none"
-                stroke="#10b981"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-
-              {/* Data Point Circles */}
-              {chartPoints.map((pt, i) => (
-                <circle
-                  key={i}
-                  cx={xCoords[i]}
-                  cy={getSvgY(pt.val)}
-                  r="4"
-                  fill="#ffffff"
-                  stroke="#10b981"
-                  strokeWidth="2.5"
+                {/* Area Polygon */}
+                <polygon
+                  points={dynamicAreaPoints}
+                  fill="url(#areaGradientLight)"
                 />
-              ))}
 
-              {/* X Axis Labels */}
-              <text x="40" y="160" fontSize="9" fill="#64748b" textAnchor="middle">T-12h</text>
-              <text x="85" y="160" fontSize="9" fill="#64748b" textAnchor="middle">T-9h</text>
-              <text x="130" y="160" fontSize="9" fill="#64748b" textAnchor="middle">T-6h</text>
-              <text x="175" y="160" fontSize="9" fill="#64748b" textAnchor="middle">T-3h</text>
-              <text x="220" y="160" fontSize="9" fill="#10b981" fontWeight="700" textAnchor="middle">Now</text>
-            </svg>
+                {/* Line Curve */}
+                <polyline
+                  points={dynamicSvgPoints}
+                  fill="none"
+                  stroke="#0284c7"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+
+                {/* Data Point Circles and Value Callouts */}
+                {chartPoints.map((pt, i) => (
+                  <g key={`pt-${i}`}>
+                    <circle
+                      cx={xCoords[i]}
+                      cy={getSvgY(pt.val)}
+                      r="5.5"
+                      fill="#ffffff"
+                      stroke="#0284c7"
+                      strokeWidth="3"
+                    />
+                    <text
+                      x={xCoords[i]}
+                      y={getSvgY(pt.val) - 11}
+                      fontSize="11"
+                      fontWeight="800"
+                      fill="#0369a1"
+                      textAnchor="middle"
+                    >
+                      {pt.val} kt
+                    </text>
+                  </g>
+                ))}
+
+                {/* X Axis Time Labels */}
+                <text x={xCoords[0]} y="252" fontSize="10.5" fill="#64748b" fontWeight="600" textAnchor="middle">T-12h</text>
+                <text x={xCoords[1]} y="252" fontSize="10.5" fill="#64748b" fontWeight="600" textAnchor="middle">T-9h</text>
+                <text x={xCoords[2]} y="252" fontSize="10.5" fill="#64748b" fontWeight="600" textAnchor="middle">T-6h</text>
+                <text x={xCoords[3]} y="252" fontSize="10.5" fill="#64748b" fontWeight="600" textAnchor="middle">T-3h</text>
+                <text x={xCoords[4]} y="252" fontSize="10.5" fill="#0284c7" fontWeight="800" textAnchor="middle">Now</text>
+              </svg>
+            </div>
           </div>
 
-          <div style={{ marginTop: 'auto', paddingTop: '10px', borderTop: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#64748b' }}>
-            <span>Initial: <strong>{chartPoints[0].val} kts</strong></span>
-            <span>Peak: <strong style={{ color: '#10b981' }}>{chartPoints[4].val} kts</strong></span>
+          {/* Model Validation & Key Meteorological Drivers */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.73rem', color: '#334155', backgroundColor: '#f8fafc', padding: '6px 10px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+              <CheckCircle2 size={14} color="#10b981" style={{ flexShrink: 0 }} />
+              <span>Convective core spiraling inward</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.73rem', color: '#334155', backgroundColor: '#f8fafc', padding: '6px 10px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+              <CheckCircle2 size={14} color="#10b981" style={{ flexShrink: 0 }} />
+              <span>SST ~29.5°C fueling thermal engine</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.73rem', color: '#334155', backgroundColor: '#f8fafc', padding: '6px 10px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+              <CheckCircle2 size={14} color="#10b981" style={{ flexShrink: 0 }} />
+              <span>Tropospheric shear &lt;12 kts (favorable)</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.73rem', color: '#334155', backgroundColor: '#f8fafc', padding: '6px 10px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+              <CheckCircle2 size={14} color="#10b981" style={{ flexShrink: 0 }} />
+              <span>Zero data leakage on held-out test split</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1359,18 +1480,15 @@ export const IntelligenceDashboard: React.FC = () => {
           className="white-card"
           style={{
             padding: '22px 26px',
-            background:
-              riData.is_ri_active
-                ? 'linear-gradient(135deg, #fff1f2 0%, #ffffff 60%, #fef2f2 100%)'
-                : riData.risk_level === 'HIGH_RISK'
-                ? 'linear-gradient(135deg, #fff7ed 0%, #ffffff 60%, #fffbeb 100%)'
-                : 'linear-gradient(135deg, #f0fdf4 0%, #ffffff 60%, #f8fafc 100%)',
-            border: `1.5px solid ${riData.risk_color}55`,
-            borderLeft: `6px solid ${riData.risk_color}`,
+            background: riData.is_ri_active
+              ? 'linear-gradient(135deg, #fef2f2 0%, #ffffff 100%)'
+              : riData.risk_level === 'HIGH_RISK'
+              ? 'linear-gradient(135deg, #fffbeb 0%, #ffffff 100%)'
+              : 'linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%)',
+            border: '1.5px solid #e2e8f0',
+            borderLeft: `5px solid ${riData.risk_color}`,
             borderRadius: '14px',
-            boxShadow: riData.is_ri_active
-              ? '0 6px 24px rgba(220, 38, 38, 0.12)'
-              : '0 4px 18px rgba(0,0,0,0.06)',
+            boxShadow: '0 2px 12px rgba(15, 23, 42, 0.04)',
             transition: 'all 0.2s ease',
           }}
         >
@@ -1415,7 +1533,6 @@ export const IntelligenceDashboard: React.FC = () => {
                       letterSpacing: '0.04em',
                       color: '#ffffff',
                       backgroundColor: riData.risk_color,
-                      boxShadow: `0 2px 8px ${riData.risk_color}66`,
                     }}
                   >
                     {riData.risk_level.replace(/_/g, ' ')}
@@ -1434,10 +1551,10 @@ export const IntelligenceDashboard: React.FC = () => {
                 alignItems: 'center',
                 gap: '8px',
                 backgroundColor: '#ffffff',
-                border: `1.5px solid ${riData.risk_color}66`,
+                border: '1.5px solid #e2e8f0',
                 padding: '6px 14px',
                 borderRadius: '24px',
-                boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
               }}
             >
               <Flame size={16} color={riData.risk_color} />
@@ -1455,7 +1572,7 @@ export const IntelligenceDashboard: React.FC = () => {
           {/* Metric Cards Grid */}
           <div className="responsive-grid-auto-220" style={{ marginBottom: '16px' }}>
             {/* 1. 24h Wind Surge */}
-            <div style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '12px 14px', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+            <div style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '12px 14px', border: '1px solid #e2e8f0' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>
                   24h Velocity Surge
@@ -1465,14 +1582,14 @@ export const IntelligenceDashboard: React.FC = () => {
                 </span>
               </div>
               <div style={{ fontSize: '1.35rem', fontWeight: 900, color: riData.observed_24h_wind_delta_kts >= 30 ? '#dc2626' : '#0f172a', marginTop: '2px' }}>
-                +{riData.observed_24h_wind_delta_kts} <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>kts / 24h</span>
+                +{riData.observed_24h_wind_delta_kts} <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#64748b' }}>kts / 24h</span>
               </div>
               <div style={{ width: '100%', height: '5px', backgroundColor: '#e2e8f0', borderRadius: '3px', marginTop: '6px', overflow: 'hidden' }}>
                 <div
                   style={{
                     width: `${Math.min(100, (riData.observed_24h_wind_delta_kts / 30.0) * 100)}%`,
                     height: '100%',
-                    backgroundColor: riData.observed_24h_wind_delta_kts >= 30 ? '#dc2626' : '#2563eb',
+                    backgroundColor: riData.observed_24h_wind_delta_kts >= 30 ? '#ef4444' : '#0284c7',
                     borderRadius: '3px',
                     transition: 'width 0.4s ease',
                   }}
@@ -1481,12 +1598,12 @@ export const IntelligenceDashboard: React.FC = () => {
             </div>
 
             {/* 2. Pressure Drop Rate */}
-            <div style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '12px 14px', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+            <div style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '12px 14px', border: '1px solid #e2e8f0' }}>
               <div style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>
                 Core Pressure Deepening
               </div>
               <div style={{ fontSize: '1.35rem', fontWeight: 900, color: '#0f172a', marginTop: '2px' }}>
-                -{riData.pressure_drop_rate_hpa_day} <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>hPa / 24h</span>
+                -{riData.pressure_drop_rate_hpa_day} <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#64748b' }}>hPa / 24h</span>
               </div>
               <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '4px' }}>
                 Rate: {(riData.pressure_drop_rate_hpa_day / 24.0).toFixed(2)} hPa/hr (barometric gradient)
@@ -1494,37 +1611,37 @@ export const IntelligenceDashboard: React.FC = () => {
             </div>
 
             {/* 3. Ocean Thermal SST */}
-            <div style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '12px 14px', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+            <div style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '12px 14px', border: '1px solid #e2e8f0' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>
                   Sea Surface Temp (SST)
                 </span>
-                <span style={{ fontSize: '0.65rem', fontWeight: 700, color: '#16a34a' }}>
+                <span style={{ fontSize: '0.65rem', fontWeight: 700, color: '#059669' }}>
                   Crit: ≥28.5°C
                 </span>
               </div>
               <div style={{ fontSize: '1.35rem', fontWeight: 900, color: riData.estimated_sst_celsius >= 29.0 ? '#ea580c' : '#0f172a', marginTop: '2px' }}>
-                {riData.estimated_sst_celsius} <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>°C</span>
+                {riData.estimated_sst_celsius} <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#64748b' }}>°C</span>
               </div>
-              <div style={{ fontSize: '0.68rem', color: '#16a34a', marginTop: '4px' }}>
+              <div style={{ fontSize: '0.68rem', color: '#059669', marginTop: '4px' }}>
                 Ocean thermal energy supportive for cyclogenesis
               </div>
             </div>
 
             {/* 4. Vertical Wind Shear */}
-            <div style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '12px 14px', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+            <div style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '12px 14px', border: '1px solid #e2e8f0' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>
                   Tropospheric Shear (VWS)
                 </span>
-                <span style={{ fontSize: '0.65rem', fontWeight: 700, color: riData.vertical_wind_shear_kts <= 12 ? '#16a34a' : '#64748b' }}>
+                <span style={{ fontSize: '0.65rem', fontWeight: 700, color: riData.vertical_wind_shear_kts <= 12 ? '#059669' : '#64748b' }}>
                   Fav: &lt;15 kts
                 </span>
               </div>
               <div style={{ fontSize: '1.35rem', fontWeight: 900, color: '#0f172a', marginTop: '2px' }}>
-                {riData.vertical_wind_shear_kts} <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>kts</span>
+                {riData.vertical_wind_shear_kts} <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#64748b' }}>kts</span>
               </div>
-              <div style={{ fontSize: '0.68rem', color: '#2563eb', marginTop: '4px' }}>
+              <div style={{ fontSize: '0.68rem', color: '#0284c7', marginTop: '4px' }}>
                 Core cloud top: {riData.core_cloud_top_temp_celsius}°C (Band 31 TIR)
               </div>
             </div>
@@ -1533,7 +1650,7 @@ export const IntelligenceDashboard: React.FC = () => {
           {/* Diagnostic Factors Scientific Checklist */}
           {riData.diagnostic_factors && riData.diagnostic_factors.length > 0 && (
             <div style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '14px 16px', border: '1px solid #e2e8f0', marginBottom: '14px' }}>
-              <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#334155', textTransform: 'uppercase', marginBottom: '8px' }}>
+              <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginBottom: '8px' }}>
                 Scientific Physical Factors Checklist (RSMC &amp; WMO Standards)
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -1548,20 +1665,20 @@ export const IntelligenceDashboard: React.FC = () => {
                       gap: '8px',
                       padding: '6px 10px',
                       borderRadius: '6px',
-                      backgroundColor: idx % 2 === 0 ? '#f8fafc' : '#ffffff',
+                      backgroundColor: idx % 2 === 0 ? '#f8fafc' : 'transparent',
                       fontSize: '0.74rem',
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <CheckCircle2
                         size={14}
-                        color={f.status === 'extreme' ? '#dc2626' : f.status === 'favorable' ? '#16a34a' : '#2563eb'}
+                        color={f.status === 'extreme' ? '#dc2626' : f.status === 'favorable' ? '#10b981' : '#0284c7'}
                       />
-                      <span style={{ fontWeight: 700, color: '#1e293b' }}>{f.name}:</span>
+                      <span style={{ fontWeight: 700, color: '#0f172a' }}>{f.name}:</span>
                       <span style={{ color: '#475569' }}>{f.description}</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#0f172a' }}>{f.value}</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#0284c7' }}>{f.value}</span>
                       <span
                         style={{
                           fontSize: '0.64rem',
@@ -1569,9 +1686,9 @@ export const IntelligenceDashboard: React.FC = () => {
                           padding: '1px 6px',
                           borderRadius: '4px',
                           backgroundColor:
-                            f.status === 'extreme' ? '#fee2e2' : f.status === 'favorable' ? '#dcfce7' : '#eff6ff',
+                            f.status === 'extreme' ? '#fee2e2' : f.status === 'favorable' ? '#dcfce7' : '#e0f2fe',
                           color:
-                            f.status === 'extreme' ? '#dc2626' : f.status === 'favorable' ? '#16a34a' : '#2563eb',
+                            f.status === 'extreme' ? '#dc2626' : f.status === 'favorable' ? '#15803d' : '#0369a1',
                         }}
                       >
                         {f.status.toUpperCase()}
@@ -1589,172 +1706,13 @@ export const IntelligenceDashboard: React.FC = () => {
               backgroundColor: riData.is_ri_active ? '#fef2f2' : '#f8fafc',
               borderRadius: '8px',
               padding: '10px 14px',
-              border: `1px solid ${riData.is_ri_active ? '#fecaca' : '#e2e8f0'}`,
+              border: `1px solid ${riData.is_ri_active ? '#fca5a5' : '#e2e8f0'}`,
               fontSize: '0.78rem',
               color: riData.is_ri_active ? '#991b1b' : '#334155',
               lineHeight: 1.45,
             }}
           >
-            <strong>Operational Advisory:</strong> {riData.operational_advisory}
-          </div>
-        </div>
-      )}
-
-      {/* 5. Coastal Landfall & IMD Disaster Hazard Bulletin */}
-      {landfallData && (
-        <div
-          className="white-card"
-          style={{
-            padding: '20px 24px',
-            background:
-              landfallData.alert_level === 'RED'
-                ? 'linear-gradient(135deg, #fff1f2 0%, #ffffff 100%)'
-                : landfallData.alert_level === 'ORANGE'
-                ? 'linear-gradient(135deg, #fff7ed 0%, #ffffff 100%)'
-                : 'linear-gradient(135deg, #fefce8 0%, #ffffff 100%)',
-            border: `1.5px solid ${landfallData.alert_color}55`,
-            borderLeft: `6px solid ${landfallData.alert_color}`,
-            borderRadius: '14px',
-            boxShadow: '0 4px 18px rgba(0,0,0,0.06)',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '12px',
-              marginBottom: '16px',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div
-                style={{
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '10px',
-                  backgroundColor: landfallData.alert_color,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#ffffff',
-                  boxShadow: `0 4px 12px ${landfallData.alert_color}55`,
-                }}
-              >
-                <AlertTriangle size={20} />
-              </div>
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#0f172a' }}>
-                    Global Coastal Landfall &amp; Hazard Bulletin
-                  </span>
-                  <span
-                    style={{
-                      padding: '3px 10px',
-                      borderRadius: '12px',
-                      fontSize: '0.72rem',
-                      fontWeight: 800,
-                      letterSpacing: '0.04em',
-                      color: '#ffffff',
-                      backgroundColor: landfallData.alert_color,
-                      boxShadow: `0 2px 8px ${landfallData.alert_color}66`,
-                    }}
-                  >
-                    {landfallData.alert_level}
-                  </span>
-                </div>
-                <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
-                  {selectedCyclone?.basin || 'Global'} Geodesic Coastline Proximity &amp; Gale Impact Radii • Cyclone {landfallData.cyclone_name}
-                </div>
-              </div>
-            </div>
-
-            {landfallData.evacuation_recommended && (
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '6px 14px',
-                  borderRadius: '20px',
-                  backgroundColor: '#fee2e2',
-                  color: '#b91c1c',
-                  border: '1px solid #fecaca',
-                  fontSize: '0.74rem',
-                  fontWeight: 700,
-                }}
-              >
-                <ShieldAlert size={15} />
-                <span>COASTAL EVACUATION RECOMMENDED</span>
-              </div>
-            )}
-          </div>
-
-          {/* Metrics Grid (Responsive) */}
-          <div className="responsive-grid-auto-220" style={{ marginBottom: '14px' }}>
-            <div style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '12px 14px', border: '1px solid #e2e8f0' }}>
-              <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase' }}>
-                Target Coastal Sector
-              </div>
-              <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#0f172a', marginTop: '3px' }}>
-                {landfallData.target_coastal_sector}
-              </div>
-              <div style={{ fontSize: '0.7rem', color: '#2563eb', marginTop: '2px' }}>
-                Point: {landfallData.projected_landfall_point[0]}°N, {landfallData.projected_landfall_point[1]}°E
-              </div>
-            </div>
-
-            <div style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '12px 14px', border: '1px solid #e2e8f0' }}>
-              <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase' }}>
-                Distance to Coastline
-              </div>
-              <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0f172a', marginTop: '2px' }}>
-                {landfallData.distance_to_coast_km} <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>km</span>
-              </div>
-              <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '2px' }}>
-                Haversine geodesic calculation
-              </div>
-            </div>
-
-            <div style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '12px 14px', border: '1px solid #e2e8f0' }}>
-              <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase' }}>
-                Estimated Landfall ETA
-              </div>
-              <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#2563eb', marginTop: '2px' }}>
-                ~{landfallData.estimated_landfall_eta_hours} <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>hours</span>
-              </div>
-              <div style={{ fontSize: '0.7rem', color: '#10b981', marginTop: '2px' }}>
-                Forward track vector projection
-              </div>
-            </div>
-
-            <div style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '12px 14px', border: '1px solid #e2e8f0' }}>
-              <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase' }}>
-                Hazard Alert Radii
-              </div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#dc2626', marginTop: '4px' }}>
-                🔴 Gale Ring: {landfallData.gale_wind_radius_km} km (≥64 kts)
-              </div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#ea580c', marginTop: '2px' }}>
-                🟠 Storm Zone: {landfallData.storm_warning_radius_km} km (≥34 kts)
-              </div>
-            </div>
-          </div>
-
-          {/* Advisory text */}
-          <div
-            style={{
-              backgroundColor: '#f8fafc',
-              borderRadius: '8px',
-              padding: '10px 14px',
-              border: '1px solid #e2e8f0',
-              fontSize: '0.78rem',
-              color: '#334155',
-              lineHeight: 1.45,
-            }}
-          >
-            <strong>Official Advisory:</strong> {landfallData.advisory}
+            <strong style={{ color: '#0f172a' }}>Operational Advisory:</strong> {riData.operational_advisory}
           </div>
         </div>
       )}
@@ -1774,9 +1732,9 @@ export const IntelligenceDashboard: React.FC = () => {
         <InteractiveMap
           observedPoints={observedTrackPoints}
           predictedPoints={predictedTrackPoints}
-          cycloneName={selectedCyclone?.name || 'VARDAH'}
+          cycloneName={selectedCyclone?.name || 'Active Cyclone'}
           height="100%"
-          landfallData={landfallData}
+          landfallData={null}
         />
       </div>
     </div>
